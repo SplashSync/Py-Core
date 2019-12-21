@@ -20,7 +20,7 @@ setup(
        name='SplashPy',
        version="0.1",
        packages=find_packages(),
-       install_requires=["soap2py", "pycrypto"],
+       install_requires=["soap2py", "pycrypto", 'Crypto', 'pysimplesoap'],
        author='SplashSync',
        author_email='contact@splashsync.com',
        description="Foundation Package for Splash Py Clients",

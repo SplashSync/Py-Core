@@ -12,14 +12,13 @@
 #  file that was distributed with this source code.
 #
 
-import logging
 import hashlib
 from Crypto.Cipher import AES
 import base64
 from splashpy.config import Config
 
 
-def encrypt(data):
+def encrypt( data ):
     # ====================================================================#
     # Safety Checks
     if Config.wsIdentifier is None or Config.wsEncryptionKey is None:
@@ -34,7 +33,8 @@ def encrypt(data):
 
     return False;
 
-def decrypt(data):
+
+def decrypt( data ):
     # ====================================================================#
     # Safety Checks
     if Config.wsIdentifier is None or Config.wsEncryptionKey is None:
@@ -49,30 +49,28 @@ def decrypt(data):
 
     return False;
 
+
 class AESCipher:
     """OpenSsl "Like" AES 256  Cipher"""
 
-    def __init__(self, key, iv):
+    def __init__( self, key, iv):
         self.key = hashlib.sha256(key.encode('utf-8')).hexdigest()[:32].encode("utf-8")
         self.iv = hashlib.sha256(iv.encode('utf-8')).hexdigest()[:16].encode("utf-8")
 
     @staticmethod
-    def __pad(s):
+    def __pad( s ):
         return s + (AES.block_size - len(s) % AES.block_size) * chr(AES.block_size - len(s) % AES.block_size)
 
     @staticmethod
-    def __unpad(s):
+    def __unpad( s ):
         return s[0:-ord(s[-1])]
 
-   # __pad = lambda self, s: s + (AES.block_size - len(s) % AES.block_size) * chr(AES.block_size - len(s) % AES.block_size)
-    #__unpad = lambda self, s: s[0:-ord(s[-1])]
-
-    def encrypt(self, raw):
+    def encrypt( self, raw ):
         raw = self.__pad(raw)
         cipher = AES.new(self.key, AES.MODE_CBC, self.iv)
         return base64.b64encode(base64.b64encode(cipher.encrypt(raw)))
 
-    def decrypt(self, enc):
+    def decrypt( self, enc ):
         enc = base64.b64decode(base64.b64decode(enc))
         cipher = AES.new(self.key, AES.MODE_CBC, self.iv)
         return self.__unpad(cipher.decrypt(enc).decode("utf-8"))

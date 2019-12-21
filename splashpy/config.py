@@ -15,12 +15,19 @@
 from splashpy import const
 
 
-class Config:
+class TestConfig:
+    def __init__( self, identifier, key, host=False ):
+        """Init Base Configuration"""
+        self.wsIdentifier = identifier
+        self.wsEncryptionKey = key
+        if isinstance(host, str):
+            self.wsHost = host
 
+
+class Config:
     # ====================================================================#
     # Define Module Core Configuration
     # ====================================================================#
-    wsIdentifier = None
     wsIdentifier = None
     wsEncryptionKey = None
     wsTimeout = const.__TIMEOUT__
@@ -33,3 +40,36 @@ class Config:
     # ====================================================================#
     lang = const.__LANG__
     smartNotify = const.__SMART_NOTIFY__
+
+    def __init__( self, identifier, key, host=False ):
+        """Init Base Configuration"""
+        self.wsIdentifier = identifier
+        self.wsEncryptionKey = key
+        if isinstance(host, str):
+            self.wsHost = host
+
+    def is_valid( self ):
+        """Validate Ws Minimal Configuration"""
+        if not isinstance(self.wsIdentifier, str):
+            return False
+
+        if not isinstance(self.wsEncryptionKey, str):
+            return False
+
+        if not isinstance(self.wsHost, str):
+            return False
+
+        return True
+
+    def identifiers( self ):
+        return self.wsIdentifier, self.wsEncryptionKey, self.wsHost
+
+    def method( self ):
+        return self.wsCrypt
+
+    def timeout( self ):
+        return self.wsTimeout
+
+    def force_host(self, host):
+        self.wsHost = host
+

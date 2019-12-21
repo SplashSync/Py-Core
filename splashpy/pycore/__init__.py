@@ -12,7 +12,4 @@
 #  file that was distributed with this source code.
 #
 
-
-
-#from . import pycore
-#from . import core
+from . import pycore
