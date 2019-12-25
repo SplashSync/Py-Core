@@ -14,6 +14,7 @@
 
 from config import Config
 
+
 class Framework:
     """Base Class for Splash Client & Server"""
 

@@ -18,7 +18,7 @@ import base64
 from splashpy.config import Config
 from security import decrypt
 import xml.dom.minidom
-
+from componants.XmlManager import XmlManager
 
 def unpack( soapdata, secured=True ):
     """Unpack Received Splash Data to Object"""
@@ -29,29 +29,16 @@ def unpack( soapdata, secured=True ):
     else:
         xmlString = base64.b64decode(rawData)
 
+
     if not isinstance(xmlString, str):
         return False;
 
-    try:
-        xmlData = xml.dom.minidom.parseString(xmlString).firstChild
-    except:
-        return False;
+    xmlData = XmlManager.to_object(xmlString)
 
-
-    data = {
-        "test": "ddd"
-    }
-
-    print xmlData.nodeName
-    print xmlData.attributes.values()
-
-    for element in xmlData.childNodes:
-        if element.nodeType is xml.dom.minidom.Node.ELEMENT_NODE:
-            print element.firstChild.data
-
-    print xmlData.firstChild.nodeType
-    print (xmlData.firstChild.data)
-#    print xmlData.firstChild.getElementsByTagName('result').__getitem__(0).nodeValue
-#    print base64.b64decode(xmlData.firstChild.firstChild.data)
+#    try:
+        #print xmlString
+        #xmlData = XmlManager.xml_to_object(xmlString)
+#    except:
+#        return False;
 
     return xmlString;

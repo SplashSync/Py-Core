@@ -45,9 +45,6 @@ class SplashClient(Framework):
         if self.__soap_client is None:
             wsId, wsKey, wsHost = self.config().identifiers()
             self.__soap_client = SoapClient(location=wsHost, ns=False, exceptions=False)
-#                action=wsHost,  # SOAPAction
-#                namespace=wsHost,
-#                soap_ns='soap', ns=False, exceptions=True)
 
         return self.__soap_client
 
@@ -61,7 +58,7 @@ if __name__ == "__main__":
 
 
         Splash = SplashClient("ThisIsSplashWsId", "ThisIsYourEncryptionKeyForSplash")
-        Splash.config().force_host("http://py.splashsync.local/ws/soap")
+        Splash.config().force_host("http://localhost/SplashToolkit/public/ws/soap")
         print(Splash.Ping())
 
 
