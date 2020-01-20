@@ -16,3 +16,5 @@ install:
 # command to run tests
 script:
   - pytest
+  - docker-compose exec splash python3 ./splashpy/server.py --serve
+  - docker-compose exec toolkit php bin/phpunit -c phpunit.xml.dist
