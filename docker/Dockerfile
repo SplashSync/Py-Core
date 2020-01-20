@@ -11,7 +11,7 @@ ADD ./ /app/
 RUN pip install -e /app/
 
 # Start Splash Python Server
-# CMD [ "python", "./splashpy/server.py", "--serve"]
+CMD [ "python", "./splashpy/server.py", "--serve"]
 # Start Python Console Only
-CMD [ "python", "-i"]
+#CMD [ "python", "-i"]
 
