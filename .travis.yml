@@ -7,11 +7,13 @@ services:
   - docker    # Require Docker to run Splash Php Toolkit
 
 cache:
+  pip: ~
   directories:
   - docker_images
 
 before_install:
-  - docker load -i docker_images/images.tar || true
+  # Restore Docker Images from Cache
+  #- docker load -i docker_images/images.tar || true
 
 install:
   # Install PIP dependencies
@@ -31,4 +33,5 @@ script:
   - docker-compose stop
 
 before_cache:
-  - docker save -o docker_images/images.tar $(docker images -a -q)
+  # Store Docker Images in Cache
+  #- docker save -o docker_images/images.tar $(docker images -a -q)
