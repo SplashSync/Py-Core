@@ -14,13 +14,11 @@
 
 from setuptools import setup, find_packages
 
-#import src.pycore
-
 setup(
-       name='SplashPy',
+       name='splashpy',
        version="0.1",
        packages=find_packages(),
-       install_requires=["soap2py", "pycrypto", 'Crypto', 'pysimplesoap'],
+       install_requires=["pycryptodome", 'crypto', 'pysimplesoap'],
        author='SplashSync',
        author_email='contact@splashsync.com',
        description="Foundation Package for Splash Py Clients",
@@ -35,7 +33,7 @@ setup(
               "License :: MIT License",
               "Natural Language :: French",
               "Operating System :: OS Independent",
-              "Programming Language :: Python :: 2.7",
+              "Programming Language :: Python :: 3.6",
               "Topic :: Communications",
        ]
 )

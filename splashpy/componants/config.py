@@ -13,15 +13,7 @@
 #
 
 from splashpy import const
-
-
-class TestConfig:
-    def __init__( self, identifier, key, host=False ):
-        """Init Base Configuration"""
-        self.wsIdentifier = identifier
-        self.wsEncryptionKey = key
-        if isinstance(host, str):
-            self.wsHost = host
+import logging
 
 
 class Config:
@@ -41,33 +33,41 @@ class Config:
     lang = const.__LANG__
     smartNotify = const.__SMART_NOTIFY__
 
-    def __init__( self, identifier, key, host=False ):
+    def __init__(self, identifier, key, host=False):
         """Init Base Configuration"""
         self.wsIdentifier = identifier
         self.wsEncryptionKey = key
+        # if isinstance(host, (str, unicode)):
         if isinstance(host, str):
             self.wsHost = host
 
-    def is_valid( self ):
+    def is_valid(self):
         """Validate Ws Minimal Configuration"""
+
+        # if not isinstance(self.wsIdentifier, (str, unicode)):
         if not isinstance(self.wsIdentifier, str):
+            logging.warning("Ws Identifier is Missing")
             return False
 
+        # if not isinstance(self.wsEncryptionKey, (str, unicode)):
         if not isinstance(self.wsEncryptionKey, str):
+            logging.warning("Ws Encryption Key is Missing")
             return False
 
+        # if not isinstance(self.wsHost, (str, unicode)):
         if not isinstance(self.wsHost, str):
+            logging.warning("Ws Host is Missing")
             return False
 
         return True
 
-    def identifiers( self ):
+    def identifiers(self):
         return self.wsIdentifier, self.wsEncryptionKey, self.wsHost
 
-    def method( self ):
+    def method(self):
         return self.wsCrypt
 
-    def timeout( self ):
+    def timeout(self):
         return self.wsTimeout
 
     def force_host(self, host):

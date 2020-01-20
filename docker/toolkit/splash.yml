@@ -34,5 +34,5 @@ splash:
             config:  
                 WsIdentifier:       ThisIsSplashWsId
                 WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash                
-                WsHost:             http://localhost
-                WsPath:             /local/path/to/your/application/vendor/splash/phpcore/soap.php  
+                WsHost:             http://py-server.splashsync.local
+                WsPath:             :8008

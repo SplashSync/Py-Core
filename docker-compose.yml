@@ -23,7 +23,7 @@
 #
 # To us different PS Version coinfigured, you need to add hosts to /etc/hosts
 # 
-# 172.169.0.11    	    py.splashsync.local
+# 172.169.2.10    	    py.splashsync.local
 #
 ################################################################################
 
@@ -33,7 +33,24 @@ version: '2'
 services:
 
     ################################################################################
-    # Splash Toolkit Container   
+    # Splash Py Container
+    splash:
+        build:
+            context: ./
+            dockerfile: docker/Dockerfile
+        container_name: py-splashsync
+        tty: true
+        volumes:
+            # Server Sources in Read Only Mode
+            - "./:/app/"
+            - "./splashpy:/app/splashpy:ro"
+        hostname: py-server.splashsync.local
+        networks:
+            pycore:         { ipv4_address: 172.169.2.11, aliases: [ py-server.splashsync.local ] }
+            splashsync:     { aliases: [ py-server.splashsync.local ] }
+
+    ################################################################################
+    # Splash Toolkit Container
     toolkit:
         image: 'splashsync/toolkit'
         container_name: py-toolkit

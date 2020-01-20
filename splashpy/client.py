@@ -12,39 +12,66 @@
 #  file that was distributed with this source code.
 #
 
-from __future__ import unicode_literals
-from pysimplesoap.client import SoapClient
-from core.splash import Framework
 
-import logging
-from core.encoder import *
-
-logging.basicConfig()
-
-from splashpy.core.security import decrypt
-import base64
+from splashpy.core.framework import Framework
+from splashpy.componants.encoder import unpack, pack
+from pysimplesoap.client import SoapClient, SoapFault
 
 
 class SplashClient(Framework):
     __soap_client = None
 
-    def Ping( self ):
+    def ping(self):
         """Ping Splash Server, No Encryption, Just Say Hello!!"""
 
-        client = self.__get_client()
-        wsId, wsKey, wsHost = Splash.config().identifiers()
+        # Create Soap Client
+        soap_client = self.__get_client()
+        wsId, wsKey, wsHost = self.config().identifiers()
 
+        # Execute Ping Request
         try:
-            response = client.ping(id=wsId, data="test")
-        except:
+            soap_response = soap_client.Ping(param0=wsId, param1="test")
+        # Catch Potential Errors
+        except SoapFault as fault:
+            Framework.log().on_fault(fault)
             return False
 
-        return unpack(response, False)
+        # Decode Response
+        ping_response = unpack(soap_response.children().children().children().__str__(), False)
 
-    def __get_client( self ):
+        # Verify Response
+        if ping_response is False:
+            return False
+
+        return ping_response["result"] == "1"
+
+    def connect(self):
+        """Connect Splash Server, With Encryption, Just Say Hello!!"""
+
+        # Create Soap Client
+        soap_client = self.__get_client()
+        wsId, wsKey, wsHost = self.config().identifiers()
+        # Execute Connect Request
+        try:
+            soap_response = soap_client.Connect(param0=wsId, param1=pack({"connect": True}))
+        # Catch Potential Errors
+        except SoapFault as fault:
+            Framework.log().on_fault(fault)
+            return False
+        # Decode Response
+        connect_response = unpack(soap_response.children().children().children().__str__())
+
+        # Verify Response
+        if connect_response is False:
+            return False
+
+        return connect_response["result"] == "1"
+
+    def __get_client(self):
+        """Build Soap Client with Host Configuration"""
         if self.__soap_client is None:
             wsId, wsKey, wsHost = self.config().identifiers()
-            self.__soap_client = SoapClient(location=wsHost, ns=False, exceptions=False)
+            self.__soap_client = SoapClient(location=wsHost, ns=False, exceptions=True)
 
         return self.__soap_client
 
@@ -52,31 +79,21 @@ class SplashClient(Framework):
 if __name__ == "__main__":
     import sys
 
+    client = SplashClient("ThisIsSplashWsId", "ThisIsYourEncryptionKeyForSplash")
+    client.config().force_host("http://localhost:8008/")
+
     if '--ping' in sys.argv:
-        print("Ping Test")
-
-
-
-        Splash = SplashClient("ThisIsSplashWsId", "ThisIsYourEncryptionKeyForSplash")
-        Splash.config().force_host("http://localhost/SplashToolkit/public/ws/soap")
-        print(Splash.Ping())
-
-
-
-
-    if '--web2py' in sys.argv:
-        # test local sample webservice exposed by web2py
-        from client import SoapClient
-
-        if not '--wsdl' in sys.argv:
-            client = SoapClient(
-                location="http://127.0.0.1:8000/webservices/sample/call/soap",
-                action='http://127.0.0.1:8000/webservices/sample/call/soap',  # SOAPAction
-                namespace="http://127.0.0.1:8000/webservices/sample/call/soap",
-                soap_ns='soap', ns=False, exceptions=True)
+        if client.ping() is True:
+            print("Ping Test =>> Success")
         else:
-            client = SoapClient(wsdl="http://127.0.0.1:8000/webservices/sample/call/soap?WSDL")
-        response = client.Dummy()
-        print('dummy', response)
-        response = client.Echo(value='hola')
-        print('echo', repr(response))
+            print("Ping Test =>> Fail")
+
+        client.log().to_logging()
+
+    if '--connect' in sys.argv:
+        if client.connect() is True:
+            print("Connect Test =>> Success")
+        else:
+            print("Connect Test =>> Fail")
+
+        client.log().to_logging()

@@ -12,8 +12,3 @@
 #  file that was distributed with this source code.
 #
 
-
-from . import componants
-
-#from . import pycore
-#from . import core

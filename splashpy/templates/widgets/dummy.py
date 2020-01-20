@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 #  This file is part of SplashSync Project.
 #
@@ -12,4 +11,11 @@
 #  file that was distributed with this source code.
 #
 
-from . import pycore
+from splashpy.models.widget import BaseWidget
+
+
+class Dummy(BaseWidget):
+
+    def get(self, object_id, fields):
+        """Return requested Widget Data"""
+        return {}
