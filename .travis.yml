@@ -6,15 +6,20 @@ python:
 services:
   - docker    # Require Docker to run Splash Php Toolkit
 
-# command to install dependencies
+
 install:
+  # Install PIP dependencies
   - pip install pycryptodome crypto pysimplesoap peewee
+  # Install Module as PIP dependencies
   - pip install -e ./
+  # Build Docker Compose
   - docker network create splashsync --attachable
   - docker-compose up -d
 
 # command to run tests
 script:
+  # Run unit tests for whole package
   - pytest
-  - docker-compose exec splash python3 ./splashpy/server.py --serve
+  # Run Splash Unit tests from Splash Toolkit
   - docker-compose exec toolkit php bin/phpunit -c phpunit.xml.dist
+  - docker-compose stop
