@@ -6,6 +6,12 @@ python:
 services:
   - docker    # Require Docker to run Splash Php Toolkit
 
+cache:
+  directories:
+  - docker_images
+
+before_install:
+  - docker load -i docker_images/images.tar || true
 
 install:
   # Install PIP dependencies
@@ -23,3 +29,6 @@ script:
   # Run Splash Unit tests from Splash Toolkit
   - docker-compose exec toolkit php vendor/bin/phpunit -c phpunit.xml.dist
   - docker-compose stop
+
+before_cache:
+  - docker save -o docker_images/images.tar $(docker images -a -q)
