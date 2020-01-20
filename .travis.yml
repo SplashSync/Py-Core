@@ -1,12 +1,16 @@
 language: python
 
 python:
-  - "3.6"      # current default Python on Travis CI
+  - "3.6"     # current default Python on Travis CI
+
+services:
+  - docker    # Require Docker to run Splash Php Toolkit
 
 # command to install dependencies
 install:
   - pip install pycryptodome crypto pysimplesoap peewee
   - pip install -e ./
+  - docker-compose up -D
 
 # command to run tests
 script:
