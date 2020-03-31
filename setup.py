@@ -16,7 +16,7 @@ from setuptools import setup, find_packages
 
 setup(
        name='splashpy',
-       version="0.1",
+       version="0.1.1",
        packages=find_packages(),
        install_requires=["pycryptodome", 'crypto', 'pysimplesoap'],
        author='SplashSync',
@@ -24,13 +24,13 @@ setup(
        description="Foundation Package for Splash Py Clients",
        #long_description=open('README.md').read(),
        license="MIT",
-       url='https://github.com/SplashSync/Php-Core',
+       url='https://github.com/SplashSync/PyCore',
        # Active la prise en compte du fichier MANIFEST.in
        #include_package_data=True,
        classifiers=[
               "Programming Language :: Python",
               "Development Status :: 1 - Planning",
-              "License :: MIT License",
+              "License :: OSI Approved :: MIT License",
               "Natural Language :: French",
               "Operating System :: OS Independent",
               "Programming Language :: Python :: 3.6",

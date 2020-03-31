@@ -2,7 +2,7 @@
 #
 #  This file is part of SplashSync Project.
 #
-#  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+#  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -55,7 +55,7 @@ class SimpleFields():
     def getSimpleStr( self, index, field_id, target=None ):
         """Read Simple String Field"""
         value = self.__getSimpleValue(index, field_id, target)
-        if value is None:
+        if value is None or value is False:
             value = ""
         self._out[field_id] = str(value)
 
@@ -68,7 +68,7 @@ class SimpleFields():
     def getSimpleDate( self, index, field_id, target=None ):
         """Read Simple Date Field"""
         value = self.__getSimpleValue(index, field_id, target)
-        if value is None:
+        if value is None or value is False:
             self._out[field_id] = ""
         else:
             self._out[field_id] = value.strftime(const.__SPL_T_DATECAST__)
@@ -85,7 +85,7 @@ class SimpleFields():
     def getSimpleDateTime( self, index, field_id, target=None ):
         """Read Simple DateTime Field"""
         value = self.__getSimpleValue(index, field_id, target)
-        if value is None:
+        if value is None or value is False:
             self._out[field_id] = ""
         else:
             self._out[field_id] = value.strftime(const.__SPL_T_DATETIMECAST__)
@@ -100,3 +100,30 @@ class SimpleFields():
             return Framework.log().error(exception.message)
 
         self.__setSimpleValue(field_id, field_date, target)
+
+class GenericFields(SimpleFields):
+
+    def __getSimpleValue( self, index, field_id, target=None ):
+        """Read Generic Raw Field Value"""
+        try:
+            if target is None:
+                value = self.object.get(field_id)
+            else:
+                value = target.get(field_id)
+            self._in.__delitem__(index)
+        except Exception as exception:
+            Framework.log().error(exception.message)
+            return None
+
+        return value
+
+    def __setSimpleValue( self, field_id, field_data, target=None ):
+        """Write Simple Raw Field Value"""
+        try:
+            if target is None:
+                self.object.set(field_id, field_data)
+            else:
+                target.set(field_id, field_data)
+            self._in.__delitem__(field_id)
+        except Exception as exception:
+            return Framework.log().error(exception.message)

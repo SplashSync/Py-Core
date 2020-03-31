@@ -1,7 +1,7 @@
 #
 #  This file is part of SplashSync Project.
 #
-#  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+#  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -117,6 +117,11 @@ class FieldFactory:
         FieldFactory.new['name'] = field_name
         if FieldFactory.new['desc'] is None:
             FieldFactory.new['desc'] = field_name
+
+    @staticmethod
+    def description( field_name ):
+        """Set Current New Field Description"""
+        FieldFactory.new['desc'] = field_name
 
     @staticmethod
     def inlist( list_name ):
@@ -270,7 +275,7 @@ class FieldFactory:
     @staticmethod
     def setDefaultLanguage( iso_code ):
         """Select Default Language for Field List"""
-        from core.framework import Framework
+        from splashpy.core.framework import Framework
         # Safety Check ==> Verify Language ISO Code
         if not isinstance(iso_code, str) or iso_code.__len__() < 2:
             return Framework.log().error("Default Language ISO Code is Invalid")
@@ -280,7 +285,7 @@ class FieldFactory:
     @staticmethod
     def setMultilang( iso_code ):
         """Configure Current Field with Multilangual Options"""
-        from core.framework import Framework
+        from splashpy.core.framework import Framework
         # Safety Check ==> Verify Language ISO Code
         if not isinstance(iso_code, str) or iso_code.__len__() < 2:
             return Framework.log().error("Default Language ISO Code is Invalid")
@@ -307,13 +312,13 @@ class FieldFactory:
     @staticmethod
     def validate():
         """Validate Field Definition"""
-        from core.framework import Framework
+        from splashpy.core.framework import Framework
         # Verify - Field Type is Not Empty.
         if not isinstance(FieldFactory.new['type'], str) or FieldFactory.new['type'].__len__() < 3:
             return Framework.log().error("Field type is not defined")
         # Verify - Field Id is Not Empty.
         if not isinstance(FieldFactory.new['id'], str) or FieldFactory.new['id'].__len__() < 2:
-            return Framework.log().error("Field IS is not defined")
+            return Framework.log().error("Field ID is not defined")
         # # Verify - Field Id No Spacial Chars.
         # if not isinstance(FieldFactory.new.id, str) or FieldFactory.new.id.__len__() < 2:
         #     Framework.log().error("Field IS is not defined")
@@ -347,7 +352,7 @@ class FieldFactory:
 
     @staticmethod
     def publish():
-        from core.framework import Framework
+        from splashpy.core.framework import Framework
         # Commit Last Created if not already done
         if FieldFactory.new is not None:
             FieldFactory.commit()

@@ -2,7 +2,7 @@
 #
 #  This file is part of SplashSync Project.
 #
-#  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+#  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,7 +12,7 @@
 #  file that was distributed with this source code.
 #
 
-import const
+from splashpy import const
 from splashpy.core.framework import Framework
 from pysimplesoap.server import HTTPServer, SoapDispatcher, SOAPHandler, SoapFault
 from splashpy.componants.encoder import unpack, pack
@@ -67,6 +67,31 @@ class SplashServer(Framework):
         httpd.dispatcher = self.__get_server()
         httpd.serve_forever()
 
+    def fromWerkzeug(self, request, complete=True):
+        """Handle Werkzeug Requests"""
+        from splashpy.componants.werkzeug import WerkzeugHelper
+
+        # Verify Werkzeug is Installed
+        if not WerkzeugHelper.is_installed():
+            return False
+        # Verify Request Format
+        if not WerkzeugHelper.is_valid_request(request):
+            return False
+        # Complete Server Info from Request
+        if complete:
+            self.getServerDetails().loadWerkzeugInformation(request)
+        # POST >> Handle Soap Request
+        if request.method == 'POST':
+            return self.__get_server().dispatch(str(request.data, 'UTF-8'))
+        # POST >> Handle Soap Request
+        if "node" in request.args:
+            # Load Server Info
+            wsId, wsKey, wsHost = self.config().identifiers()
+            if request.args["node"] == wsId:
+                return "TODO: Show Server Debug Information"
+
+        return "This Server Provide no Description"
+
     def __get_server( self ):
         """Build Soap Server with Host Configuration"""
         if self.__dispatcher is None:
@@ -117,6 +142,7 @@ class SplashServer(Framework):
         wsId, wsKey, wsHost = self.config().identifiers()
         # Verify Server Id
         if id != wsId:
+            import logging
             logging.warning("Wrong server Id...")
             return False
         # Clean Logs
