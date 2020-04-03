@@ -182,7 +182,7 @@ if __name__ == "__main__":
         from peewee import SqliteDatabase
         from splashpy.faker.short import Short, ShortData
         from splashpy.faker.client import FakerClient
-        from splashpy.templates.widgets.dummy import Dummy
+        from splashpy.templates.widgets import Dummy, Basic, Morris
         from splashpy.models.server import ServerInfo
 
         logging.warning("Starting Sqlite Database...")
@@ -194,7 +194,7 @@ if __name__ == "__main__":
             "ThisIsSplashWsId",
             "ThisIsYourEncryptionKeyForSplash",
             [Short()],
-            [Dummy()],
+            [Dummy(), Basic(), Morris()],
             info=FakerClient(),
             server=ServerInfo({
                 "server_host":"http://localhost:8008",
