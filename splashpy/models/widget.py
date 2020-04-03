@@ -38,8 +38,16 @@ class BaseWidget(WidgetInterface):
     blocks = {}
     options = {}
     parameters = {}
-    out = {}
+    out = {
+        "title": "",
+        "subtitle": "",
+        "icon": "",
+        "blocks": {}
+    }
     disabled = False
+
+    def __init__(self):
+        self.setTitle(self.name).setIcon(self.icon)
 
     # ====================================================================#
     # COMMON CLASS INFORMATION
@@ -69,7 +77,11 @@ class BaseWidget(WidgetInterface):
         """Get Widget Default Parameters"""
         return self.parameters
 
-    def description( self ):
+    # ====================================================================#
+    # COMMON CLASS SERVER ACTIONS
+    # ====================================================================#
+
+    def description(self):
         """Get Ws Widget Description"""
         # Build & Return Widget Description Array
         return {
@@ -85,13 +97,45 @@ class BaseWidget(WidgetInterface):
             # Widget Icon Class (Font Awesome 5. ie "fas fa-user")
             "icon": self.getIcon(),
             # Is This Widget Enabled or Not?
-            "disabled": self.isDisabled()
+            "disabled": self.isDisabled(),
+            # Widget Options
+            "options": self.getOptions(),
+            # Widget Parameters
+            "parameters": self.getParameters()
         }
 
-    def isDisabled( self ):
+    def render(self):
+        """Render / Return Widget Data Array"""
+        return self.out
+
+    def isDisabled(self):
         """Check if Object is Disabled"""
         return self.disabled
 
     # ====================================================================#
     # COMMON CLASS SETTERS
     # ====================================================================#
+
+    def setTitle(self, text):
+        """Set Widget Title"""
+        self.out["title"] = text
+
+        return self
+
+    def setSubTitle(self, text):
+        """Set Widget Subtitle"""
+        self.out["subtitle"] = text
+
+        return self
+
+    def setIcon(self, text):
+        """Set Widget Icon"""
+        self.out["icon"] = text
+
+        return self
+
+    def setBlocks(self, blocks):
+        """Set Widget Icon"""
+        self.out["blocks"] = blocks
+
+        return self

@@ -34,7 +34,7 @@ class WidgetInterface:
     # ====================================================================#
 
     @abstractmethod
-    def get(self, object_id, fields):
+    def get(self, parameters):
         """Return requested Widget Data"""
         raise NotImplementedError("Not implemented yet.")
 

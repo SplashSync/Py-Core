@@ -140,7 +140,7 @@ class Framework:
     @staticmethod
     def getWidget(widget_type):
         """Safe Get Widget Class"""
-        if widget_type not in Framework.__widget:
+        if widget_type not in Framework.__widgets:
             return False
         return Framework.__widgets[widget_type]
 

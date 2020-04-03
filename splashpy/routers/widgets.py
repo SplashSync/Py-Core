@@ -27,14 +27,16 @@ class WidgetsRouter(BaseRouter):
 
         # READING OF SERVER WIDGETS DEFINITION
         if task['name'] == const.__SPL_F_WIDGET_DEFINITION__:
-            Framework.log().error("Widget Router - NOT Implemented Yet... ")
-            response['data'] = {}
+            # Load Widget Class
+            ws_widget = Framework.getWidget(task["params"]['type'])
+            response['data'] = ws_widget.description()
             response['result'] = True
 
         # READING OF SERVER WIDGETS CONTENTS
         if task['name'] == const.__SPL_F_WIDGET_GET__:
-            Framework.log().error("Widget Router - NOT Implemented Yet... ")
-            response['data'] = {}
+            # Load Widget Class
+            ws_widget = Framework.getWidget(task["params"]['type'])
+            response['data'] = ws_widget.get(task["params"]['params'])
             response['result'] = True
 
         return response
