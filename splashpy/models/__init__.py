@@ -16,3 +16,4 @@ from .object import BaseObject
 from .widget import BaseWidget
 from .client import ClientInfo
 from .server import ServerInfo
+from .configurator import AbstractConfigurator
