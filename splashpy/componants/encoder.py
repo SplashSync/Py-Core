@@ -190,8 +190,8 @@ class XmlManager:
             xmlElement.appendChild(newNode)
             return
 
-        # Add Int Object
-        if isinstance(object, int):
+        # Add Int or Float Object
+        if isinstance(object, int) or isinstance(object, float):
             newNode = xmlDoc.createTextNode(str(base64.b64encode(str(object).encode()), "utf-8"))
             xmlElement.appendChild(newNode)
             return
