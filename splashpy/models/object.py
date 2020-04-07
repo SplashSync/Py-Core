@@ -65,27 +65,27 @@ class BaseObject(IntelParser, ObjectInterface):
     # COMMON CLASS INFORMATION
     # ====================================================================#
 
-    def getType( self ):
+    def getType(self):
         """Get Object Type"""
         return self.__class__.__name__
 
-    def getName( self ):
+    def getName(self):
         """Get Object Type Name"""
         return self.name
 
-    def getDescription( self ):
+    def getDescription(self):
         """Get Object Type Description"""
         return self.desc
 
-    def getIcon( self ):
+    def getIcon(self):
         """Get Object Type FontAwesome 5 Icon"""
         return self.icon
 
-    def isDisabled( self ):
+    def isDisabled(self):
         """Check if Object is Disabled"""
         return self.disabled
 
-    def description( self ):
+    def description(self):
         """Get Ws Object Description"""
         # Build & Return Object Description Array
         return {
@@ -151,3 +151,13 @@ class BaseObject(IntelParser, ObjectInterface):
             return self.__updated[key]
         except:
             return False
+
+    # ====================================================================#
+    #  Object FILES Management
+    # ====================================================================#
+
+    def getFile(self, path, md5):
+        """
+        Custom Reading of a File from Local System (Database or any else)
+        """
+        return None

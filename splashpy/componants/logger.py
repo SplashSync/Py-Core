@@ -14,7 +14,6 @@
 
 from collections import Iterable
 
-
 class Logger:
     """Splash Logger: Collect & Return Remote Logs"""
 
@@ -27,22 +26,59 @@ class Logger:
         self.err = []
         self.deb = []
 
-    def set_debug( self, debug ):
+    def set_debug(self, debug):
+        """Setup Debug Mode"""
         self.debug = debug
 
-    def set_prefix( self, prefix ):
+    def set_prefix(self, prefix):
+        """Set Logs Messages Prefix"""
         self.prefix = prefix
 
-    def info( self, text ):
+    def info(self, text ):
+        """Add an Info / Success Message to Log"""
         self.__add("msg", text)
         return True
 
-    def warn( self, text ):
+    def warn(self, text):
+        """Add an Warning Message to Log"""
         self.__add("war", text)
 
-    def error( self, text ):
+    def error(self, text):
+        """Add an Error Message to Log"""
         self.__add("err", text)
         return False
+
+    def fromException(self, exception):
+        """Add an Exception to Log"""
+        import traceback
+        # Detect Error Main Message
+        if hasattr(exception, "message"):
+            self.__add("err", exception.message)
+        else:
+            self.__add("err", exception)
+        # Detect Error Trace
+        self.__add("err", "".join(traceback.TracebackException.from_exception(exception).format()))
+
+        return False
+
+    def dump(self, data, name=None):
+        """Dump Data and Add to Logs"""
+        from json import dump
+        from io import StringIO
+        if name is None:
+            prefix = "Dump " + str(type(data)) + " : "
+        else:
+            prefix = name + " " + str(type(data)) + " : "
+        if isinstance(data, bool):
+            return self.__add("war", prefix + str(data))
+        if isinstance(data, int) or isinstance(data, float) or isinstance(data, str):
+            return self.__add("war", prefix + str(data))
+        try:
+            buffer = StringIO()
+            dump(data, buffer)
+            return self.__add("war", prefix + buffer.getvalue())
+        except Exception as exception:
+            return self.__add("war", exception)
 
     def vvv( self, text ):
         if self.debug is True:

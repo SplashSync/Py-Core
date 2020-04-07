@@ -21,7 +21,7 @@ __AUTHOR__ = 'Splash Official <www.splashsync.com>'
 
 # ====================================================================
 # Webservice Parameters
-__HOST__ = "www.splashsync.com/ws/soap"
+__HOST__ = "https://www.splashsync.com/ws/soap"
 __TIMEOUT__ = 30
 __CRYPT_METHOD__ = "AES-256-CBC"
 __ENCODE__ = "XML"

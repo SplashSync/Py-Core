@@ -12,7 +12,8 @@
 #
 
 from splashpy.models.widget import BaseWidget
-from splashpy.core.framework import Framework
+from splashpy import Framework
+
 
 class BlocksFactory:
     """Splash Objects Widgets Blocks Definitions Generator"""

@@ -12,12 +12,6 @@
 #  file that was distributed with this source code.
 #
 
-from splashpy.componants.config import Config
-from splashpy.componants.logger import Logger
-from splashpy.models.object import BaseObject
-from splashpy.models.widget import BaseWidget
-from splashpy.models.client import ClientInfo
-from splashpy.models.server import ServerInfo
 
 class Framework:
     """Base Class for Splash Client & Server"""
@@ -31,10 +25,16 @@ class Framework:
 
     def __init__(self, identifier, key, objects=None, widgets=None, info=False, server=False, config=False):
         """Init of Splash Mini Framework"""
-
+        from splashpy.componants.config import Config
+        from splashpy.componants.logger import Logger
+        from splashpy.models.client import ClientInfo
+        from splashpy.models.server import ServerInfo
         # ====================================================================#
         # Init Splash Client Configuration
-        Framework.__config = Config(identifier, key)
+        if isinstance(config, Config):
+            Framework.__config = config
+        else:
+            Framework.__config = Config(identifier, key)
         # Init Logger
         Framework.__logger = Logger()
         # ====================================================================#
@@ -82,6 +82,7 @@ class Framework:
     @staticmethod
     def setClientInfo(info):
         """Safe Access to Client Module Information"""
+        from splashpy.models.client import ClientInfo
         if isinstance(info, ClientInfo):
             Framework.__client = info
 
@@ -97,6 +98,7 @@ class Framework:
     @staticmethod
     def setServerDetails(info):
         """Safe Access to Server Details"""
+        from splashpy.models.server import ServerInfo
         if isinstance(info, ServerInfo):
             Framework.__server = info
 
@@ -107,6 +109,7 @@ class Framework:
     @staticmethod
     def addObject(ws_object):
         """Safe Add Objects to Framework"""
+        from splashpy.models.object import BaseObject
         if isinstance(ws_object, BaseObject):
             Framework.__objects[ws_object.getType()] = ws_object
 
@@ -129,6 +132,7 @@ class Framework:
     @staticmethod
     def addWidget(ws_widget):
         """Safe Add Widget to Framework"""
+        from splashpy.models.widget import BaseWidget
         if isinstance(ws_widget, BaseWidget):
             Framework.__widgets[ws_widget.getType()] = ws_widget
 

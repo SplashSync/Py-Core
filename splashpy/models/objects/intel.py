@@ -28,14 +28,14 @@ class IntelParser:
     _out = {}
     object = {}
 
-    def __init__( self ):
+    def __init__(self):
         pass
 
     # ====================================================================#
     # OBJECT DEFINITION
     # ====================================================================#
 
-    def fields( self ):
+    def fields(self):
         from splashpy.componants.fieldfactory import FieldFactory
 
         # Walk on Field Building Functions
@@ -79,7 +79,7 @@ class IntelParser:
         # Return Object Data
         return self._out
 
-    def set( self, object_id, fields ):
+    def set(self, object_id, fields ):
         # ====================================================================#
         # Init Writing
         self._in = fields       # Store List of Field to Write in Buffer
@@ -87,9 +87,8 @@ class IntelParser:
         self.isUpdated()        # Clear Updated Flag before Writing
         # ====================================================================#
         # Load or Create Requested Object
-        if not object_id:
+        if object_id is None or len(object_id) < 1:
             self.object = self.create()
-            print(self.object)
         else:
             self.object = self.load(object_id)
         if self.object is False:

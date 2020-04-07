@@ -16,9 +16,7 @@ from splashpy import const
 from splashpy.core.framework import Framework
 from pysimplesoap.server import HTTPServer, SoapDispatcher, SOAPHandler, SoapFault
 from splashpy.componants.encoder import unpack, pack
-from splashpy.routers.admin import AdminRouter
-from splashpy.routers.objects import ObjectsRouter
-from splashpy.routers.widgets import WidgetsRouter
+from splashpy.routers import AdminRouter, ObjectsRouter, WidgetsRouter, FilesRouter
 
 
 class SplashServer(Framework):
@@ -61,6 +59,11 @@ class SplashServer(Framework):
         """Serve Widgets Request from Splash Server"""
         # Return Router Response
         return self.__run(WidgetsRouter(), param0, param1)
+
+    def files(self, param0, param1):
+        """Serve Files Request from Splash Server"""
+        # Return Router Response
+        return self.__run(FilesRouter(), param0, param1)
 
     def serve(self):
         httpd = HTTPServer(("", 8008), SOAPHandler)
@@ -134,6 +137,12 @@ class SplashServer(Framework):
                 const.__SPL_S_WIDGETS__, self.widgets,
                 returns={'return': str}, args={'param0': str, 'param1': str}
             )
+            # ====================================================================#
+            # Files Service
+            self.__dispatcher.register_function(
+                const.__SPL_S_FILE__, self.files,
+                returns={'return': str}, args={'param0': str, 'param1': str}
+            )
 
         return self.__dispatcher
 
@@ -159,7 +168,10 @@ class SplashServer(Framework):
         if self.__inputs is False:
             return SoapFault(0, "Internal Server Error")
         # Execute Router Tasks
-        result = router.run(self.__inputs, self.__outputs)
+        try:
+            result = router.run(self.__inputs, self.__outputs)
+        except Exception as exception:
+            result = Framework.log().fromException(exception)
         # Push Server Log to Console
         self.log().to_logging()
         # Return Router Response

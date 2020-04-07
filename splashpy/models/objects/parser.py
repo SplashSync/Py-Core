@@ -12,7 +12,7 @@
 #  file that was distributed with this source code.
 #
 
-from datetime import datetime
+from datetime import date, datetime
 from splashpy.core.framework import Framework
 from splashpy import const
 
@@ -28,7 +28,7 @@ class SimpleFields():
                 value = getattr(target, field_id)
             self._in.__delitem__(index)
         except Exception as exception:
-            Framework.log().error(exception.message)
+            Framework.log().fromException(exception)
             return None
 
         return value
@@ -42,7 +42,7 @@ class SimpleFields():
                 setattr(target, field_id, field_data)
             self._in.__delitem__(field_id)
         except Exception as exception:
-            return Framework.log().error(exception.message)
+            return Framework.log().fromException(exception)
 
     def getSimple( self, index, field_id, target=None):
         """Read Simple Raw Field"""
@@ -68,36 +68,39 @@ class SimpleFields():
     def getSimpleDate( self, index, field_id, target=None ):
         """Read Simple Date Field"""
         value = self.__getSimpleValue(index, field_id, target)
-        if value is None or value is False:
-            self._out[field_id] = ""
-        else:
+        if isinstance(value, datetime) or isinstance(value, date):
             self._out[field_id] = value.strftime(const.__SPL_T_DATECAST__)
+        else:
+            self._out[field_id] = ""
 
     def setSimpleDate( self, field_id, field_data, target=None ):
         """Write Simple Date Field"""
+        if field_data is None:
+            return self.__setSimpleValue(field_id, None, target)
         try:
-            field_date = datetime.strptime(field_data, const.__SPL_T_DATECAST__)
+            field_date = datetime.strptime(field_data, const.__SPL_T_DATECAST__).date()
         except Exception as exception:
-            return Framework.log().error(exception.message)
-
+            return Framework.log().fromException(exception)
         self.__setSimpleValue(field_id, field_date, target)
 
     def getSimpleDateTime( self, index, field_id, target=None ):
         """Read Simple DateTime Field"""
         value = self.__getSimpleValue(index, field_id, target)
-        if value is None or value is False:
-            self._out[field_id] = ""
-        else:
+        if isinstance(value, datetime) or isinstance(value, date):
             self._out[field_id] = value.strftime(const.__SPL_T_DATETIMECAST__)
+        else:
+            self._out[field_id] = ""
 
     def setSimpleDateTime( self, field_id, field_data, target=None ):
         """Write Simple DateTime Field"""
+        if field_data is None:
+            return self.__setSimpleValue(field_id, None, target)
         try:
             field_date = datetime.strptime(field_data, const.__SPL_T_DATETIMECAST__)
         except ValueError:
             return Framework.log().error("Invalid DateTime: " + field_data)
         except Exception as exception:
-            return Framework.log().error(exception.message)
+            return Framework.log().fromException(exception)
 
         self.__setSimpleValue(field_id, field_date, target)
 
@@ -112,12 +115,12 @@ class GenericFields(SimpleFields):
                 value = target.get(field_id)
             self._in.__delitem__(index)
         except Exception as exception:
-            Framework.log().error(exception.message)
+            Framework.log().fromException(exception)
             return None
 
         return value
 
-    def __setSimpleValue( self, field_id, field_data, target=None ):
+    def __setSimpleValue(self, field_id, field_data, target=None):
         """Write Simple Raw Field Value"""
         try:
             if target is None:
@@ -126,4 +129,4 @@ class GenericFields(SimpleFields):
                 target.set(field_id, field_data)
             self._in.__delitem__(field_id)
         except Exception as exception:
-            return Framework.log().error(exception.message)
+            return Framework.log().fromException(exception)

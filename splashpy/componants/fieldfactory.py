@@ -142,7 +142,7 @@ class FieldFactory:
         return FieldFactory
 
     @staticmethod
-    def isReadOnly( read_only=True ):
+    def isReadOnly(read_only=True):
         """Update Current New Field set as Read Only Field"""
         if not read_only:
             return FieldFactory
@@ -152,7 +152,7 @@ class FieldFactory:
         return FieldFactory
 
     @staticmethod
-    def isWriteOnly( write_only=True ):
+    def isWriteOnly(write_only=True):
         """Update Current New Field set as Write Only Field"""
         if not write_only:
             return FieldFactory
@@ -162,7 +162,7 @@ class FieldFactory:
         return FieldFactory
 
     @staticmethod
-    def isRequired( required=True ):
+    def isRequired(required=True):
         """Update Current New Field set as required for creation"""
         # Update New Field structure
         FieldFactory.new['required'] = bool(required)
@@ -220,13 +220,13 @@ class FieldFactory:
         # Update New Field structure
         FieldFactory.new['itemtype'] = item_type
         FieldFactory.new['itemprop'] = item_prop
-        FieldFactory.setTag(item_type + const.__IDSPLIT__ + item_prop)
+        FieldFactory.setTag(item_prop + const.__IDSPLIT__ + item_type)
         return FieldFactory
 
     @staticmethod
-    def setTag( tag ):
+    def setTag(tag):
         """Update Current New Field set its unik tag for autolinking"""
-        FieldFactory.new['tag'] = hashlib.md5(tag)
+        FieldFactory.new['tag'] = hashlib.md5(tag.encode()).hexdigest()
         return FieldFactory
 
     @staticmethod

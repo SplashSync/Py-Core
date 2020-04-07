@@ -18,7 +18,7 @@ import logging
 import xml.dom.minidom
 from collections import Iterable
 from Crypto.Cipher import AES
-from splashpy.core.framework import Framework
+from splashpy import Framework
 
 def unpack( rawdata, secured=True ):
     """Unpack Received Splash Data to Object"""
@@ -199,6 +199,12 @@ class XmlManager:
         # Add String Object
         if isinstance(object, str):
             newNode = xmlDoc.createTextNode(str(base64.b64encode(object.encode()), "utf-8"))
+            xmlElement.appendChild(newNode)
+            return
+
+        # Add Bytes Object
+        if isinstance(object, bytes):
+            newNode = xmlDoc.createTextNode(str(base64.b64encode(object), "utf-8"))
             xmlElement.appendChild(newNode)
             return
 

@@ -111,3 +111,14 @@ class ObjectInterface:
         Delete Current active Lock
         """
         raise NotImplementedError("Not implemented yet.")
+
+    # ====================================================================#
+    #  Object FILES Management
+    # ====================================================================#
+
+    @abstractmethod
+    def getFile(self, path, md5):
+        """
+        Custom Reading of a File from Local System (Database or any else)
+        """
+        raise NotImplementedError("Not implemented yet.")

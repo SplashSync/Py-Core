@@ -37,7 +37,6 @@ class Config:
         """Init Base Configuration"""
         self.wsIdentifier = identifier
         self.wsEncryptionKey = key
-        # if isinstance(host, (str, unicode)):
         if isinstance(host, str):
             self.wsHost = host
 

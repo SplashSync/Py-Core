@@ -12,9 +12,8 @@
 #  file that was distributed with this source code.
 #
 
-
-from splashpy.core.framework import Framework
-from splashpy.componants.encoder import unpack, pack
+from splashpy import Framework
+from splashpy.componants import unpack, pack
 from pysimplesoap.client import SoapClient, SoapFault
 
 
@@ -67,13 +66,41 @@ class SplashClient(Framework):
 
         return connect_response["result"] == "1"
 
+    def file(self, request):
+        """Send File Request to Splash Server"""
+        # Create Soap Client
+        soap_client = self.__get_client()
+        wsId, wsKey, wsHost = self.config().identifiers()
+        # Execute Connect Request
+        try:
+            soap_response = soap_client.Files(param0=wsId, param1=pack(request))
+        # Catch Potential Errors
+        except SoapFault as fault:
+            Framework.log().on_fault(fault)
+            return False
+        # Decode Response
+        connect_response = unpack(soap_response.children().children().children().__str__())
+
+        # Verify Response
+        if connect_response is False:
+            return False
+
+        return connect_response
+
     def __get_client(self):
         """Build Soap Client with Host Configuration"""
-        if self.__soap_client is None:
+        if not isinstance(self.__soap_client, SoapClient):
             wsId, wsKey, wsHost = self.config().identifiers()
             self.__soap_client = SoapClient(location=wsHost, ns=False, exceptions=True)
 
         return self.__soap_client
+
+    @staticmethod
+    def getInstance():
+        """Safe Access to Splash WebService Client"""
+        wsId, wsKey, wsHost = Framework.config().identifiers()
+
+        return SplashClient(wsId, wsKey, None, None, Framework.getClientInfo(), Framework.getServerDetails(), Framework.config())
 
 
 if __name__ == "__main__":
