@@ -14,7 +14,7 @@
 import copy
 import hashlib
 from splashpy import const
-
+from splashpy import const, Framework
 
 class FieldFactory:
     """Splash Objects Fields Definitions Generator"""
@@ -89,7 +89,7 @@ class FieldFactory:
     # ====================================================================#
 
     @staticmethod
-    def create( field_type, field_id=None, field_name=None ):
+    def create(field_type, field_id=None, field_name=None):
         """Create a new Field Definition with default parameters"""
 
         # Commit Last Created if not already done
@@ -100,10 +100,10 @@ class FieldFactory:
         # Set Field Type
         FieldFactory.new['type'] = field_type
         # Set Field Identifier
-        if isinstance(field_id, str) and field_id.__len__() >= 3:
+        if isinstance(field_id, str) and field_id.__len__() >= 2:
             FieldFactory.identifier(field_id)
         # Set Field Name
-        if isinstance(field_name, str) and field_name.__len__() >= 3:
+        if isinstance(field_name, str) and field_name.__len__() >= 2:
             FieldFactory.name(field_name)
 
     @staticmethod
@@ -124,18 +124,18 @@ class FieldFactory:
         FieldFactory.new['desc'] = field_name
 
     @staticmethod
-    def inlist( list_name ):
+    def inlist(list_name):
         """Update Current New Field set as it inside a list"""
         # Safety Check
         if not isinstance(list_name, str) or list_name.__len__() < 3:
             return False
         # Update New Field Identifier
-        FieldFactory.new['id'] = FieldFactory.new['id'] + const.__LISTSPLIT__ + list_name.strip()
+        FieldFactory.new['id'] = FieldFactory.new['id'] + const.__LISTSPLIT__ + list_name
         # Update New Field Type
-        FieldFactory.new['type'] = FieldFactory.new['type'].strip() + const.__LISTSPLIT__ + const.__SPL_T_LIST__
+        FieldFactory.new['type'] = FieldFactory.new['type'] + const.__LISTSPLIT__ + const.__SPL_T_LIST__
 
     @staticmethod
-    def group( group_name ):
+    def group(group_name):
         """Update Current New Field with Field Group Name"""
         # Update New Field Group
         FieldFactory.new['group'] = group_name.strip()

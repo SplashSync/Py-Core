@@ -13,3 +13,6 @@
 #
 
 from .files import FilesHelper, ImagesHelper
+from .fields import FieldsHelper
+from .list import ListHelper
+from .objects import ObjectsHelper
