@@ -16,7 +16,7 @@ import base64
 import hashlib
 
 
-class FilesHelper():
+class FilesHelper:
 
     @staticmethod
     def encodeFromRaw(contents, name, filename, path, public_url, b64=False):
@@ -45,7 +45,7 @@ class FilesHelper():
     @staticmethod
     def md5(contents, b64=False):
         """Detect File Md5"""
-        if contents is None:
+        if not isinstance(contents, type([bytes, str])):
             return None
         if b64 is True:
             return hashlib.md5(base64.b64decode(contents)).hexdigest()

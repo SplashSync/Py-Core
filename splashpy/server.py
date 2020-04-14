@@ -163,10 +163,12 @@ class SplashServer(Framework):
         """Execute Routers Actions"""
         # Receive Message
         self.__inputs = self.__receive(id, data)
-        # print "Tasks Inputs:", self.__inputs
         self.__outputs = {}
         if self.__inputs is False:
             return SoapFault(0, "Internal Server Error")
+        # Detect Debug Mode
+        if "debug" in self.__inputs and self.__inputs["debug"] == "1":
+            Framework.setDebugMode(True)
         # Execute Router Tasks
         try:
             result = router.run(self.__inputs, self.__outputs)

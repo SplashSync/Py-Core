@@ -16,6 +16,7 @@
 class Framework:
     """Base Class for Splash Client & Server"""
 
+    __debug = False     # Debug Mode
     __config = None     # Framework general Configuration
     __logger = None     # Splash Logger
     __client = None     # Client module info/description
@@ -148,4 +149,17 @@ class Framework:
             return False
         return Framework.__widgets[widget_type]
 
+    # ====================================================================#
+    # Server Debug Mode Management
+    # ====================================================================#
+
+    @staticmethod
+    def isDebugMode():
+        """Check if Server is in Debug Mode"""
+        return Framework.__debug
+
+    @staticmethod
+    def setDebugMode(state=True):
+        """Set Debug Mode"""
+        Framework.__debug = bool(state)
 
