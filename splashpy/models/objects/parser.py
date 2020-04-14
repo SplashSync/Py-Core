@@ -17,9 +17,9 @@ from splashpy.core.framework import Framework
 from splashpy import const
 
 
-class SimpleFields():
+class SimpleFields:
 
-    def __getSimpleValue( self, index, field_id, target=None ):
+    def __getSimpleValue(self, index, field_id, target=None):
         """Read Simple Raw Field Value"""
         try:
             if target is None:
@@ -28,12 +28,13 @@ class SimpleFields():
                 value = getattr(target, field_id)
             self._in.__delitem__(index)
         except Exception as exception:
-            Framework.log().fromException(exception)
+            if not Framework.isDebugMode():
+                Framework.log().fromException(exception)
             return None
 
         return value
 
-    def __setSimpleValue( self, field_id, field_data, target=None ):
+    def __setSimpleValue(self, field_id, field_data, target=None):
         """Write Simple Raw Field Value"""
         try:
             if target is None:
@@ -44,7 +45,7 @@ class SimpleFields():
         except Exception as exception:
             return Framework.log().fromException(exception)
 
-    def getSimple( self, index, field_id, target=None):
+    def getSimple(self, index, field_id, target=None):
         """Read Simple Raw Field"""
         self._out[field_id] = self.__getSimpleValue(index, field_id, target)
 

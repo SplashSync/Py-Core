@@ -68,7 +68,10 @@ class Framework:
 
     @staticmethod
     def log():
-        """Safe Access to Splash Logger"""
+        """
+        Safe Access to Splash Logger
+        :return: splashpy.componants.Logger
+        """
         return Framework.__logger
 
     # ====================================================================#

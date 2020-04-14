@@ -49,7 +49,7 @@ class IntelParser:
     # OBJECT CRUD
     # ====================================================================#
 
-    def get( self, object_id, fields ):
+    def get(self, object_id, fields):
         # ====================================================================#
         # Init Reading
         self._in = fields
