@@ -45,7 +45,7 @@ class FilesHelper:
     @staticmethod
     def md5(contents, b64=False):
         """Detect File Md5"""
-        if not isinstance(contents, type([bytes, str])):
+        if not isinstance(contents, (bytes, str)):
             return None
         if b64 is True:
             return hashlib.md5(base64.b64decode(contents)).hexdigest()
