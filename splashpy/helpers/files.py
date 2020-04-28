@@ -58,6 +58,8 @@ class ImagesHelper(FilesHelper):
     @staticmethod
     def encodeFromRaw(contents, name, filename, path, public_url, b64=False):
         """Encode Splash Image from Raw Contents"""
+        if not isinstance(contents, (bytes, str)):
+            return None
         # ====================================================================#
         # Detect Base64 Images
         if b64 is True:
@@ -96,6 +98,8 @@ class ImagesHelper(FilesHelper):
     @staticmethod
     def get_extension(contents, b64=False):
         """Detect Extension if Raw File Contents is an Image"""
+        if not isinstance(contents, (bytes, str)):
+            return None
         import imghdr
         if b64 is True:
             return imghdr.what(None, h=base64.b64decode(contents))

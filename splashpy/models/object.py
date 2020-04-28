@@ -58,7 +58,7 @@ class BaseObject(IntelParser, ObjectInterface):
     _out = {}
     object = {}
 
-    def __init__( self ):
+    def __init__(self):
         pass
 
     # ====================================================================#

@@ -29,7 +29,7 @@ class SplashClient(Framework):
 
         # Execute Ping Request
         try:
-            soap_response = soap_client.Ping(param0=wsId, param1="test")
+            soap_response = soap_client.Ping(id=wsId, data="test")
         # Catch Potential Errors
         except SoapFault as fault:
             Framework.log().on_fault(fault)
@@ -52,7 +52,7 @@ class SplashClient(Framework):
         wsId, wsKey, wsHost = self.config().identifiers()
         # Execute Connect Request
         try:
-            soap_response = soap_client.Connect(param0=wsId, param1=pack({"connect": True}))
+            soap_response = soap_client.Connect(id=wsId, data=pack({"connect": True}))
         # Catch Potential Errors
         except SoapFault as fault:
             Framework.log().on_fault(fault)
@@ -73,7 +73,7 @@ class SplashClient(Framework):
         wsId, wsKey, wsHost = self.config().identifiers()
         # Execute Connect Request
         try:
-            soap_response = soap_client.Files(param0=wsId, param1=pack(request))
+            soap_response = soap_client.Files(id=wsId, data=pack(request))
         # Catch Potential Errors
         except SoapFault as fault:
             Framework.log().on_fault(fault)
@@ -91,7 +91,7 @@ class SplashClient(Framework):
         """Build Soap Client with Host Configuration"""
         if not isinstance(self.__soap_client, SoapClient):
             wsId, wsKey, wsHost = self.config().identifiers()
-            self.__soap_client = SoapClient(location=wsHost, ns=False, exceptions=True)
+            self.__soap_client = SoapClient(location=wsHost, ns=False, exceptions=True, soap_server="jetty")
 
         return self.__soap_client
 
