@@ -34,6 +34,9 @@ class SplashClient(Framework):
         except SoapFault as fault:
             Framework.log().on_fault(fault)
             return False
+        except Exception as exception:
+            Framework.log().fromException(exception)
+            return False
 
         # Decode Response
         ping_response = unpack(soap_response.children().children().children().__str__(), False)
@@ -57,6 +60,9 @@ class SplashClient(Framework):
         except SoapFault as fault:
             Framework.log().on_fault(fault)
             return False
+        except Exception as exception:
+            Framework.log().fromException(exception)
+            return False
         # Decode Response
         connect_response = unpack(soap_response.children().children().children().__str__())
 
@@ -77,6 +83,9 @@ class SplashClient(Framework):
         # Catch Potential Errors
         except SoapFault as fault:
             Framework.log().on_fault(fault)
+            return False
+        except Exception as exception:
+            Framework.log().fromException(exception)
             return False
         # Decode Response
         connect_response = unpack(soap_response.children().children().children().__str__())
