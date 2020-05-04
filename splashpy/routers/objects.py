@@ -122,7 +122,6 @@ class ObjectsRouter(BaseRouter):
     @staticmethod
     def isValidTask(task):
         """Verify Received Task"""
-        print("Objects Task", task["params"])
         # Verify Requested Object Type is Available
         if not hasattr(task["params"], '__iter__'):
             return Framework.log().error("Object Router - Missing Task Parameters... ")
