@@ -162,6 +162,30 @@ class Logger:
         """Import Error Message from Soap Fault"""
         getattr(self, "err").append(soap_fault.faultstring)
 
+    def to_html(self,  clean=False):
+        """
+        Return All WebServer current Log WebServer in Html format
+        :param clean: bool
+        :return: str
+        """
+        from splashpy.helpers import HtmlLogExporter
+        raw_html = HtmlLogExporter.to_html(self.export())
+        if clean:
+            self.clear()
+        return raw_html
+
+    def to_html_list(self,  clean=False):
+        """
+        Return All WebServer current Log WebServer in Html Checklist format
+        :param clean: bool
+        :return: str
+        """
+        from splashpy.helpers import HtmlLogExporter
+        raw_html = HtmlLogExporter.to_html_list(self.export())
+        if clean:
+            self.clear()
+        return raw_html
+
 
 if __name__ == "__main__":
     # import logging

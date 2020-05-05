@@ -17,3 +17,4 @@ from .fields import FieldsHelper
 from .list import ListHelper
 from .objects import ObjectsHelper
 from .price import PricesHelper
+from .logger import HtmlLogExporter

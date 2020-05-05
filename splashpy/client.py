@@ -100,7 +100,13 @@ class SplashClient(Framework):
         """Build Soap Client with Host Configuration"""
         if not isinstance(self.__soap_client, SoapClient):
             wsId, wsKey, wsHost = self.config().identifiers()
-            self.__soap_client = SoapClient(location=wsHost, ns=False, exceptions=True, soap_server="jetty")
+            self.__soap_client = SoapClient(
+                location=wsHost, ns=False, exceptions=True,
+                soap_server="jetty",
+                http_headers={
+                    'Content-type': 'application/x-www-form-urlencoded',
+                }
+            )
 
         return self.__soap_client
 
