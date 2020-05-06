@@ -41,11 +41,11 @@ def unpack( rawdata, secured=True ):
     return xmlData
 
 
-def pack( rawdata, secured=True ):
+def pack(rawdata, secured=True):
     """Package Splash Data before Transmission"""
     # Complete Message with System Information
-    rawdata['debug'] = Framework.isDebugMode()
-    rawdata['verbose'] = Framework.isDebugMode()
+    rawdata['debug'] = int(Framework.isDebugMode())
+    rawdata['verbose'] = int(Framework.isDebugMode())
     # Complete Message with Log
     rawdata['log'] = Framework.log().export()
     # Encode Message to Xml
