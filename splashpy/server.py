@@ -146,7 +146,7 @@ class SplashServer(Framework):
 
         return self.__dispatcher
 
-    def __receive( self, id, data ):
+    def __receive(self, id, data):
         # Load Server Info
         wsId, wsKey, wsHost = self.config().identifiers()
         # Verify Server Id
