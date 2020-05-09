@@ -73,6 +73,14 @@ class FieldFactory:
         "notest": False,  # Do No Perform Tests for this Field
     }
 
+    # Field Types Allowed for Multilang
+    __MULTILANG_TYPES__ = [
+        const.__SPL_T_VARCHAR__,
+        const.__SPL_T_VARCHAR__+"@list",
+        const.__SPL_T_TEXT__,
+        const.__SPL_T_TEXT__ + "@list"
+    ]
+
     # ====================================================================#
     # STATIC VARIABLES
     # ====================================================================#
@@ -97,6 +105,9 @@ class FieldFactory:
             FieldFactory.commit()
         # Create new empty field
         FieldFactory.new = copy.copy(FieldFactory.__DEFAULT_FIELD)
+        FieldFactory.new['choices'] = {}
+        FieldFactory.new['asso'] = {}
+        FieldFactory.new['options'] = {}
         # Set Field Type
         FieldFactory.new['type'] = field_type
         # Set Field Identifier
@@ -197,7 +208,7 @@ class FieldFactory:
             FieldFactory.new['asso'] = None
             return FieldFactory
         # Set New Field Associations
-        FieldFactory.new['asso'] = args
+        FieldFactory.new['asso'] = list(args)
         return FieldFactory
 
     @staticmethod
@@ -283,15 +294,19 @@ class FieldFactory:
         FieldFactory.dfLanguage = iso_code
 
     @staticmethod
-    def setMultilang( iso_code ):
-        """Configure Current Field with Multilangual Options"""
+    def setMultilang(iso_code):
+        """
+        Configure Current Field with Multilangual Options
+        :param iso_code: str
+        :return: void
+        """
         from splashpy.core.framework import Framework
         # Safety Check ==> Verify Language ISO Code
         if not isinstance(iso_code, str) or iso_code.__len__() < 2:
             return Framework.log().error("Default Language ISO Code is Invalid")
 
         # Safety Check ==> Verify Field Type is Allowed
-        if not FieldFactory.new['type'] in [const.__SPL_T_VARCHAR__, const.__SPL_T_TEXT__]:
+        if not FieldFactory.new['type'] in FieldFactory.__MULTILANG_TYPES__:
             return Framework.log().error("This field type is not Multi-lang: " + FieldFactory.new['type'])
 
         # Default Language ==> Only Setup Language Option
