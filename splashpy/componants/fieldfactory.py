@@ -41,36 +41,36 @@ class FieldFactory:
     __DEFAULT_FIELD = {
         # ====================================================================#
         #      GENERAL FIELD PROPS
-        "required": False,  # Field is Required to Create a New Object (Bool)
-        "type": None,  # Field Format Type Name
-        "id": None,  # Field Object Unique Identifier
-        "name": None,  # Field Humanized Name (String)
-        "desc": None,  # Field Description (String)
-        "group": None,  # Field Section/Group (String)
+        "required": False,      # Field is Required to Create a New Object (Bool)
+        "type": None,           # Field Format Type Name
+        "id": None,             # Field Object Unique Identifier
+        "name": None,           # Field Humanized Name (String)
+        "desc": None,           # Field Description (String)
+        "group": None,          # Field Section/Group (String)
         # ====================================================================#
         #      ACCESS PROPS
-        "read": True,  # Field is Readable (Bool)
-        "write": True,  # Field is Writable (Bool)
-        "inlist": False,  # Field is Available in Object List Response (Bool)
+        "read": True,           # Field is Readable (Bool)
+        "write": True,          # Field is Writable (Bool)
+        "inlist": False,        # Field is Available in Object List Response (Bool)
         # ====================================================================#
         #      SYNC MODE
-        "syncmode": "both",  # Field Favorite Sync Mode (read|write|both)
+        "syncmode": "both",     # Field Favorite Sync Mode (read|write|both)
         # ====================================================================#
         #      SCHEMA.ORG IDENTIFICATION
-        "itemprop": None,  # Field Unique Schema.Org "Like" Property Name
-        "itemtype": None,  # Field Unique Schema.Org Object Url
-        "tag": None,  # Field Unique Linker Tags (Self-Generated)
+        "itemprop": None,       # Field Unique Schema.Org "Like" Property Name
+        "itemtype": None,       # Field Unique Schema.Org Object Url
+        "tag": None,            # Field Unique Linker Tags (Self-Generated)
         # ====================================================================#
         #      DATA SPECIFIC FORMATS PROPS
-        "choices": {},  # Possible Values used in Editor & Debugger Only  (Array)
+        "choices": [],          # Possible Values used in Editor & Debugger Only  (Array)
         # ====================================================================#
         #      DATA LOGGING PROPS
-        "log": False,  # Field is To Log (Bool)
+        "log": False,           # Field is To Log (Bool)
         # ====================================================================#
         #      DEBUGGER PROPS
-        "asso": {},  # Associated Fields. Fields to Generate with this field.
-        "options": {},  # Fields Constraints to Generate Fake Data during Tests
-        "notest": False,  # Do No Perform Tests for this Field
+        "asso": {},             # Associated Fields. Fields to Generate with this field.
+        "options": {},          # Fields Constraints to Generate Fake Data during Tests
+        "notest": False,        # Do No Perform Tests for this Field
     }
 
     # Field Types Allowed for Multilang
@@ -105,7 +105,7 @@ class FieldFactory:
             FieldFactory.commit()
         # Create new empty field
         FieldFactory.new = copy.copy(FieldFactory.__DEFAULT_FIELD)
-        FieldFactory.new['choices'] = {}
+        FieldFactory.new['choices'] = []
         FieldFactory.new['asso'] = {}
         FieldFactory.new['options'] = {}
         # Set Field Type
