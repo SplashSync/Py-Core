@@ -14,7 +14,7 @@
 
 from splashpy import const
 from splashpy.core.framework import Framework
-from pysimplesoap.server import HTTPServer, SoapDispatcher, SOAPHandler, SoapFault
+from splashpy.soap.server import HTTPServer, SoapDispatcher, SOAPHandler, SoapFault
 from splashpy.componants.encoder import unpack, pack
 from splashpy.routers import AdminRouter, ObjectsRouter, WidgetsRouter, FilesRouter
 

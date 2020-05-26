@@ -18,7 +18,7 @@ setup(
        name='splashpy',
        version="0.1.4",
        packages=find_packages(),
-       install_requires=["pycryptodome", 'crypto', 'pysimplesoap'],
+       install_requires=["pycryptodome", 'crypto'],
        author='SplashSync',
        author_email='contact@splashsync.com',
        description="Foundation Package for Splash Py Clients",

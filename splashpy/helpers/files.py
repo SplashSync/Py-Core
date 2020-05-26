@@ -38,11 +38,6 @@ class FilesHelper:
         }
 
     @staticmethod
-    def encodeFromBase64 (base64_content):
-        """Detect Extension if Base64 File Contents is an Image"""
-        return Files.isRawImage(base64.b64decode(base64_contents))
-
-    @staticmethod
     def md5(contents, b64=False):
         """Detect File Md5"""
         if not isinstance(contents, (bytes, str)):
@@ -108,9 +103,17 @@ class ImagesHelper(FilesHelper):
 
     @staticmethod
     def get_pil_dims(raw_contents):
-        """Detect Image Dimensions using PIL"""
-        from PIL import Image
-        import io
+        """
+        Detect Image Dimensions using PIL
+
+        :param raw_contents: str
+        :return: int
+        """
+        try:
+            from PIL import Image
+            import io
+        except ImportError:
+            return 0
         image = Image.open(io.BytesIO(raw_contents))
 
         return image.size

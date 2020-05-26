@@ -14,7 +14,7 @@
 
 from splashpy import Framework
 from splashpy.componants import unpack, pack
-from pysimplesoap.client import SoapClient, SoapFault
+from splashpy.soap.client import SoapClient, SoapFault
 
 
 class SplashClient(Framework):

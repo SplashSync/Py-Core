@@ -11,7 +11,7 @@ cache:
 
 install:
   # Install PIP dependencies
-  - pip install pycryptodome crypto pysimplesoap peewee
+  - pip install pycryptodome crypto peewee
   # Install Module as PIP dependencies
   - pip install -e ./
   # Build Docker Compose

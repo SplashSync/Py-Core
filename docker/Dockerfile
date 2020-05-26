@@ -2,7 +2,7 @@ FROM python:3.6-slim
 WORKDIR /app
 
 # Install required Libraries
-RUN pip install pycryptodome crypto pysimplesoap peewee pytest
+RUN pip install pycryptodome crypto peewee pytest
 
 # Add Original Package Sources
 ADD ./ /app/
