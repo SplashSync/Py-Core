@@ -35,5 +35,10 @@ setup(
               "Operating System :: OS Independent",
               "Programming Language :: Python :: 3.6",
               "Topic :: Communications",
+       ],
+       # Add Assets Files
+       data_files=[
+              'splashpy/assets/img/python.png',
+              'splashpy/assets/img/python.ico',
        ]
 )
