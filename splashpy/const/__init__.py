@@ -90,6 +90,7 @@ __SPL_T_COUNTRY__ = 'country'           # Iso country code (FR / US ...)
 __SPL_T_STATE__ = 'state'               # Iso state code (CA / FR ...)
 __SPL_T_CURRENCY__ = 'currency'         # Iso Currency code (EUR / USD ... )
 __SPL_T_URL__ = 'url'                   # External Url
+__SPL_T_INLINE__ = 'inline'             # Inline Simple Json List
 
 # ====================================================================
 # ====================================================================
