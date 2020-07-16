@@ -16,7 +16,7 @@ from setuptools import setup, find_packages
 
 setup(
        name='splashpy',
-       version="0.2.0",
+       version="0.2.2",
        packages=find_packages(),
        install_requires=["pycryptodome", 'crypto'],
        author='SplashSync',
@@ -35,5 +35,10 @@ setup(
               "Operating System :: OS Independent",
               "Programming Language :: Python :: 3.6",
               "Topic :: Communications",
+       ],
+       # Add Assets Files
+       data_files=[
+              'splashpy/assets/img/python.png',
+              'splashpy/assets/img/python.ico',
        ]
 )
