@@ -40,7 +40,3 @@ class FakerClient(ClientInfo):
         self.www = "www.splashsync.com"
         self.email = "contact@splashsync.com"
         self.phone = "060606060"
-
-        # ====================================================================#
-        # Read Access
-        self.in_group_8 = True
