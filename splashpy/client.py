@@ -108,8 +108,7 @@ class SplashClient(Framework):
         # Verify this Object is Locked ==> No Action on this Node
         if not SplashClient.is_commit_allowed(object_type, object_ids, action):
             Framework.log().warn("Commit Not Allowed")
-            Framework.log().to_logging()
-            Framework.log().clear()
+            Framework.log().to_logging().clear()
             return True
         # ====================================================================//
         # Create Soap Client
@@ -134,19 +133,16 @@ class SplashClient(Framework):
         # Catch Potential Errors
         except SoapFault as fault:
             Framework.log().on_fault(fault)
-            Framework.log().to_logging()
-            Framework.log().clear()
+            Framework.log().to_logging().clear()
             return False
         except Exception as exception:
             Framework.log().fromException(exception)
-            Framework.log().to_logging()
-            Framework.log().clear()
+            Framework.log().to_logging().clear()
             return False
         # Decode Response
         commit_response = unpack(soap_response.children().children().children().__str__())
         # Push Logs to Console
-        Framework.log().to_logging()
-        Framework.log().clear()
+        Framework.log().to_logging().clear()
         # Verify Response
         if commit_response is False:
             return False

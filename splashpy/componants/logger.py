@@ -27,12 +27,22 @@ class Logger:
         self.deb = []
 
     def set_debug(self, debug):
-        """Setup Debug Mode"""
+        """
+        Setup Debug Mode
+
+        :return self
+        """
         self.debug = debug
+        return self
 
     def set_prefix(self, prefix):
-        """Set Logs Messages Prefix"""
+        """
+        Set Logs Messages Prefix
+
+        :return self
+        """
         self.prefix = prefix
+        return self
 
     def info(self, text ):
         """Add an Info / Success Message to Log"""
@@ -86,17 +96,27 @@ class Logger:
         return True
 
     def clear(self):
+        """
+        Clear Log Queue
+
+        :return: self
+        """
         self.msg = []
         self.war = []
         self.err = []
         self.deb = []
+        return self
 
     def __add( self, msg_type, text ):
         message = "[" + self.prefix + "] " + text.__str__()
         getattr(self, msg_type).append(message)
 
     def to_logging(self):
-        """Push All Messages to Logging"""
+        """
+        Push All Messages to Logging
+
+        :return self
+        """
         import logging
 
         # Force Logger Level to Show All Messages
@@ -118,6 +138,8 @@ class Logger:
 
         # Restore Logger Level
         logging.getLogger().setLevel(level)
+        return self
+
 
     def export( self ):
         """Export All Messages for Messages Packing"""
