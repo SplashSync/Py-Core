@@ -230,6 +230,9 @@ class AbstractConfigurator:
         # ====================================================================#
         # Field is Logged Flag
         self.updateFieldBoolVal(field, values, "log")
+        # ====================================================================#
+        # Field Values Choices
+        self.updateFieldListVal(field, values, "choices")
 
         return field
 
@@ -261,3 +264,15 @@ class AbstractConfigurator:
         if isinstance(field["itemprop"], str) and isinstance(field["itemtype"], str):
             tagString = field['itemprop'] + const.__IDSPLIT__ + field['itemtype']
             field['tag'] = hashlib.md5(tagString.encode()).hexdigest()
+
+    @staticmethod
+    def updateFieldListVal(field, values, key):
+        """Override a Dict Definition"""
+        if key not in values or not isinstance(values[key], dict):
+            return
+        field[key] = []
+        for index, value in values[key].items():
+            field[key].append({
+                'key': index,
+                'value': value
+            })
