@@ -95,7 +95,7 @@ class Logger:
         message = "[" + self.prefix + "] " + text.__str__()
         getattr(self, msg_type).append(message)
 
-    def to_logging( self ):
+    def to_logging(self):
         """Push All Messages to Logging"""
         import logging
 

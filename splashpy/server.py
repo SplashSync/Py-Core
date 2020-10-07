@@ -85,6 +85,7 @@ class SplashServer(Framework):
             self.getServerDetails().loadWerkzeugInformation(request)
         # POST >> Handle Soap Request
         if request.method == 'POST':
+            Framework.setServerMode(True)
             return self.__get_server().dispatch(str(request.data, 'UTF-8'))
         # POST >> Handle Soap Request
         if "node" in request.args:

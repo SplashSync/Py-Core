@@ -12,13 +12,18 @@
 #  file that was distributed with this source code.
 #
 
-from splashpy import Framework
+from splashpy import const, Framework
 from splashpy.componants import unpack, pack
 from splashpy.soap.client import SoapClient, SoapFault
 
 
 class SplashClient(Framework):
+
+    # Splash Soap Client
     __soap_client = None
+
+    # List of all Commits done inside this current session
+    __commited = []
 
     def ping(self):
         """Ping Splash Server, No Encryption, Just Say Hello!!"""
@@ -72,6 +77,82 @@ class SplashClient(Framework):
 
         return connect_response["result"] == "1"
 
+    def commit(self, object_type, object_ids = None, action = None, user = None, comment = None):
+        """
+        Submit an Update for a Local Object
+
+        :param object_type: str             Object Type Name
+        :param object_ids: str|int|list     Object Local Id or Array of Local Id
+        :param action: str                  Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+        :param user: str
+        :param comment: str
+
+        :return bool
+        """
+
+        # ====================================================================
+        # Verify this Object Class is Valid ==> No Action on this Node
+        if not Framework.getObject(object_type):
+            return True
+        # ====================================================================
+        # Initiate Tasks parameters array
+        params = SplashClient.__get_commit_parameters(object_type, object_ids, action, user, comment)
+        # ====================================================================
+        # Add This Commit to Session Logs
+        SplashClient.__commited.append(params)
+        # ====================================================================
+        # Verify if Server Mode (Soap Request) ==> No Commit Allowed
+        if Framework.isServerMode():
+            return False
+        # ====================================================================
+        # Verify this Object is Locked ==> No Action on this Node
+        if not SplashClient.is_commit_allowed(object_type, object_ids, action):
+            Framework.log().warn("Commit Not Allowed")
+            Framework.log().to_logging()
+            Framework.log().clear()
+            return True
+        # ====================================================================//
+        # Create Soap Client
+        soap_client = self.__get_client()
+        ws_id, ws_key, ws_host = self.config().identifiers()
+        # ====================================================================#
+        # Initiate File Request Contents
+        request = {
+            "tasks": {
+                "task": {
+                    "id": 1,
+                    "name": const.__SPL_F_COMMIT__,
+                    "desc": "Commit changes from Python Module",
+                    "params": params,
+                }
+            }
+        }
+        # ====================================================================//
+        # Execute Commit Request
+        try:
+            soap_response = soap_client.Objects(id=ws_id, data=pack(request))
+        # Catch Potential Errors
+        except SoapFault as fault:
+            Framework.log().on_fault(fault)
+            Framework.log().to_logging()
+            Framework.log().clear()
+            return False
+        except Exception as exception:
+            Framework.log().fromException(exception)
+            Framework.log().to_logging()
+            Framework.log().clear()
+            return False
+        # Decode Response
+        commit_response = unpack(soap_response.children().children().children().__str__())
+        # Push Logs to Console
+        Framework.log().to_logging()
+        Framework.log().clear()
+        # Verify Response
+        if commit_response is False:
+            return False
+
+        return commit_response
+
     def file(self, request):
         """Send File Request to Splash Server"""
         # Create Soap Client
@@ -109,6 +190,76 @@ class SplashClient(Framework):
             )
 
         return self.__soap_client
+
+    @staticmethod
+    def __get_commit_parameters(object_type, object_ids=None, action=None, user=None, comment=None):
+        """
+        Build Call Parameters Array
+
+        :param object_type: str             Object Type Name
+        :param object_ids: str|int|list     Object Local Id or Array of Local Id
+        :param action: str                  Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+        :param user: str
+        :param comment: str
+
+        :return dict
+        """
+        return {
+            'type':  str(object_type),
+            'id':    object_ids if isinstance(object_ids, list) else [ str(object_ids) ],
+            'action': str(action),
+            'user':     str(user),
+            'comment': str(comment),
+        }
+
+    @staticmethod
+    def is_commit_allowed(object_type, object_ids=None, action=None):
+        """
+        Check if Commit is Allowed Local Object
+
+        :param object_type: str             Object Type Name
+        :param object_ids: str|int|list     Object Local Id or Array of Local Id
+        :param action: str                  Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+
+        :return: bool
+        """
+        # ====================================================================
+        # Verify if Server Mode (Soap Request) ==> No Commit Allowed
+        if Framework.isServerMode():
+            return False
+        # ====================================================================
+        # Verify this Object is Locked ==> No Action on this Node
+        if isinstance(object_ids, list):
+            for object_id in object_ids:
+                if Framework.getObject(object_type).islocked(object_id):
+                    return False
+        elif Framework.getObject(object_type).islocked(object_ids):
+            return False
+        # ====================================================================
+        # Verify Create Object is Locked ==> No Action on this Node
+        if (const.__SPL_A_CREATE__ is action) and Framework.getObject(object_type).islocked():
+            return False
+        # ====================================================================//
+        # Verify if Travis Mode (PhpUnit) ==> No Commit Allowed
+        return not SplashClient.is_travis_mode(object_type, action)
+
+    @staticmethod
+    def is_travis_mode(object_type, action=None):
+        """
+        Check if Commit we Are in Travis Mode
+
+        :param object_type: str             Object Type Name
+        :param action: str                  Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+
+        :return: bool
+        """
+        # ====================================================================
+        # Detect Travis from Framework
+        if not Framework.isDebugMode():
+            return False
+        Framework.log().warn('Module Commit Skipped ('+object_type+', '+action+')')
+
+        return True
 
     @staticmethod
     def getInstance():

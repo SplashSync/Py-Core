@@ -127,7 +127,7 @@ class BaseObject(IntelParser, ObjectInterface):
         self.__locks[object_id] = True
         return True
 
-    def islocked(self, object_id):
+    def islocked(self, object_id="new"):
         if object_id in self.__locks:
             return self.__locks[object_id]
         return False
