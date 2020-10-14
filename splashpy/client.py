@@ -26,7 +26,11 @@ class SplashClient(Framework):
     __commited = []
 
     def ping(self):
-        """Ping Splash Server, No Encryption, Just Say Hello!!"""
+        """
+        Ping Splash Server, No Encryption, Just Say Hello!!
+
+        :rtype: bool
+        """
 
         # Create Soap Client
         soap_client = self.__get_client()
@@ -53,7 +57,11 @@ class SplashClient(Framework):
         return ping_response["result"] == "1"
 
     def connect(self):
-        """Connect Splash Server, With Encryption, Just Say Hello!!"""
+        """
+        Connect Splash Server, With Encryption, Just Say Hello!!
+
+        :rtype: bool
+        """
 
         # Create Soap Client
         soap_client = self.__get_client()
@@ -87,12 +95,14 @@ class SplashClient(Framework):
         :param user: str
         :param comment: str
 
-        :return bool
+        :rtype: bool
         """
 
         # ====================================================================
         # Verify this Object Class is Valid ==> No Action on this Node
         if not Framework.getObject(object_type):
+            Framework.log().warn("Object "+object_type+" Not Found => Commit Skipped")
+            Framework.log().to_logging().clear()
             return True
         # ====================================================================
         # Initiate Tasks parameters array
@@ -103,6 +113,8 @@ class SplashClient(Framework):
         # ====================================================================
         # Verify if Server Mode (Soap Request) ==> No Commit Allowed
         if Framework.isServerMode():
+            Framework.log().warn("Server Mode => Commit Skipped")
+            Framework.log().to_logging().clear()
             return False
         # ====================================================================
         # Verify this Object is Locked ==> No Action on this Node
@@ -174,7 +186,11 @@ class SplashClient(Framework):
         return connect_response
 
     def __get_client(self):
-        """Build Soap Client with Host Configuration"""
+        """
+        Build Soap Client with Host Configuration
+
+        :rtype: SoapClient
+        """
         if not isinstance(self.__soap_client, SoapClient):
             wsId, wsKey, wsHost = self.config().identifiers()
             self.__soap_client = SoapClient(
@@ -198,7 +214,7 @@ class SplashClient(Framework):
         :param user: str
         :param comment: str
 
-        :return dict
+        :rtype: dict
         """
         return {
             'type':  str(object_type),
@@ -217,7 +233,7 @@ class SplashClient(Framework):
         :param object_ids: str|int|list     Object Local Id or Array of Local Id
         :param action: str                  Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
 
-        :return: bool
+        :rtype: bool
         """
         # ====================================================================
         # Verify if Server Mode (Soap Request) ==> No Commit Allowed
@@ -247,7 +263,7 @@ class SplashClient(Framework):
         :param object_type: str             Object Type Name
         :param action: str                  Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
 
-        :return: bool
+        :rtype: bool
         """
         # ====================================================================
         # Detect Travis from Framework
@@ -259,7 +275,11 @@ class SplashClient(Framework):
 
     @staticmethod
     def getInstance():
-        """Safe Access to Splash WebService Client"""
+        """
+        Safe Access to Splash WebService Client
+
+        :rtype: SplashClient
+        """
         wsId, wsKey, wsHost = Framework.config().identifiers()
 
         return SplashClient(wsId, wsKey, None, None, Framework.getClientInfo(), Framework.getServerDetails(), Framework.config())

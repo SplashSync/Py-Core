@@ -64,14 +64,21 @@ class Framework:
 
     @staticmethod
     def config():
-        """Safe Access to Local Configuration"""
+        """
+        Safe Access to Local Configuration
+
+        :return: Splash Config
+        :rtype:splashpy.componants.config.Config
+        """
         return Framework.__config
 
     @staticmethod
     def log():
         """
         Safe Access to Splash Logger
-        :return: splashpy.componants.Logger
+
+        :return: Splash Logger
+        :rtype: splashpy.componants.logger.Logger
         """
         return Framework.__logger
 
@@ -81,7 +88,12 @@ class Framework:
 
     @staticmethod
     def getClientInfo():
-        """Safe Access to Client Module Information"""
+        """
+        Safe Access to Client Module Information
+
+        :return: Splash Logger
+        :rtype: splashpy.models.client.ClientInfo
+        """
         return Framework.__client
 
     @staticmethod
@@ -102,7 +114,12 @@ class Framework:
 
     @staticmethod
     def setServerDetails(info):
-        """Safe Access to Server Details"""
+        """
+        Safe Access to Server Details
+
+        :return: Splash Logger
+        :rtype: splashpy.models.client.ServerInfo
+        """
         from splashpy.models.server import ServerInfo
         if isinstance(info, ServerInfo):
             Framework.__server = info
@@ -120,12 +137,20 @@ class Framework:
 
     @staticmethod
     def getObjects():
-        """Get List of Available Objects Types"""
+        """
+        Get List of Available Objects Types
+
+        :rtype: list
+        """
         return list(Framework.__objects.keys())
 
     @staticmethod
     def getObject(object_type):
-        """Safe Get Object Class"""
+        """
+        Safe Get Object Class
+
+        :rtype: splashpy.models.object.BaseObject
+        """
         if object_type not in Framework.__objects:
             return False
         return Framework.__objects[object_type]
@@ -143,12 +168,20 @@ class Framework:
 
     @staticmethod
     def getWidgets():
-        """Get List of Available Widget Types"""
+        """
+        Get List of Available Widget Types
+
+        :rtype: list
+        """
         return list(Framework.__widgets.keys())
 
     @staticmethod
     def getWidget(widget_type):
-        """Safe Get Widget Class"""
+        """
+        Safe Get Widget Class
+
+        :rtype: splashpy.models.widget.BaseWidget
+        """
         if widget_type not in Framework.__widgets:
             return False
         return Framework.__widgets[widget_type]
