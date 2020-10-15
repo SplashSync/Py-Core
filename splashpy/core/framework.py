@@ -80,6 +80,9 @@ class Framework:
         :return: Splash Logger
         :rtype: splashpy.componants.logger.Logger
         """
+        if Framework.__logger is None:
+            from splashpy.componants.logger import Logger
+            Framework.__logger = Logger()
         return Framework.__logger
 
     # ====================================================================#
