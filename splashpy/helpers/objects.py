@@ -23,18 +23,18 @@ class ObjectsHelper:
         """
         Create an Object Identifier String
         :param object_type: str
-        :param object_id: str
+        :param object_id: int|str
         :return: None|str
         """
         # ==================================================================== #
         # Safety Checks
         if not isinstance(object_type, str) or len(object_type) < 3:
             return None
-        if not isinstance(object_type, str) or len(object_type) < 1:
+        if not isinstance(object_id, (int, str)) or len(str(object_id)) < 1:
             return None
         # ==================================================================== #
         # Create & Return Field Id Data String
-        return   object_id + const.__IDSPLIT__ + object_type
+        return str(object_id) + const.__IDSPLIT__ + object_type
 
     @staticmethod
     def id(identifier):
