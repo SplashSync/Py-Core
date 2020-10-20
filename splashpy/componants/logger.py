@@ -58,7 +58,7 @@ class Logger:
         self.__add("err", text)
         return False
 
-    def fromException(self, exception):
+    def fromException(self, exception, trace=True):
         """Add an Exception to Log"""
         import traceback
         # Detect Error Main Message
@@ -67,7 +67,8 @@ class Logger:
         else:
             self.__add("err", exception)
         # Detect Error Trace
-        self.__add("err", "".join(traceback.TracebackException.from_exception(exception).format()))
+        if trace:
+            self.__add("err", "".join(traceback.TracebackException.from_exception(exception).format()))
 
         return False
 
