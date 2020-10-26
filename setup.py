@@ -16,17 +16,15 @@ from setuptools import setup, find_packages
 
 setup(
        name='splashpy',
-       version="0.2.2",
+       version="0.3.0",
        packages=find_packages(),
        install_requires=["pycryptodome", 'crypto'],
        author='SplashSync',
        author_email='contact@splashsync.com',
        description="Foundation Package for Splash Py Clients",
-       #long_description=open('README.md').read(),
        license="MIT",
        url='https://github.com/SplashSync/PyCore',
        # Active la prise en compte du fichier MANIFEST.in
-       #include_package_data=True,
        classifiers=[
               "Programming Language :: Python",
               "Development Status :: 1 - Planning",
