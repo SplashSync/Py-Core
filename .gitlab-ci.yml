@@ -36,9 +36,12 @@ stages:
     ################################################################################
     # Install & Configure Environnement
     before_script:
-      # Build Docker Compose
+      # Init Docker
       - docker info
       - docker network create splashsync --attachable
+      # Install Docker Compose
+      - apk add --no-cache docker-compose
+      # Build Docker Compose
       - docker-compose up -d
     ################################################################################
     # Run Test Script
