@@ -39,7 +39,7 @@ services:
             context: ./
             dockerfile: docker/Dockerfile
         container_name: py-splashsync
-        tty: true
+#        tty: true
         volumes:
             # Server Sources in Read Only Mode
             - "./:/app/"
