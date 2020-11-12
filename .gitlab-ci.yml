@@ -65,22 +65,22 @@ tests:py-3:
     script:
         - pip install twine
         - python setup.py bdist_wheel
-        - TWINE_PASSWORD=${TWINE_PASSWORD} TWINE_USERNAME=__token__ python -m twine upload --repository ${TWINE_REPOSITORY} dist/* --verbose
+        - TWINE_PASSWORD=${TWINE_TOKEN} TWINE_USERNAME=__token__ python -m twine upload --repository ${TWINE_REPOSITORY} dist/* --verbose
     artifacts:
         paths:
             - dist/*.whl
 
 release:test:
     <<: *release
-    variables:
-        TWINE_REPOSITORY:   testpypi
-        TWINE_PASSWORD:     PYPI_TEST_TOKEN
+    before_script:
+          - export TWINE_REPOSITORY="testpypi"
+          - export TWINE_TOKEN="${PYPI_TEST_TOKEN}"
 
 release:tags:
     <<: *release
-    variables:
-        TWINE_REPOSITORY:   pypi
-        TWINE_PASSWORD:     PYPI_API_TOKEN
+    before_script:
+          - export TWINE_REPOSITORY="pypi"
+          - export TWINE_TOKEN="${PYPI_API_TOKEN}"
     only:
         - tags
 
