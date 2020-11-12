@@ -60,6 +60,7 @@ cache:
       # Install Module as PIP dependencies
       - pip install -e ./
       # Build Docker Compose
+      - docker info
       - docker network create splashsync --attachable
       - docker-compose up -d
     ################################################################################
