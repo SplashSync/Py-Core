@@ -45,6 +45,7 @@ cache:
 ################################################################
 
 .core_tests:    &core_tests
+    image:      docker:stable
     stage:      tests
     tags:
       - Dedicated-Docker
@@ -67,13 +68,12 @@ cache:
     # Run Test Script
     script:
       # Run unit tests for whole package
-      - pytest
+      - docker-compose exec splash pytest
       # Run Splash Unit tests from Splash Toolkit
       - docker-compose exec toolkit php vendor/bin/phpunit -c phpunit.xml.dist
       - docker-compose stop
 
 tests:py-3:
-  image: python:3
   <<: *core_tests
 
 
