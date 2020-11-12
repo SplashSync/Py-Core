@@ -55,16 +55,22 @@ stages:
 tests:py-3:
   <<: *core_tests
 
+################################################################
+# Relase PyPi Package
+################################################################
 
-#run:
-#  script:
-#    - python setup.py bdist_wheel
-#    # an alternative approach is to install and run:
-#    - pip install dist/*
-#    # run the command here
-#  artifacts:
-#    paths:
-#      - dist/*.whl
+release:
+    image: python:3
+    script:
+      - python setup.py bdist_wheel
+      - TWINE_PASSWORD=${PYPI_API_TOKEN} TWINE_USERNAME=__token__ python -m twine upload --repository testpypi dist/*
+    artifacts:
+      paths:
+        - dist/*.whl
+#    only:
+#        - tags
+
+
 #
 #pages:
 #  script:
