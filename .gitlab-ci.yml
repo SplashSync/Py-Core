@@ -83,15 +83,3 @@ release:tags:
           - export TWINE_TOKEN="${PYPI_API_TOKEN}"
     only:
         - tags
-
-#
-#pages:
-#  script:
-#    - pip install sphinx sphinx-rtd-theme
-#    - cd doc ; make html
-#    - mv build/html/ ../public/
-#  artifacts:
-#    paths:
-#      - public
-#  only:
-#    - master
