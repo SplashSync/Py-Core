@@ -20,7 +20,7 @@
 stages:
 #  - docker
   - tests
-#  - deploy
+  - release
 
 ################################################################
 # Functional Tests
@@ -56,11 +56,12 @@ tests:py-3:
   <<: *core_tests
 
 ################################################################
-# Relase PyPi Package
+# Release PyPi Package
 ################################################################
 
 release:
     image: python:3
+    stage:      release
     script:
       - python setup.py bdist_wheel
       - TWINE_PASSWORD=${PYPI_API_TOKEN} TWINE_USERNAME=__token__ python -m twine upload --repository testpypi dist/*
