@@ -47,9 +47,9 @@ stages:
     # Run Test Script
     script:
       # Run unit tests for whole package
-      - docker-compose exec splash pytest
+      - docker-compose exec -i splash pytest
       # Run Splash Unit tests from Splash Toolkit
-      - docker-compose exec toolkit php vendor/bin/phpunit -c phpunit.xml.dist
+      - docker-compose exec -i toolkit php vendor/bin/phpunit -c phpunit.xml.dist
       - docker-compose stop
 
 tests:py-3:
