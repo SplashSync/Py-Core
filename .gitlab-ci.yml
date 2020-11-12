@@ -75,6 +75,7 @@ release:test:
     before_script:
           - export TWINE_REPOSITORY="testpypi"
           - export TWINE_TOKEN="${PYPI_TEST_TOKEN}"
+    when: manual
 
 release:tags:
     <<: *release
