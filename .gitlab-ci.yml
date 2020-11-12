@@ -63,6 +63,7 @@ release:
     image: python:3
     stage:      release
     script:
+      - pip install twine
       - python setup.py bdist_wheel
       - TWINE_PASSWORD=${PYPI_API_TOKEN} TWINE_USERNAME=__token__ python -m twine upload --repository testpypi dist/*
     artifacts:
