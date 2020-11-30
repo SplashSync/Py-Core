@@ -124,16 +124,16 @@ class BaseObject(IntelParser, ObjectInterface):
     # ====================================================================#
 
     def lock(self, object_id="new"):
-        self.__locks[object_id] = True
+        self.__locks[str(object_id)] = True
         return True
 
     def islocked(self, object_id="new"):
-        if object_id in self.__locks:
-            return self.__locks[object_id]
+        if str(object_id) in self.__locks:
+            return self.__locks[str(object_id)]
         return False
 
     def unlock(self, object_id):
-        self.__locks[object_id] = False
+        self.__locks[str(object_id)] = False
         return True
 
     # ====================================================================#

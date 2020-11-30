@@ -14,7 +14,7 @@
 
 # ====================================================================
 # Global Definitions
-__VERSION__ = '0.0.1'
+__VERSION__ = '0.3.1'
 __NAME__ = "Splash Python Core Module"
 __DESC__ = "Splash Open-Source & Universal Synchronisation WebService."
 __AUTHOR__ = 'Splash Official <www.splashsync.com>'
