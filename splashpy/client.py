@@ -119,7 +119,7 @@ class SplashClient(Framework):
         # ====================================================================
         # Verify this Object is Locked ==> No Action on this Node
         if not SplashClient.is_commit_allowed(object_type, object_ids, action):
-            Framework.log().warn("Commit Not Allowed")
+            Framework.log().msg('Module Commit Skipped (' + object_type + ', ' + action + ')')
             Framework.log().to_logging().clear()
             return True
         # ====================================================================//
@@ -269,7 +269,6 @@ class SplashClient(Framework):
         # Detect Travis from Framework
         if not Framework.isDebugMode():
             return False
-        Framework.log().warn('Module Commit Skipped ('+object_type+', '+action+')')
 
         return True
 
