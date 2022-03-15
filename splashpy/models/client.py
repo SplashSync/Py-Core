@@ -13,8 +13,11 @@
 #
 
 from abc import abstractmethod
-from collections import Iterable
 from splashpy import const
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 
 
 class ClientInfo:
