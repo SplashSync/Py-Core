@@ -15,14 +15,15 @@
 #
 ################################################################################
 
+ARG image=python:3.7-slim
 ################################################################################
 # Configure Image
-FROM python:3.6-slim
+FROM ${image}
 WORKDIR /app
 
 ################################################################################
 # Install required Libraries
-RUN pip install pycryptodome crypto peewee pytest
+RUN pip install peewee pytest
 
 ################################################################################
 # Add Original Package Sources

@@ -51,9 +51,12 @@ class FieldFactory:
         #      ACCESS PROPS
         "read": True,           # Field is Readable (Bool)
         "write": True,          # Field is Writable (Bool)
+        "index": False,         # Field Should be Indexed for Text Search (Bool)
         "inlist": False,        # Field is Available in Object List Response (Bool)
+        "hlist": False,         # Field is Available in Object List but Hidden (Bool)
         # ====================================================================#
         #      SYNC MODE
+        "primary": False,       # Field is a Primary Key (Bool)
         "syncmode": "both",     # Field Favorite Sync Mode (read|write|both)
         # ====================================================================#
         #      SCHEMA.ORG IDENTIFICATION
@@ -180,6 +183,17 @@ class FieldFactory:
         return FieldFactory
 
     @staticmethod
+    def isPrimary(primary=True):
+        """Update Current New Field set as primary key"""
+        # Update New Field structure
+        FieldFactory.new['primary'] = bool(primary)
+        # Update New Field structure
+        if bool(primary):
+            FieldFactory.isIndexed(True)
+
+        return FieldFactory
+
+    @staticmethod
     def setPreferRead():
         """Signify Server Current New Field Prefer ReadOnly Mode"""
         # Update New Field structure
@@ -212,16 +226,29 @@ class FieldFactory:
         return FieldFactory
 
     @staticmethod
-    def isListed( listed=True ):
+    def isListed(listed=True):
         """Update Current New Field set as available in objects list"""
         # Update New Field structure
         FieldFactory.new['inlist'] = bool(listed)
         return FieldFactory
 
     @staticmethod
-    def isLogged( logged=True ):
-        """Update Current New Field set as recommended for logging"""
-        # Update New Field structure
+    def isIndexed(indexed=True):
+        """
+        Update Current New Field set as indexed for text search
+        :param indexed: bool
+        :return: self
+        """
+        FieldFactory.new['indexed'] = bool(indexed)
+        return FieldFactory
+
+    @staticmethod
+    def isLogged(logged=True):
+        """
+        Update Current New Field set as recommended for logging
+        :param logged: bool
+        :return: self
+        """
         FieldFactory.new['log'] = bool(logged)
         return FieldFactory
 

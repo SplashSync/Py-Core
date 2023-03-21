@@ -18,21 +18,53 @@
 splash:
 
 ################################################################################    
-# List of Availables Connector Connections
+# List of Available Connector Connections
 ################################################################################    
 
     connections:
-        
+
         ########################################################################
-        # Generic Soap Connection (Test & Debug your Generic Splash Servers)
-        generic:
-            id:                 ThisIsSplashWsId
+        # SplashPy on Python 3.9
+        splashpy-3p9:
+            id:                 ThisIsSplashWsId3p9
             key:                ThisIsYourEncryptionKeyForSplash
-            name:               My Generic Server
+            name:               Python 3.9
             host:               false
             connector:          soap
-            config:  
-                WsIdentifier:       ThisIsSplashWsId
-                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash                
-                WsHost:             http://py-server.splashsync.local
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsSplashWsId3p9
+                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
+                WsHost:             http://3p9.splashpy.local
+                WsPath:             :8008
+
+        ########################################################################
+        # SplashPy on Python 3.8
+        splashpy-3p8:
+            id:                 ThisIsSplashWsId3p8
+            key:                ThisIsYourEncryptionKeyForSplash
+            name:               Python 3.8
+            host:               false
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsSplashWsId3p8
+                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
+                WsHost:             http://3p8.splashpy.local
+                WsPath:             :8008
+
+
+        ########################################################################
+        # SplashPy on Python 3.7
+        splashpy-3p7:
+            id:                 ThisIsSplashWsId3p7
+            key:                ThisIsYourEncryptionKeyForSplash
+            name:               Python 3.7
+            host:               false
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsSplashWsId3p7
+                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
+                WsHost:             http://3p7.splashpy.local
                 WsPath:             :8008

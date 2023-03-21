@@ -33,34 +33,69 @@ version: '2'
 services:
 
     ################################################################################
-    # Splash Py Container
-    splash:
+    # Python 3.9 - Splash Py
+    splashpy-3.9:
         build:
             context: ./
             dockerfile: docker/Dockerfile
-        container_name: py-splashsync
-#        tty: true
+            args:
+                image:  python:3.9-slim
+        container_name: 3p9.splashpy.local
         volumes:
             # Server Sources in Read Only Mode
             - "./:/app/"
             - "./splashpy:/app/splashpy:ro"
-        hostname: py-server.splashsync.local
+        hostname: 3p9.splashpy.local
         networks:
-            pycore:         { ipv4_address: 172.169.2.11, aliases: [ py-server.splashsync.local ] }
-            splashsync:     { aliases: [ py-server.splashsync.local ] }
+            pycore:         { ipv4_address: 172.169.2.39, aliases: [ 3p9.splashpy.local ] }
+            splashsync:     { aliases: [ 3p9.splashpy.local ] }
+
+    ################################################################################
+    # Python 3.8 - Splash Py
+    splashpy-3.8:
+        build:
+            context: ./
+            dockerfile: docker/Dockerfile
+            args:
+                image:  python:3.8-slim
+        container_name: 3p8.splashpy.local
+        volumes:
+            # Server Sources in Read Only Mode
+            - "./:/app/"
+            - "./splashpy:/app/splashpy:ro"
+        hostname: 3p8.splashpy.local
+        networks:
+            pycore:         { ipv4_address: 172.169.2.38, aliases: [ 3p8.splashpy.local ] }
+            splashsync:     { aliases: [ 3p8.splashpy.local ] }
+
+    ################################################################################
+    # Python 3.7 - Splash Py
+    splashpy-3.7:
+        build:
+            context: ./
+            dockerfile: docker/Dockerfile
+        container_name: 3p7.splashpy.local
+        volumes:
+            # Server Sources in Read Only Mode
+            - "./:/app/"
+            - "./splashpy:/app/splashpy:ro"
+        hostname: 3p7.splashpy.local
+        networks:
+            pycore:         { ipv4_address: 172.169.2.37, aliases: [ 3p7.splashpy.local ] }
+            splashsync:     { aliases: [ 3p7.splashpy.local ] }
 
     ################################################################################
     # Splash Toolkit Container
     toolkit:
-        image: 'splashsync/toolkit'
-        container_name: py-toolkit
+        image:              'splashsync/toolkit'
+        container_name:     toolkit.splashpy.local
         volumes:
             # Specify Local Configuration File
             - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
-        hostname:           py.splashsync.local
+        hostname:           toolkit.splashpy.local
         networks:
-            pycore:         { ipv4_address: 172.169.2.10, aliases: [ py.splashsync.local ] }
-            splashsync:     { aliases: [ py.splashsync.local ] }
+            pycore:         { ipv4_address: 172.169.2.10, aliases: [ toolkit.splashpy.local ] }
+            splashsync:     { aliases: [ toolkit.splashpy.local ] }
             
 networks:
     ################################################################################

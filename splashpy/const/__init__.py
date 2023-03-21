@@ -233,6 +233,7 @@ __SPL_F_COMMIT__ = 'Commit'                       # Commit Object Change on Serv
 __SPL_F_DESC__ = 'Description'                    # Read Object Description
 __SPL_F_FIELDS__ = 'Fields'                       # Read Object Available Fields List
 __SPL_F_LIST__ = 'ObjectsList'                    # Read Object List
+__SPL_F_IDENTIFY__ = 'Identify'                   # Identify Object by Primary Keys
 __SPL_F_GET__ = 'Get'                             # Read Object Data
 __SPL_F_SET__ = 'Set'                             # Write Object Data
 __SPL_F_DEL__ = 'Delete'                          # Delete An Object

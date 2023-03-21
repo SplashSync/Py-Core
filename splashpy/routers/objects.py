@@ -39,6 +39,10 @@ class ObjectsRouter(BaseRouter):
         if task['name'] in [const.__SPL_F_GET__, const.__SPL_F_SET__, const.__SPL_F_DEL__]:
             return self.doSyncActions(task)
 
+        # Execute Primary Actions
+        if task['name'] in [const.__SPL_F_IDENTIFY__]:
+            return self.doPrimaryActions(task)
+
         # Wrong Request Task
         Framework.log().error("Object Router - Requested task not found => " + task['name'])
 
@@ -116,6 +120,25 @@ class ObjectsRouter(BaseRouter):
                 ws_object.lock(ws_object_id)
                 response['data'] = ws_object.delete(ws_object_id)
                 response['result'] = response['data']
+
+        return response
+
+    def doPrimaryActions(self, task):
+        """Execute Admin Objects Actions"""
+        from splashpy.componants.validator import Validator
+        response = self.empty_response(task)
+        # Load Object Class
+        ws_object = Framework.getObject(task["params"]['type'])
+
+        # IDENTIFY OF OBJECT BY PRIMARY KEY
+        if task['name'] == const.__SPL_F_IDENTIFY__:
+            keys = task["params"]['keys']
+            if ws_object and Validator.isValidObjectFieldsList(keys):
+                try:
+                    response['data'] = ws_object.getByPrimary(keys)
+                    response['result'] = True
+                except Exception as exception:
+                    Framework.log().fromException(exception, False)
 
         return response
 

@@ -196,19 +196,20 @@ if __name__ == "__main__":
     if '--serve' in sys.argv:
         from peewee import SqliteDatabase
         from splashpy.faker.short import Short, ShortData
+        from splashpy.faker.primary import Primary, PrimaryData
         from splashpy.faker.client import FakerClient
         from splashpy.templates.widgets import Dummy, Basic, Morris
         from splashpy.models.server import ServerInfo
 
         logging.warning("Starting Sqlite Database...")
         fakerDb = SqliteDatabase('faker.db')
-        fakerDb.create_tables([ShortData])
+        fakerDb.create_tables([ShortData, PrimaryData])
 
         logging.warning("Starting server...")
         server = SplashServer(
-            "ThisIsSplashWsId",
+            "ThisIsSplashWsId"+str(sys.version_info.major)+"p"+str(sys.version_info.minor),
             "ThisIsYourEncryptionKeyForSplash",
-            [Short()],
+            [Short(), Primary()],
             [Dummy(), Basic(), Morris()],
             info=FakerClient(),
             server=ServerInfo({

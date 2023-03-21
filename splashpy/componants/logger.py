@@ -12,7 +12,7 @@
 #  file that was distributed with this source code.
 #
 
-from collections import Iterable
+from collections.abc import Iterable
 
 class Logger:
     """Splash Logger: Collect & Return Remote Logs"""

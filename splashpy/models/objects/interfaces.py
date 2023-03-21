@@ -88,6 +88,19 @@ class ObjectInterface:
         raise NotImplementedError("Not implemented yet.")
 
     # ====================================================================#
+    #  Object Primary Keys Management
+    # ====================================================================#
+
+    @abstractmethod
+    def getByPrimary(self, keys):
+        """
+        Identify Object Using Primary Keys
+        :param keys: hash
+        :return: None|string
+        """
+        return None
+
+    # ====================================================================#
     #  Object LOCK Management
     # ====================================================================#
 

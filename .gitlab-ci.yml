@@ -34,7 +34,7 @@ stages:
     services:
       - docker:dind
     ################################################################################
-    # Install & Configure Environnement
+    # Install & Configure Environment
     before_script:
       # Init Docker
       - docker info
@@ -47,7 +47,9 @@ stages:
     # Run Test Script
     script:
       # Run unit tests for whole package
-      - docker-compose exec -T splash pytest
+      - docker-compose exec -T splashpy-3.9 pytest
+      - docker-compose exec -T splashpy-3.8 pytest
+      - docker-compose exec -T splashpy-3.7 pytest
       # Run Splash Unit tests from Splash Toolkit
       - docker-compose exec -T toolkit php vendor/bin/phpunit -c phpunit.xml.dist
       - docker-compose stop

@@ -12,7 +12,7 @@
 #  file that was distributed with this source code.
 #
 from abc import abstractmethod
-from collections import Iterable
+from collections.abc import Iterable
 from splashpy import const
 
 

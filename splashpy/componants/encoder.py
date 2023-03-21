@@ -16,7 +16,7 @@ import hashlib
 import base64
 import logging
 import xml.dom.minidom
-from collections import Iterable
+from collections.abc import Iterable
 from Crypto.Cipher import AES
 from splashpy import Framework
 
@@ -151,11 +151,11 @@ class XmlManager:
         """Recursive Decoding of Xml DOM to Object"""
 
         # Convert Single Text Nodes to String Value
-        if element.childNodes.length is 1 and element.firstChild.nodeType is xml.dom.minidom.Node.TEXT_NODE:
+        if element.childNodes.length == 1 and element.firstChild.nodeType is xml.dom.minidom.Node.TEXT_NODE:
             return str(base64.b64decode(element.firstChild.data), "utf-8")
 
         # If Element has no Child Node
-        if element.childNodes.length is 0:
+        if element.childNodes.length == 0:
             return None
 
         # Walk on Child Node Elements
