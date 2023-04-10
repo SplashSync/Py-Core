@@ -12,11 +12,11 @@
 #  file that was distributed with this source code.
 #
 
-from collections import Iterable
+from collections.abc import Iterable
 
 
 class HtmlLogExporter:
-    """Splash Logger: Html Exports Managment"""
+    """Splash Logger: Html Exports Management"""
 
     @staticmethod
     def to_html(logs):
