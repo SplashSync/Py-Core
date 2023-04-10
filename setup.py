@@ -17,13 +17,12 @@ import sys
 
 setup(
        name='splashpy',
-       version="0.3.1",
+       version="0.4.0",
        packages=find_packages(),
        install_requires=[
               "pycryptodome" if sys.version_info.minor >= 8 else "pycryptodome==3.16.0",
               'crypto'
        ],
-       # install_requires=['crypto'],
        author='SplashSync',
        author_email='contact@splashsync.com',
        description="Foundation Package for Splash Py Clients",
