@@ -216,6 +216,9 @@ class AbstractConfigurator:
         # Field is Required Flag
         self.updateFieldBoolVal(field, values, "required")
         # ====================================================================#
+        # Field is Index Flag
+        self.updateFieldBoolVal(field, values, "index")
+        # ====================================================================#
         # Field Read Allowed
         self.updateFieldBoolVal(field, values, "read")
         # ====================================================================#

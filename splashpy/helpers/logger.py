@@ -12,8 +12,6 @@
 #  file that was distributed with this source code.
 #
 
-from collections.abc import Iterable
-
 
 class HtmlLogExporter:
     """Splash Logger: Html Exports Management"""
