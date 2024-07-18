@@ -27,7 +27,7 @@ stages:
 ################################################################
 
 .core_tests:    &core_tests
-    image:      docker:stable
+    image:      docker:latest
     stage:      tests
     tags:
       - Dedicated-Docker
@@ -39,20 +39,18 @@ stages:
       # Init Docker
       - docker info
       - docker network create splashsync --attachable
-      # Install Docker Compose
-      - apk add --no-cache docker-compose
       # Build Docker Compose
-      - docker-compose up -d
+      - docker compose up -d
     ################################################################################
     # Run Test Script
     script:
       # Run unit tests for whole package
-      - docker-compose exec -T splashpy-3.9 pytest
-      - docker-compose exec -T splashpy-3.8 pytest
-      - docker-compose exec -T splashpy-3.7 pytest
+      - docker compose exec -T splashpy-3.9 pytest
+      - docker compose exec -T splashpy-3.8 pytest
+      - docker compose exec -T splashpy-3.7 pytest
       # Run Splash Unit tests from Splash Toolkit
-      - docker-compose exec -T toolkit php vendor/bin/phpunit -c phpunit.xml.dist
-      - docker-compose stop
+      - docker compose exec -T toolkit php vendor/bin/phpunit -c phpunit.xml.dist
+      - docker compose stop
 
 tests:py-3:
   <<: *core_tests
