@@ -18,19 +18,52 @@
 ################################################################################
 # Docker Compose File
 #
-# This Docker File intend to Create a Complete Dev Envirenement 
+# This Docker File intend to Create a Complete Dev Environment
 # for Splash Modules on Prestashop
 #
-# To us different PS Version coinfigured, you need to add hosts to /etc/hosts
+# To us different PS Version configured, you need to add hosts to /etc/hosts
 # 
 # 172.169.2.10    	    py.splashsync.local
 #
 ################################################################################
 
-
-version: '2'
-
 services:
+
+    ################################################################################
+    # Python 3.12 - Splash Py
+    splashpy-3.12:
+        build:
+            context: ./
+            dockerfile: docker/Dockerfile
+            args:
+                image:  python:3.12-slim
+        container_name: 3p12.splashpy.local
+        volumes:
+            # Server Sources in Read Only Mode
+            - "./:/app/"
+            - "./splashpy:/app/splashpy:ro"
+        hostname:           3p12.splashpy.local
+        networks:
+            pycore:         { ipv4_address: 172.169.2.32, aliases: [ 3p12.splashpy.local ] }
+            splashsync:     { aliases: [ 3p12.splashpy.local ] }
+
+    ################################################################################
+    # Python 3.10 - Splash Py
+    splashpy-3.10:
+        build:
+            context: ./
+            dockerfile: docker/Dockerfile
+            args:
+                image:  python:3.10-slim
+        container_name: 3p10.splashpy.local
+        volumes:
+            # Server Sources in Read Only Mode
+            - "./:/app/"
+            - "./splashpy:/app/splashpy:ro"
+        hostname:           3p10.splashpy.local
+        networks:
+            pycore:         { ipv4_address: 172.169.2.30, aliases: [ 3p10.splashpy.local ] }
+            splashsync:     { aliases: [ 3p10.splashpy.local ] }
 
     ################################################################################
     # Python 3.9 - Splash Py
@@ -91,7 +124,7 @@ services:
         container_name:     toolkit.splashpy.local
         volumes:
             # Specify Local Configuration File
-            - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
+            - './docker/toolkit/splash.yaml:/app/config/packages/splash.yaml:ro'
         hostname:           toolkit.splashpy.local
         networks:
             pycore:         { ipv4_address: 172.169.2.10, aliases: [ toolkit.splashpy.local ] }

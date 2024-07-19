@@ -24,6 +24,36 @@ splash:
     connections:
 
         ########################################################################
+        # SplashPy on Python 3.12
+        splashpy-3p12:
+            id:                 ThisIsSplashWsId3p12
+            key:                ThisIsYourEncryptionKeyForSplash
+            name:               Python 3.12
+            host:               false
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsSplashWsId3p12
+                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
+                WsHost:             http://3p12.splashpy.local
+                WsPath:             :8008
+
+        ########################################################################
+        # SplashPy on Python 3.10
+        splashpy-3p10:
+            id:                 ThisIsSplashWsId3p10
+            key:                ThisIsYourEncryptionKeyForSplash
+            name:               Python 3.10
+            host:               false
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsSplashWsId3p10
+                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
+                WsHost:             http://3p10.splashpy.local
+                WsPath:             :8008
+
+        ########################################################################
         # SplashPy on Python 3.9
         splashpy-3p9:
             id:                 ThisIsSplashWsId3p9

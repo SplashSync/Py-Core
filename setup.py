@@ -17,7 +17,7 @@ import sys
 
 setup(
        name='splashpy',
-       version="0.4.0",
+       version="0.4.1",
        packages=find_packages(),
        install_requires=[
               "pycryptodome" if sys.version_info.minor >= 8 else "pycryptodome==3.16.0",

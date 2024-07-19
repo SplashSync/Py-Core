@@ -41,7 +41,7 @@ class Files():
         # Verify Response
         if response is False:
             return None
-        if "result" not in response or response["result"] is not "1":
+        if "result" not in response or response["result"] != "1":
             return None
         try:
             task = response["tasks"]['task']

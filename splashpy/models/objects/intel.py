@@ -162,7 +162,7 @@ class IntelParser:
         # Prepare List of Available Methods
         result = []
         for method in dir(self):
-            if method.find(prefix) is not 0:
+            if method.find(prefix) != 0:
                 continue
             if method.find("Fields") is not (method.__len__() - 6):
                 continue

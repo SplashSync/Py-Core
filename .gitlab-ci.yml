@@ -45,6 +45,8 @@ stages:
     # Run Test Script
     script:
       # Run unit tests for whole package
+      - docker compose exec -T splashpy-3.12 pytest
+      - docker compose exec -T splashpy-3.10 pytest
       - docker compose exec -T splashpy-3.9 pytest
       - docker compose exec -T splashpy-3.8 pytest
       - docker compose exec -T splashpy-3.7 pytest
