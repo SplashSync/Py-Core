@@ -65,7 +65,7 @@ tests:py-3:
     image:      python:3
     stage:      release
     script:
-        - pip install twine
+        - pip install twine setuptools
         - python setup.py bdist_wheel
         - TWINE_PASSWORD=${TWINE_TOKEN} TWINE_USERNAME=__token__ python -m twine upload --repository ${TWINE_REPOSITORY} dist/* --verbose
     artifacts:
