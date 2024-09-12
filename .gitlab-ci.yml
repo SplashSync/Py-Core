@@ -38,7 +38,7 @@ stages:
     before_script:
       # Init Docker
       - docker info
-      - if [[ "$(docker network ls | grep "splashsync")" == "" ]] ; then docker network create splashsync -attachable fi
+      - if [[ "$(docker network ls | grep "splashsync")" == "" ]] ; then docker network create splashsync -attachable; fi
       # Build Docker Compose
       - docker compose up -d
     ################################################################################
