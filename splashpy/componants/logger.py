@@ -44,6 +44,11 @@ class Logger:
         self.prefix = prefix
         return self
 
+    def notice(self, text ):
+        """Add an Debug Message to Log"""
+        self.__add("deb", text)
+        return True
+
     def info(self, text ):
         """Add an Info / Success Message to Log"""
         self.__add("msg", text)

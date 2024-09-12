@@ -113,14 +113,12 @@ class SplashClient(Framework):
         # ====================================================================
         # Verify if Server Mode (Soap Request) ==> No Commit Allowed
         if Framework.isServerMode():
-            Framework.log().warn("Server Mode => Commit Skipped")
-            Framework.log().to_logging().clear()
+            Framework.log().notice("Server Mode => Commit Skipped")
             return False
         # ====================================================================
         # Verify this Object is Locked ==> No Action on this Node
         if not SplashClient.is_commit_allowed(object_type, object_ids, action):
-            Framework.log().msg('Module Commit Skipped (' + object_type + ', ' + action + ')')
-            Framework.log().to_logging().clear()
+            Framework.log().notice('Module Commit Skipped (' + object_type + ', ' + action + ')')
             return True
         # ====================================================================//
         # Create Soap Client
