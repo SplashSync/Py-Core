@@ -22,12 +22,16 @@ class SimpleFields:
     def __getSimpleValue(self, index, field_id, target=None):
         """Read Simple Raw Field Value"""
         try:
-            if target is None:
-                value = getattr(self.object, field_id)
-            else:
-                value = getattr(target, field_id)
+            # ====================================================================#
+            # Get attribute value
+            value = getattr(target if target is not None else self.object, field_id)
+
+            # ====================================================================#
+            # Mark Field as Processed
             self._in.__delitem__(index)
         except Exception as exception:
+            # ====================================================================#
+            # Log Error if not in Debug Mode
             if not Framework.isDebugMode():
                 Framework.log().fromException(exception)
             return None
@@ -37,10 +41,20 @@ class SimpleFields:
     def __setSimpleValue(self, field_id, field_data, target=None):
         """Write Simple Raw Field Value"""
         try:
-            if target is None:
-                setattr(self.object, field_id, field_data)
-            else:
-                setattr(target, field_id, field_data)
+            # ====================================================================#
+            # Get current attribute value before change
+            current_value = getattr(target if target is not None else self.object, field_id)
+
+            # ====================================================================#
+            # Only set if attribute value has changed
+            if current_value != field_data:
+                if target is None:
+                    setattr(self.object, field_id, field_data)
+                else:
+                    setattr(target, field_id, field_data)
+
+            # ====================================================================#
+            # Mark Field as Processed
             self._in.__delitem__(field_id)
         except Exception as exception:
             return Framework.log().fromException(exception)
