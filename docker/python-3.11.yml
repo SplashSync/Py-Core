@@ -1,0 +1,43 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync  <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+# splashpy faker on Python 3.11 (development & E2E tests only).
+# Host: 3p11.splashpy.local - IP: 172.169.2.31
+
+services:
+
+    python-3-11:
+        build:
+            context:    ".."
+            dockerfile: "docker/python/Dockerfile"
+            args:       { PYTHON: "3.11" }
+        container_name: "3p11.splashpy.local"
+        hostname:       "3p11.splashpy.local"
+        environment:
+            SPLASH_WS_ID:   "ThisIsSplashWsId3p11"
+            SPLASH_WS_KEY:  "ThisIsYourEncryptionKeyForSplash"
+            SPLASH_WS_HOST: "http://toolkit.splashpy.local/ws/soap"
+        networks:
+            pycore:         { ipv4_address: 172.169.2.31, aliases: [ 3p11.splashpy.local ] }
+            splashsync:     { aliases: [ 3p11.splashpy.local ] }
+
+networks:
+    pycore:
+        driver:     bridge
+        ipam:
+            config:
+                - subnet: 172.169.2.0/24
+    splashsync:
+        external:   true

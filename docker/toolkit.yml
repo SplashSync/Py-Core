@@ -1,0 +1,45 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync  <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+# Splash Toolkit 3.0: runs the standard connector suites against the Python fakers.
+# Host: toolkit.splashpy.local - IP: 172.169.2.10
+
+services:
+
+    toolkit:
+        image:          "splashsync/toolkit:3.0"
+        container_name: "toolkit.splashpy.local"
+        hostname:       "toolkit.splashpy.local"
+        volumes:
+            - "./toolkit/splash.yaml:/app/config/packages/splash.yaml:ro"
+        networks:
+            pycore:         { ipv4_address: 172.169.2.10, aliases: [ toolkit.splashpy.local ] }
+            splashsync:     { aliases: [ toolkit.splashpy.local ] }
+        depends_on:
+            python-3-9:     { condition: service_healthy }
+            python-3-10:    { condition: service_healthy }
+            python-3-11:    { condition: service_healthy }
+            python-3-12:    { condition: service_healthy }
+            python-3-13:    { condition: service_healthy }
+            python-3-14:    { condition: service_healthy }
+
+networks:
+    pycore:
+        driver:     bridge
+        ipam:
+            config:
+                - subnet: 172.169.2.0/24
+    splashsync:
+        external:   true

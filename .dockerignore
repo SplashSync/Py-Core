@@ -1,0 +1,14 @@
+.git
+.venv
+venv
+.cache
+.idea
+.claude
+build
+dist
+splashpy
+tests
+docs
+**/__pycache__
+*.egg-info
+faker.db

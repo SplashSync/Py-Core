@@ -1,0 +1,167 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync  <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+[build-system]
+requires        = ["hatchling>=1.18"]
+build-backend   = "hatchling.build"
+
+################################################################################
+# Project Metadata
+################################################################################
+
+[project]
+name            = "splashpy"
+dynamic         = ["version"]
+description     = "Splash Sync Python Core: build Splash connectors for any Python application."
+readme          = "README.md"
+license         = { file = "LICENSE" }
+authors         = [{ name = "Splash Sync", email = "contact@splashsync.com" }]
+requires-python = ">=3.9"
+keywords        = ["splash", "splashsync", "synchronization", "connector", "soap"]
+classifiers     = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Communications",
+    "Typing :: Typed",
+]
+dependencies    = [
+    "cryptography>=41",
+]
+
+[project.optional-dependencies]
+dev             = [
+    "bandit>=1.7",
+    "build>=1.0",
+    "mypy>=1.10,<2",   # mypy 2 cannot target Python 3.9
+    "pre-commit>=3.5",
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+]
+
+[project.urls]
+Homepage        = "https://www.splashsync.com"
+Repository      = "https://gitlab.com/SplashSync/Py-Core"
+
+[project.scripts]
+splashpy        = "splashpy.cli:main"
+
+[project.entry-points."splash"]
+faker           = "splashpy.faker:FakerExtension"
+
+################################################################################
+# Build
+################################################################################
+
+[tool.hatch.version]
+path            = "src/splashpy/version.py"
+
+[tool.hatch.build.targets.wheel]
+packages        = ["src/splashpy"]
+
+[tool.hatch.build.targets.sdist]
+include         = ["src/splashpy", "tests", "README.md", "LICENSE"]
+
+################################################################################
+# Ruff: Lint & Format
+################################################################################
+
+[tool.ruff]
+target-version  = "py39"
+line-length     = 120
+src             = ["src", "tests"]
+
+[tool.ruff.lint]
+select          = [
+    "E", "W",       # pycodestyle
+    "F",            # pyflakes
+    "I",            # isort
+    "UP",           # pyupgrade
+    "B",            # bugbear
+    "C4",           # comprehensions
+    "SIM",          # simplify
+    "RUF",          # ruff specific
+    "D",            # docstrings on every module, class & function
+    "FA",           # future annotations
+    "PT",           # pytest style
+    "N",            # naming
+]
+ignore          = [
+    "D203",         # one blank line before class docstring (conflicts with D211)
+    "D213",         # multi-line summary on second line (conflicts with D212)
+]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+known-first-party = ["splashpy"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**"      = ["D100", "D104"]
+
+[tool.ruff.format]
+quote-style     = "double"
+
+################################################################################
+# Mypy: Static Analysis
+################################################################################
+
+[tool.mypy]
+python_version  = "3.9"
+strict          = true
+files           = ["src", "tests"]
+mypy_path       = "src"
+
+################################################################################
+# Bandit: Security
+################################################################################
+
+[tool.bandit]
+exclude_dirs    = ["tests"]
+
+################################################################################
+# Pytest & Coverage
+################################################################################
+
+[tool.pytest.ini_options]
+testpaths       = ["tests"]
+addopts         = "-ra --strict-markers"
+cache_dir       = ".cache/pytest"
+markers         = [
+    "golden: tests checked against fixtures generated by Php-Core",
+]
+
+[tool.coverage.run]
+source_pkgs     = ["splashpy"]
+branch          = true
+
+[tool.coverage.report]
+fail_under      = 90
+show_missing    = true
+skip_covered    = true
+exclude_also    = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+]

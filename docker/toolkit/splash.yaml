@@ -2,7 +2,7 @@
 #
 #  This file is part of SplashSync Project.
 #
-#  Copyright (C) Splash Sync <www.splashsync.com>
+#  Copyright (C) Splash Sync  <www.splashsync.com>
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -11,90 +11,103 @@
 #  For the full copyright and license information, please view the LICENSE
 #  file that was distributed with this source code.
 #
-#  @author Bernard Paquier <contact@splashsync.com>
-#
 ################################################################################
 
+# Toolkit 3.0 configuration: one SOAP connection per Python version.
+
+parameters:
+    env(SERVER_NAME):   'http://toolkit'
+    env(APP_SECRET):    'HXAE37X4DWTprvyLb10F3f7StmRStcZy'
+
 splash:
-
-################################################################################    
-# List of Available Connector Connections
-################################################################################    
-
     connections:
 
         ########################################################################
-        # SplashPy on Python 3.12
-        splashpy-3p12:
-            id:                 ThisIsSplashWsId3p12
-            key:                ThisIsYourEncryptionKeyForSplash
-            name:               Python 3.12
-            host:               false
-            connector:          soap
-            config:
-                Extended:           true
-                WsIdentifier:       ThisIsSplashWsId3p12
-                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
-                WsHost:             http://3p12.splashpy.local
-                WsPath:             :8008
-
-        ########################################################################
-        # SplashPy on Python 3.10
-        splashpy-3p10:
-            id:                 ThisIsSplashWsId3p10
-            key:                ThisIsYourEncryptionKeyForSplash
-            name:               Python 3.10
-            host:               false
-            connector:          soap
-            config:
-                Extended:           true
-                WsIdentifier:       ThisIsSplashWsId3p10
-                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
-                WsHost:             http://3p10.splashpy.local
-                WsPath:             :8008
-
-        ########################################################################
-        # SplashPy on Python 3.9
-        splashpy-3p9:
+        # splashpy faker on Python 3.9
+        python-3-9:
             id:                 ThisIsSplashWsId3p9
             key:                ThisIsYourEncryptionKeyForSplash
-            name:               Python 3.9
+            name:               "[3.0] Python 3.9"
             host:               false
             connector:          soap
             config:
                 Extended:           true
                 WsIdentifier:       ThisIsSplashWsId3p9
                 WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
-                WsHost:             http://3p9.splashpy.local
-                WsPath:             :8008
+                WsHost:             http://3p9.splashpy.local:8000
+                WsPath:             /splash
 
         ########################################################################
-        # SplashPy on Python 3.8
-        splashpy-3p8:
-            id:                 ThisIsSplashWsId3p8
+        # splashpy faker on Python 3.10
+        python-3-10:
+            id:                 ThisIsSplashWsId3p10
             key:                ThisIsYourEncryptionKeyForSplash
-            name:               Python 3.8
+            name:               "[3.0] Python 3.10"
             host:               false
             connector:          soap
             config:
                 Extended:           true
-                WsIdentifier:       ThisIsSplashWsId3p8
+                WsIdentifier:       ThisIsSplashWsId3p10
                 WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
-                WsHost:             http://3p8.splashpy.local
-                WsPath:             :8008
-
+                WsHost:             http://3p10.splashpy.local:8000
+                WsPath:             /splash
 
         ########################################################################
-        # SplashPy on Python 3.7
-        splashpy-3p7:
-            id:                 ThisIsSplashWsId3p7
+        # splashpy faker on Python 3.11
+        python-3-11:
+            id:                 ThisIsSplashWsId3p11
             key:                ThisIsYourEncryptionKeyForSplash
-            name:               Python 3.7
+            name:               "[3.0] Python 3.11"
             host:               false
             connector:          soap
             config:
                 Extended:           true
-                WsIdentifier:       ThisIsSplashWsId3p7
+                WsIdentifier:       ThisIsSplashWsId3p11
                 WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
-                WsHost:             http://3p7.splashpy.local
-                WsPath:             :8008
+                WsHost:             http://3p11.splashpy.local:8000
+                WsPath:             /splash
+
+        ########################################################################
+        # splashpy faker on Python 3.12
+        python-3-12:
+            id:                 ThisIsSplashWsId3p12
+            key:                ThisIsYourEncryptionKeyForSplash
+            name:               "[3.0] Python 3.12"
+            host:               false
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsSplashWsId3p12
+                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
+                WsHost:             http://3p12.splashpy.local:8000
+                WsPath:             /splash
+
+        ########################################################################
+        # splashpy faker on Python 3.13
+        python-3-13:
+            id:                 ThisIsSplashWsId3p13
+            key:                ThisIsYourEncryptionKeyForSplash
+            name:               "[3.0] Python 3.13"
+            host:               false
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsSplashWsId3p13
+                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
+                WsHost:             http://3p13.splashpy.local:8000
+                WsPath:             /splash
+
+        ########################################################################
+        # splashpy faker on Python 3.14
+        python-3-14:
+            id:                 ThisIsSplashWsId3p14
+            key:                ThisIsYourEncryptionKeyForSplash
+            name:               "[3.0] Python 3.14"
+            host:               false
+            connector:          soap
+            config:
+                Extended:           true
+                WsIdentifier:       ThisIsSplashWsId3p14
+                WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash
+                WsHost:             http://3p14.splashpy.local:8000
+                WsPath:             /splash
