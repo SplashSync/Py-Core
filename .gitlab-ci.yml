@@ -2,7 +2,7 @@
 #
 #  This file is part of SplashSync Project.
 #
-#  Copyright (C) Splash Sync <www.splashsync.com>
+#  Copyright (C) Splash Sync  <www.splashsync.com>
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -11,78 +11,25 @@
 #  For the full copyright and license information, please view the LICENSE
 #  file that was distributed with this source code.
 #
-#  @author Bernard Paquier <contact@splashsync.com>
-#
 ################################################################################
 
 ################################################################
 # Defined Pipeline Stages
 stages:
-#  - docker
-  - tests
-  - release
+    - Quality
+    - Functional
+    - Builds
+
+variables:
+    PIP_CACHE_DIR:      "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+    key:                "pip-$CI_JOB_NAME"
+    paths:              [ ".cache/pip" ]
 
 ################################################################
-# Functional Tests
-################################################################
-
-.core_tests:    &core_tests
-    image:      docker:latest
-    stage:      tests
-    tags:
-      - Dedicated-Docker
-    services:
-      - docker:dind
-    ################################################################################
-    # Install & Configure Environment
-    before_script:
-      # Init Docker
-      - docker info
-      - if [[ "$(docker network ls | grep "splashsync")" == "" ]] ; then docker network create splashsync --attachable; fi
-      # Build Docker Compose
-      - docker compose up -d
-    ################################################################################
-    # Run Test Script
-    script:
-      # Run unit tests for whole package
-      - docker compose exec -T splashpy-3.12 pytest
-      - docker compose exec -T splashpy-3.10 pytest
-      - docker compose exec -T splashpy-3.9 pytest
-      - docker compose exec -T splashpy-3.8 pytest
-      - docker compose exec -T splashpy-3.7 pytest
-      # Run Splash Unit tests from Splash Toolkit
-      - docker compose exec -T toolkit php vendor/bin/phpunit -c phpunit.xml.dist
-      - docker compose stop
-
-tests:py-3:
-  <<: *core_tests
-
-################################################################
-# Release PyPi Package
-################################################################
-
-.release:   &release
-    image:      python:3
-    stage:      release
-    script:
-        - pip install twine setuptools
-        - python setup.py bdist_wheel
-        - TWINE_PASSWORD=${TWINE_TOKEN} TWINE_USERNAME=__token__ python -m twine upload --repository ${TWINE_REPOSITORY} dist/* --verbose
-    artifacts:
-        paths:
-            - dist/*.whl
-
-release:test:
-    <<: *release
-    before_script:
-          - export TWINE_REPOSITORY="testpypi"
-          - export TWINE_TOKEN="${PYPI_TEST_TOKEN}"
-    when: manual
-
-release:tags:
-    <<: *release
-    before_script:
-          - export TWINE_REPOSITORY="pypi"
-          - export TWINE_TOKEN="${PYPI_API_TOKEN}"
-    only:
-        - tags
+# Stages Jobs
+include:
+    - local:    "ci/Quality.yml"       # lint, style, security & static analysis
+    - local:    "ci/Functional.yml"    # tests matrix & Toolkit 3.0 E2E
+    - local:    "ci/Builds.yml"        # PyPi packages

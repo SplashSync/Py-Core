@@ -1,0 +1,60 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync  <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+################################################################
+# Unit & Integration Tests on every supported Python version
+################################################################
+
+tests:
+    image:      python:${PYTHON_VERSION}-slim
+    stage:      Functional
+    parallel:
+        matrix:
+            - PYTHON_VERSION: [ "3.9", "3.10", "3.11", "3.12", "3.13", "3.14" ]
+    script:
+        - apt-get update -qq && apt-get install -y -qq make > /dev/null
+        - make install PYTHON=python
+        - .venv/bin/pytest --cov --cov-report=term --cov-report=xml --junitxml=report.xml
+    coverage:   '/TOTAL.*\s(\d+(?:\.\d+)?)%/'
+    artifacts:
+        when:   always
+        reports:
+            junit:  report.xml
+            coverage_report:
+                coverage_format:    cobertura
+                path:               coverage.xml
+
+################################################################
+# E2E: Splash Toolkit 3.0 suites against the Python fakers
+################################################################
+
+e2e:
+    image:      docker:latest
+    stage:      Functional
+    tags:       [ "Dedicated-Docker" ]
+    services:
+        - docker:dind
+    script:
+        - docker info
+        - docker network inspect splashsync > /dev/null 2>&1 || docker network create splashsync --attachable
+        - docker compose up -d --build --wait
+        - docker compose exec -T toolkit php vendor/bin/phpunit -c phpunit.xml.dist --testsuite Validator
+            --filter 'A01PingTest|A02ConnectTest|A05SelfTestsTest|A06InfosTest'
+    after_script:
+        - docker compose logs --no-color > e2e.log || true
+        - docker compose down -v || true
+    artifacts:
+        when:   always
+        paths:  [ "e2e.log" ]

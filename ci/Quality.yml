@@ -1,0 +1,27 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync  <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+################################################################
+# Quality: lint, style, security & static analysis
+################################################################
+
+quality:
+    # Python 3.9: type checking must run against the oldest supported version
+    image:      python:3.9-slim
+    stage:      Quality
+    script:
+        - apt-get update -qq && apt-get install -y -qq make > /dev/null
+        - make install PYTHON=python
+        - make lint style stan
