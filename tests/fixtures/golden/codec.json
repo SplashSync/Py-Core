@@ -1,0 +1,226 @@
+{
+    "cases": [
+        {
+            "name": "scalars",
+            "payload": {
+                "string": "Hello World",
+                "empty": "",
+                "int": 42,
+                "negative": -7,
+                "zero": 0,
+                "float": 12.5,
+                "float_integral": 100.0,
+                "float_rounding": 0.30000000000000004,
+                "float_small": 1.0e-5,
+                "float_big": 1.0e+20,
+                "float_long": 123456789012345.67,
+                "float_negative": -0.75,
+                "true": true,
+                "false": false,
+                "null": null,
+                "numeric_string": "0012",
+                "utf8": "\u00c9t\u00e9 \u2603 \u20ac \u65e5\u672c",
+                "special": "<a href=\"x\">&amp; 'quotes'</a>",
+                "multiline": "line1\nline2\r\n\ttabbed"
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <string>SGVsbG8gV29ybGQ=</string>\n <empty></empty>\n <int>NDI=</int>\n <negative>LTc=</negative>\n <zero>MA==</zero>\n <float>MTIuNQ==</float>\n <float_integral>MTAw</float_integral>\n <float_rounding>MC4z</float_rounding>\n <float_small>MS4wRS01</float_small>\n <float_big>MS4wRSsyMA==</float_big>\n <float_long>MS4yMzQ1Njc4OTAxMjM1RSsxNA==</float_long>\n <float_negative>LTAuNzU=</float_negative>\n <true>MQ==</true>\n <false>MA==</false>\n <null></null>\n <numeric_string>MDAxMg==</numeric_string>\n <utf8>w4l0w6kg4piDIOKCrCDml6XmnKw=</utf8>\n <special>PGEgaHJlZj0ieCI+JmFtcDsgJ3F1b3Rlcyc8L2E+</special>\n <multiline>bGluZTEKbGluZTINCgl0YWJiZWQ=</multiline>\n</SPLASH>\n",
+            "decoded": {
+                "string": "Hello World",
+                "empty": "",
+                "int": "42",
+                "negative": "-7",
+                "zero": "0",
+                "float": "12.5",
+                "float_integral": "100",
+                "float_rounding": "0.3",
+                "float_small": "1.0E-5",
+                "float_big": "1.0E+20",
+                "float_long": "1.2345678901235E+14",
+                "float_negative": "-0.75",
+                "true": "1",
+                "false": "0",
+                "null": "",
+                "numeric_string": "0012",
+                "utf8": "\u00c9t\u00e9 \u2603 \u20ac \u65e5\u672c",
+                "special": "<a href=\"x\">&amp; 'quotes'</a>",
+                "multiline": "line1\nline2\r\n\ttabbed"
+            }
+        },
+        {
+            "name": "lists",
+            "payload": {
+                "strings": [
+                    "a",
+                    "b",
+                    "c"
+                ],
+                "ints": [
+                    1,
+                    2,
+                    3
+                ],
+                "floats": [
+                    1.5,
+                    2.0
+                ],
+                "bools": [
+                    true,
+                    false
+                ],
+                "nested": [
+                    [
+                        "x",
+                        "y"
+                    ],
+                    {
+                        "k": "v"
+                    }
+                ],
+                "empty_list": [],
+                "sparse": {
+                    "3": "three",
+                    "7": "seven"
+                }
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <strings>\n  <string-0>YQ==</string-0>\n  <string-1>Yg==</string-1>\n  <string-2>Yw==</string-2>\n </strings>\n <ints>\n  <int-0>MQ==</int-0>\n  <int-1>Mg==</int-1>\n  <int-2>Mw==</int-2>\n </ints>\n <floats>\n  <int-0>MS41</int-0>\n  <int-1>Mg==</int-1>\n </floats>\n <bools>\n  <bool-0>MQ==</bool-0>\n  <bool-1>MA==</bool-1>\n </bools>\n <nested>\n  <array-0>\n   <string-0>eA==</string-0>\n   <string-1>eQ==</string-1>\n  </array-0>\n  <array-1>\n   <k>dg==</k>\n  </array-1>\n </nested>\n <empty_list/>\n <sparse>\n  <string-3>dGhyZWU=</string-3>\n  <string-7>c2V2ZW4=</string-7>\n </sparse>\n</SPLASH>\n",
+            "decoded": {
+                "strings": {
+                    "string-0": "a",
+                    "string-1": "b",
+                    "string-2": "c"
+                },
+                "ints": {
+                    "int-0": "1",
+                    "int-1": "2",
+                    "int-2": "3"
+                },
+                "floats": {
+                    "int-0": "1.5",
+                    "int-1": "2"
+                },
+                "bools": {
+                    "bool-0": "1",
+                    "bool-1": "0"
+                },
+                "nested": {
+                    "array-0": {
+                        "string-0": "x",
+                        "string-1": "y"
+                    },
+                    "array-1": {
+                        "k": "v"
+                    }
+                },
+                "empty_list": "",
+                "sparse": {
+                    "string-3": "three",
+                    "string-7": "seven"
+                }
+            }
+        },
+        {
+            "name": "keys",
+            "payload": {
+                "field@list": "at sign",
+                "id::type": "double colon",
+                "dotted.key": "dot",
+                "with space": "space",
+                "dash-key": "dash",
+                "under_score": "underscore",
+                "CamelCase": "camel",
+                "12": "numeric string key"
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <field_list>YXQgc2lnbg==</field_list>\n <id__type>ZG91YmxlIGNvbG9u</id__type>\n <dotted_key>ZG90</dotted_key>\n <with_space>c3BhY2U=</with_space>\n <dash-key>ZGFzaA==</dash-key>\n <under_score>dW5kZXJzY29yZQ==</under_score>\n <CamelCase>Y2FtZWw=</CamelCase>\n <string-12>bnVtZXJpYyBzdHJpbmcga2V5</string-12>\n</SPLASH>\n",
+            "decoded": {
+                "field_list": "at sign",
+                "id__type": "double colon",
+                "dotted_key": "dot",
+                "with_space": "space",
+                "dash-key": "dash",
+                "under_score": "underscore",
+                "CamelCase": "camel",
+                "string-12": "numeric string key"
+            }
+        },
+        {
+            "name": "message",
+            "payload": {
+                "server": {
+                    "ServerType": "PHP",
+                    "ProtocolVersion": "1.2",
+                    "ServerHost": "localhost"
+                },
+                "service": "Objects",
+                "debug": 0,
+                "verbose": 1,
+                "tasks": {
+                    "1": {
+                        "id": 1,
+                        "name": "Get",
+                        "desc": "Read Object Data",
+                        "params": {
+                            "type": "ThirdParty",
+                            "id": "12",
+                            "fields": [
+                                "name",
+                                "email",
+                                "phone@lines"
+                            ]
+                        }
+                    }
+                },
+                "taskscount": 1,
+                "log": {
+                    "err": [],
+                    "war": [
+                        "A warning"
+                    ],
+                    "msg": [
+                        "Message 1",
+                        "Message 2"
+                    ],
+                    "deb": []
+                }
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <server>\n  <ServerType>UEhQ</ServerType>\n  <ProtocolVersion>MS4y</ProtocolVersion>\n  <ServerHost>bG9jYWxob3N0</ServerHost>\n </server>\n <service>T2JqZWN0cw==</service>\n <debug>MA==</debug>\n <verbose>MQ==</verbose>\n <tasks>\n  <array-1>\n   <id>MQ==</id>\n   <name>R2V0</name>\n   <desc>UmVhZCBPYmplY3QgRGF0YQ==</desc>\n   <params>\n    <type>VGhpcmRQYXJ0eQ==</type>\n    <id>MTI=</id>\n    <fields>\n     <string-0>bmFtZQ==</string-0>\n     <string-1>ZW1haWw=</string-1>\n     <string-2>cGhvbmVAbGluZXM=</string-2>\n    </fields>\n   </params>\n  </array-1>\n </tasks>\n <taskscount>MQ==</taskscount>\n <log>\n  <err/>\n  <war>\n   <string-0>QSB3YXJuaW5n</string-0>\n  </war>\n  <msg>\n   <string-0>TWVzc2FnZSAx</string-0>\n   <string-1>TWVzc2FnZSAy</string-1>\n  </msg>\n  <deb/>\n </log>\n</SPLASH>\n",
+            "decoded": {
+                "server": {
+                    "ServerType": "PHP",
+                    "ProtocolVersion": "1.2",
+                    "ServerHost": "localhost"
+                },
+                "service": "Objects",
+                "debug": "0",
+                "verbose": "1",
+                "tasks": {
+                    "array-1": {
+                        "id": "1",
+                        "name": "Get",
+                        "desc": "Read Object Data",
+                        "params": {
+                            "type": "ThirdParty",
+                            "id": "12",
+                            "fields": {
+                                "string-0": "name",
+                                "string-1": "email",
+                                "string-2": "phone@lines"
+                            }
+                        }
+                    }
+                },
+                "taskscount": "1",
+                "log": {
+                    "err": "",
+                    "war": {
+                        "string-0": "A warning"
+                    },
+                    "msg": {
+                        "string-0": "Message 1",
+                        "string-1": "Message 2"
+                    },
+                    "deb": ""
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,56 @@
+{
+    "php_client": [
+        {
+            "service": "Ping",
+            "params": {
+                "id": "ThisIsSplashWsId",
+                "data": "Q29udGVudA=="
+            },
+            "location": "http://python.splashpy.local/splash",
+            "action": "http://toolkit.splashsync.local#Ping",
+            "request": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:Ping><param0 xsi:type=\"xsd:string\">ThisIsSplashWsId</param0><param1 xsi:type=\"xsd:string\">Q29udGVudA==</param1></ns1:Ping></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+        },
+        {
+            "service": "Connect",
+            "params": {
+                "id": "ThisIsSplashWsId",
+                "data": "Q29udGVudA=="
+            },
+            "location": "http://python.splashpy.local/splash",
+            "action": "http://toolkit.splashsync.local#Connect",
+            "request": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:Connect><param0 xsi:type=\"xsd:string\">ThisIsSplashWsId</param0><param1 xsi:type=\"xsd:string\">Q29udGVudA==</param1></ns1:Connect></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+        },
+        {
+            "service": "Objects",
+            "params": {
+                "id": "ThisIsSplashWsId",
+                "data": "Q29udGVudA=="
+            },
+            "location": "http://python.splashpy.local/splash",
+            "action": "http://toolkit.splashsync.local#Objects",
+            "request": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:Objects><param0 xsi:type=\"xsd:string\">ThisIsSplashWsId</param0><param1 xsi:type=\"xsd:string\">Q29udGVudA==</param1></ns1:Objects></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+        }
+    ],
+    "php_server": [
+        {
+            "service": "Ping",
+            "request": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:Ping><param0 xsi:type=\"xsd:string\">ThisIsSplashWsId</param0><param1 xsi:type=\"xsd:string\">Q29udGVudA==</param1></ns1:Ping></SOAP-ENV:Body></SOAP-ENV:Envelope>\n",
+            "response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:PingResponse><return xsi:type=\"xsd:string\">RESPONSE-Ping-ThisIsSplashWsId-Q29udGVudA==</return></ns1:PingResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+        },
+        {
+            "service": "Connect",
+            "request": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:Connect><param0 xsi:type=\"xsd:string\">ThisIsSplashWsId</param0><param1 xsi:type=\"xsd:string\">Q29udGVudA==</param1></ns1:Connect></SOAP-ENV:Body></SOAP-ENV:Envelope>\n",
+            "response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:ConnectResponse><return xsi:type=\"xsd:string\">RESPONSE-Connect-ThisIsSplashWsId-Q29udGVudA==</return></ns1:ConnectResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+        },
+        {
+            "service": "Objects",
+            "request": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:Objects><param0 xsi:type=\"xsd:string\">ThisIsSplashWsId</param0><param1 xsi:type=\"xsd:string\">Q29udGVudA==</param1></ns1:Objects></SOAP-ENV:Body></SOAP-ENV:Envelope>\n",
+            "response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:ObjectsResponse><return xsi:type=\"xsd:string\">RESPONSE-Objects-ThisIsSplashWsId-Q29udGVudA==</return></ns1:ObjectsResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+        }
+    ],
+    "php_client_decode": {
+        "response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://toolkit.splashsync.local\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body><ns1:PingResponse><return xsi:type=\"xsd:string\">RESPONSE-Ping-ThisIsSplashWsId-Q29udGVudA==</return></ns1:PingResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>\n",
+        "decoded": "RESPONSE-Ping-ThisIsSplashWsId-Q29udGVudA=="
+    },
+    "php_server_fault": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Body><SOAP-ENV:Fault><faultcode>SOAP-ENV:Server</faultcode><faultstring>SOAP call: service died unexpectedly!!</faultstring></SOAP-ENV:Fault></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+}

@@ -1,0 +1,108 @@
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync  <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+
+"""``splashpy`` command line: ``version`` and ``serve`` (demo / development server)."""
+
+from __future__ import annotations
+
+import argparse
+import logging
+import sys
+from socketserver import ThreadingMixIn
+from wsgiref.simple_server import WSGIRequestHandler, WSGIServer, make_server
+
+from splashpy.adapters import SplashWsgiApp
+from splashpy.client import SplashClient
+from splashpy.config import ConfigError, EnvConfig, JsonConfig, SplashConfig, resolve
+from splashpy.extensions import Extension
+from splashpy.faker import FAKER_WS_ID, FAKER_WS_KEY, FakerExtension
+from splashpy.version import __version__
+
+_LOGGER = logging.getLogger("splashpy.cli")
+"""Command line logger."""
+
+
+class ThreadingWsgiServer(ThreadingMixIn, WSGIServer):
+    """WSGI server handling each request in a thread."""
+
+    daemon_threads = True
+
+
+class QuietHandler(WSGIRequestHandler):
+    """Request handler logging through the Python logger instead of stderr."""
+
+    def log_message(self, format: str, *args: object) -> None:
+        """Log one request."""
+        _LOGGER.info("%s - %s", self.address_string(), format % args)
+
+
+def build_parser() -> argparse.ArgumentParser:
+    """Build the command line parser."""
+    parser = argparse.ArgumentParser(prog="splashpy", description="Splash Sync Python Core.")
+    commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("version", help="print the splashpy version")
+    serve = commands.add_parser("serve", help="serve a Splash client over HTTP (development / tests)")
+    serve.add_argument("--host", default="127.0.0.1", help="listen address (default: 127.0.0.1)")
+    serve.add_argument("--port", type=int, default=8000, help="listen port (default: 8000)")
+    serve.add_argument("--path", default=None, help="only serve this path (default: any)")
+    serve.add_argument("--config", default=None, help="JSON configuration file (default: SPLASH_* variables)")
+    serve.add_argument("--faker", action="store_true", help="enable the faker demo connector (NEVER in production)")
+
+    return parser
+
+
+def load_config(path: str | None, faker: bool) -> SplashConfig:
+    """Load the configuration; the faker falls back on its development credentials."""
+    try:
+        return resolve(JsonConfig(path) if path else EnvConfig())
+    except ConfigError:
+        if not faker:
+            raise
+        _LOGGER.warning("No configuration found: using faker development credentials.")
+        return SplashConfig(ws_id=FAKER_WS_ID, ws_key=FAKER_WS_KEY)
+
+
+def serve(args: argparse.Namespace) -> int:
+    """Run the development server."""
+    config = load_config(args.config, args.faker)
+    extensions: list[Extension] = []
+    if args.faker:
+        _LOGGER.warning("Faker connector ENABLED: development and tests only, never in production.")
+        extensions.append(FakerExtension())
+    app = SplashWsgiApp(SplashClient(config, extensions=extensions), path=args.path)
+    with make_server(args.host, args.port, app, ThreadingWsgiServer, QuietHandler) as server:
+        _LOGGER.info("splashpy %s serving %s on http://%s:%s", __version__, config.ws_id, args.host, args.port)
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            _LOGGER.info("Server stopped.")
+
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Command line entry point."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    args = build_parser().parse_args(argv)
+    if args.command == "version":
+        print(__version__)
+        return 0
+    try:
+        return serve(args)
+    except ConfigError as error:
+        _LOGGER.error("Invalid configuration: %s", error)
+        return 2
+
+
+if __name__ == "__main__":  # pragma: no cover
+    sys.exit(main())

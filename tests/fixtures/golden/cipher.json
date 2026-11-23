@@ -1,0 +1,39 @@
+{
+    "cases": [
+        {
+            "key": "ThisIsYourEncryptionKeyForSplash",
+            "id": "ThisIsSplashWsId",
+            "plain": "<SPLASH>x</SPLASH>",
+            "cipher": "NDJpLzhrM1hxSjN6M21CNGM4Ly9mOUtveDE5dWhqeVIyc2U1dDNlaDNUWT0=",
+            "roundtrip": "<SPLASH>x</SPLASH>"
+        },
+        {
+            "key": "ThisIsYourEncryptionKeyForSplash",
+            "id": "ThisIsSplashWsId",
+            "plain": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "cipher": "djBybnpGNkltM2RJeVZUMEl0OWFzSGl0eUt3NmdtSzdZSzZZb2lLeEdEbnZqQnhremNRQ2NQMy9kUEZrS2JrY0hpdTJsamR6Yll6Z3FwOUdqbEdVMlZ2Y3BIdkxRbkF2WWJNVnRsVFk0YTg9",
+            "roundtrip": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        },
+        {
+            "key": "ThisIsYourEncryptionKeyForSplash",
+            "id": "ThisIsSplashWsId",
+            "plain": "\u00c9t\u00e9 \u2603 \u20ac \u65e5\u672c",
+            "cipher": "azVnSzRMV1JLeWkyK3VlM0J5OFMwV3U5UHdEbjVuUkRITkVzVXJVUjY1VT0=",
+            "roundtrip": "\u00c9t\u00e9 \u2603 \u20ac \u65e5\u672c"
+        },
+        {
+            "key": "AnotherKey",
+            "id": "AnotherId",
+            "plain": "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. ",
+            "cipher": "V2sxQ0ZobGluSDhmWDFZKzRtRS9uaHB4bzd1Rm9iVGI1ZEtEWmM3eC9ySmVscnJYM05TM0gwZjJ5b0hiWFEydlBjZUY5OTMyRFFZWm1DZ3VlMk5zOVNDUzJ0MTNmVUhYWFRpK0YzNmRMZjJnYWl4bStVK2FmRXpyY2Q0eHROanJFTWlGRlNTKzNIVFpGcU1KeW1pWVVRMWNJVDJtcXBQbndYU1FMZ0JLTks2MzI4eUw2WGswN1lhRVovZDJNRzdsQ0xQSEdaZEZJTDBiMEhacTV1Q3pwYnd0cmJvRWtMN0hRYVdCNXBaRHZUZkhKOWtSZ2UrTVN0N1hjZDIzYkFHZ05Lc0JqeXVJTDJMMlZ2NEszZFR0SnJpaVViZnd6Z0NyK1djWVkvSlJGWGQ3ZWpDcXFuaVYzQ0NnK2gvUjlKeFBaVXJ3QW9aRVgxSHBJbDRUcUpJdU50U2l4bmFLZEpVa1k3VUZ3YldiSms4MkliT0ZIdDBObWpKaUlWdDEwbkE2ZUs2aWxyUXduZ0xVTklzOUllWjMzUmcwSEhkb21VYzFmL2p1OVpjcFRFMlgzWmlUNEFpNEZTN05QWG5xK1hpdjVodWRVbnRVZDVuRGlNZHB2aFo2bnpaYmtWcWhhTVdENnNQZVQwUCtCVDhMR0RPNzE3d2ROZVhkMHprd1lPVGRkTCs4VnZ6bWtmRTBtckpIUDZHR3g4YVNkRmFhZTM3NVZ3eWhRZDNvTDU1dTUwZTNzWFczZFVvekEwNHExU1Z6ZzBiWG0xdHZoeUVzQ20yY04rRmtWOGpZV3N6YlBkSUFuNEh5Nk5ZaUNDWUwybm9aUkZ2YWUvTHQyS05RQ3dEdEJIdGVNNERyMlNFQ3NmWkw1OUROd2g5TVorVVpnclJiNjVpdzN5Z1ptb1l1d3ZHL0ZVTlJpKzlkUk1QSitTamVNQjluUHAyS3g5VEtNcVJEMllnUFF1RExNRUNvU1lZVnR0cmdqSjNkbjVvWDVaWWdZK2c2VVVjR1I2bDl6V1hDY0UzMUgzbDYwcFc1blB4cnpnNWN5TUlQWWNkYmwrZDY0SVI0dDdaMURUQkRKeHRlREswK0NKcDlHV0UyTGExWXpNZ1VodHBEdWxTUnJWdHlLSnU4U01xUXJnUmJCdnRZZzBkSkdUUVE3ZXFKOG4xRGxJUkpiKzhCTXJLV09JOHBvUGU3L2JtL3RGL0VrNUdSbEF4R1cxSU9Oajc3Z3JIYUk1eVhCY2oxbWNnK2RIUTZHQXFqR2NzMi96dElyV0pvUXRzVFBwYzVLVlhSek1aM3hhY3lTdGNIMDhBZENQb0JtSXlKNjVYMjUxazhMR3Yzb2FaYzROc1RKSmx4ZFg5cTJpdkpiOGMyMEZrL05wNVR4ampRZVd0TkxHNW5SSGU2bFBnTHN4YWRjemNHN0FJRDdaQVdPbjQ0ZnA5T29lVFNNaTlSMjF3cElSTlFFeWNxOHVqdzBxUUM4MUcwT0xoYkw5MjhqbGZqRytWa0h3TldpcnJNMVVuWld4VW94WWM5Y2Y5dDdzbWRpb28yR3hPOWk0anJGSUhvbDcydk85MmdwaDVrQ0JMKytlOXlZYWw0TWNwL1RndWdIcGVualcrMi9DR1dHYi9aT2tEdmxOL2h3RHdjZnVWb2JzaVRWcnhXc3JBL09LL2s2K2ZyeXNibkNPcWNBY0lRUlFNMFlRdEgwbFR1QjBCcU5OVXpXUTRYMDBDcHovZFVsK0NYajUwZlk2U1REZHAwZmUwLzNYYVhCSFJTaEdzRTJ6NGk2U2U4SXNtK2xxWXgwMkVVOU11NlpJSTJNcnBHK2RjeEsya2FZU05wTGFUNGJaT1p2SXhJY3pPYmE1TnJIaHdBbVZ6b0xzcUFTdndJWVRITFluYkxEVUhiUjcyNW1GaVdvLzNJY3JFMXlKczcwWVN0Mm1FczF0cTdFWTcvUk9qSWl4cXJMbkY1YlZrdzBlZFlKSUlXWlIrQkZzUXhBUDA5YmtXM1BlUE14THNWU0dZPQ==",
+            "roundtrip": "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. "
+        },
+        {
+            "key": "k",
+            "id": "i",
+            "plain": "a",
+            "cipher": "UkxOcUViMysraXdpcVcwMlpzUHRqdz09",
+            "roundtrip": "a"
+        }
+    ]
+}

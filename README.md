@@ -1,13 +1,17 @@
 # splashpy — Splash Sync Python Core
 
-Build [Splash Sync](https://www.splashsync.com) connectors for **any Python application**.
+splashpy is the Python core of [Splash Sync](https://www.splashsync.com) connectors: it lets
+**any Python application** expose its data to Splash, and notify Splash of its changes.
 
 > Branch `3.0` is a full rewrite (work in progress). splashpy 0.4.x lives on branch `1.0`.
 
-- Wire compatible with Php-Core 3.0 (byte identical, checked by golden tests).
-- No global state: one `SplashClient` per database / tenant, thread safe.
-- Transport neutral: plug `client.handle_request()` in any HTTP framework; WSGI gateway included.
-- Python 3.9 → 3.14, typed, one dependency (`cryptography`).
+## Key principles
+
+- **Wire compatible**: output is byte identical to Php-Core 3.0, checked by golden tests.
+- **No global state**: one `SplashClient` per database / tenant; each request has its own context.
+- **Transport neutral**: plug the client in any HTTP framework; a WSGI gateway is provided.
+- **Explicit**: no method discovery by name, no implicit extension activation.
+- **Python 3.9 → 3.14**, typed, one runtime dependency (`cryptography`).
 
 ## Quick start
 
@@ -35,6 +39,29 @@ from splashpy.adapters import make_app
 application = make_app(client, path="/splash")
 ```
 
+`splashpy serve --faker` runs a demo node. The faker is for development and tests only and is
+never enabled implicitly.
+
+## Documentation
+
+| Page                                             | Content                                                     |
+|--------------------------------------------------|-------------------------------------------------------------|
+| [Getting started](docs/getting-started.md)       | Install, build a client, serve Splash requests, call Splash |
+| [Configuration](docs/configuration.md)           | Settings and configuration providers                        |
+| [Project structure](docs/project-structure.md)   | Repository layout, package layers, request flow             |
+| [Wire protocol](docs/protocol.md)                | SOAP envelope, message encoding and encryption              |
+| [Development](docs/development.md)               | Quality tools, tests, golden fixtures, Docker E2E stack, CI |
+
+## Status
+
+| Area                                                  | Status       |
+|-------------------------------------------------------|--------------|
+| Wire protocol (SOAP, XML, encryption)                 | available    |
+| Client, configuration, Admin service, outgoing calls  | available    |
+| WSGI gateway, `splashpy` command line                 | available    |
+| Fields, objects, extensions registry, widgets         | milestone 2  |
+| Contracts (templates & scopes), conformance suite     | milestone 3  |
+
 ## Development
 
 ```bash
@@ -48,15 +75,7 @@ make stop           # stop the stack
 make prune          # remove containers, volumes & built images
 ```
 
-`splashpy serve --faker` runs a demo node. The faker is for development and tests only and is
-never enabled implicitly.
-
-## Documentation
-
-- [Wire protocol](docs/protocol.md)
-- [Architecture](docs/architecture.md)
-- [splashpy 1.0 inventory](docs/v1-inventory.md)
-- [Architecture decision records](docs/adr/)
+See [Development](docs/development.md) for details.
 
 ## License
 

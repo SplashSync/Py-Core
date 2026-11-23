@@ -1,0 +1,35 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync  <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+# Runs the same checks as `make quality`, from the project virtual environment.
+repos:
+    -   repo:   local
+        hooks:
+            -   id:         lint
+                name:       ruff check
+                entry:      .venv/bin/ruff check
+                language:   system
+                types:      [python]
+            -   id:         style
+                name:       ruff format
+                entry:      .venv/bin/ruff format --check
+                language:   system
+                types:      [python]
+            -   id:         stan
+                name:       mypy
+                entry:      .venv/bin/mypy
+                language:   system
+                pass_filenames: false
+                types:      [python]

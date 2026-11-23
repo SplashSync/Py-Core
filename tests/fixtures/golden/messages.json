@@ -1,0 +1,77 @@
+{
+    "cases": [
+        {
+            "name": "scalars",
+            "key": "ThisIsYourEncryptionKeyForSplash",
+            "id": "ThisIsSplashWsId",
+            "payload": {
+                "string": "Hello World",
+                "empty": "",
+                "int": 42,
+                "negative": -7,
+                "zero": 0,
+                "float": 12.5,
+                "float_integral": 100.0,
+                "float_rounding": 0.30000000000000004,
+                "float_small": 1.0e-5,
+                "float_big": 1.0e+20,
+                "float_long": 123456789012345.67,
+                "float_negative": -0.75,
+                "true": true,
+                "false": false,
+                "null": null,
+                "numeric_string": "0012",
+                "utf8": "\u00c9t\u00e9 \u2603 \u20ac \u65e5\u672c",
+                "special": "<a href=\"x\">&amp; 'quotes'</a>",
+                "multiline": "line1\nline2\r\n\ttabbed"
+            },
+            "encrypted": "WTUyTUVUczc4ZG5YUEZuejc4TDN2c2ZiWFRJUytGNHVJNXppdXY2YW1Qb2FZeW1lRmlqMTJqbDdaWUtxM3NiWHVSRVRTVXRpL0JuazVUdTM5N3ZvcW9OYXhGNzJKOWhmd2tpU3VzUklSVCttYlR6MCszNjhTR3pLclR2bnNqN1NBVkhUUFVaZmF4N2RtUWVZWVBxWVZFQ1JPN0dvUHFnUWI2R1dIcytra3MwalpjbFBoMTJmZkhPcmJNQzNDOXMxdW9jbzd1Y3FwTEowczhrTFUxNTlRODY2NDdkVlBramRKbVVINDNCK0lJNGxSM3c1dTNYeTRqUFZHRHNLelcwd1plNmpNRXA4Z1A4NElpUjhoUjJMcjQrM1QvdHpuclUyQVRjSmg5eFp3a1N0eUR2RFozTXlqS1duaUUxRlFVcmtGWEdqVVBMMWlyeFJDTXp5TzFoNUlGOUNublc2UFkxMTZsbmRudmxTd1FIQ24wVC9kUWNlM3R3Qmg3Y2FwWS9DdUdUZDhPTUlyRU1BWE91S2EvT0t4cnl3M1dBdUtrelhqTVExRFJqYXhzeEp4bUo0NFZLRFpUMnpLYWhlYXBNMHBBdEl3cEowZjYyVUFGS2JUdVU1ZHVTWFhjdWZnekF5YXlaYXk1TWhxbUoxdm9RQWRzSldSd0VWOHZ0dWxpNWVwZ0h2eVFXS0xuTnUvT0FxYmR5QXdJUVpnUjBXMTVLSkN2VWVQTk1uVU9zR0NHUzlydWpLdytsWkc2cDg5YTFaNGpBSW9Fb2IzdzBHbnZyN0hLRGpzdDJDVXZnVTJNTDNLVERyK1JUN1dEWWhZb0owWE1lcW5ES0RsOXdKV1J6c095Q0tmaEllcmpHUGdjK2ZmWVlnYm9EemJ3cnhpSGVCTCtBUkRxSFJNRHRCYmFEeld1TC85UE4rTWdSOGg5NFo1UVNLb1NOMmowUi84RnUyakJ6dmx2RVpqWnlDdFlzdDQ5dmQ3ditRZDhXUmFwblpldG5TN1dGbmtFc08xditVa3VsTEZHcFFNQUdBSDg0cUlYUDgzZERoTkIrVjdzUzhNcG1RR08rcUF6NW9NalQveVZEdHMrMEtwT0EvMjlERkd4bkpSdlM2YlhDZHV6SWpZKzNHWVREME0rUzA1dGZ2a2o3MzR0eFNWcWRVTWxFb3p5cmZDN1dNZkdZVURLdDg=",
+            "unsecured": "PFNQTEFTSD4KIDxzdHJpbmc+U0dWc2JHOGdWMjl5YkdRPTwvc3RyaW5nPgogPGVtcHR5PjwvZW1wdHk+CiA8aW50Pk5EST08L2ludD4KIDxuZWdhdGl2ZT5MVGM9PC9uZWdhdGl2ZT4KIDx6ZXJvPk1BPT08L3plcm8+CiA8ZmxvYXQ+TVRJdU5RPT08L2Zsb2F0PgogPGZsb2F0X2ludGVncmFsPk1UQXc8L2Zsb2F0X2ludGVncmFsPgogPGZsb2F0X3JvdW5kaW5nPk1DNHo8L2Zsb2F0X3JvdW5kaW5nPgogPGZsb2F0X3NtYWxsPk1TNHdSUzAxPC9mbG9hdF9zbWFsbD4KIDxmbG9hdF9iaWc+TVM0d1JTc3lNQT09PC9mbG9hdF9iaWc+CiA8ZmxvYXRfbG9uZz5NUzR5TXpRMU5qYzRPVEF4TWpNMVJTc3hOQT09PC9mbG9hdF9sb25nPgogPGZsb2F0X25lZ2F0aXZlPkxUQXVOelU9PC9mbG9hdF9uZWdhdGl2ZT4KIDx0cnVlPk1RPT08L3RydWU+CiA8ZmFsc2U+TUE9PTwvZmFsc2U+CiA8bnVsbD48L251bGw+CiA8bnVtZXJpY19zdHJpbmc+TURBeE1nPT08L251bWVyaWNfc3RyaW5nPgogPHV0Zjg+dzRsMHc2a2c0cGlESU9LQ3JDRG1sNlhtbkt3PTwvdXRmOD4KIDxzcGVjaWFsPlBHRWdhSEpsWmowaWVDSStKbUZ0Y0RzZ0ozRjFiM1JsY3ljOEwyRSs8L3NwZWNpYWw+CiA8bXVsdGlsaW5lPmJHbHVaVEVLYkdsdVpUSU5DZ2wwWVdKaVpXUT08L211bHRpbGluZT4KPC9TUExBU0g+Cg=="
+        },
+        {
+            "name": "message",
+            "key": "ThisIsYourEncryptionKeyForSplash",
+            "id": "ThisIsSplashWsId",
+            "payload": {
+                "server": {
+                    "ServerType": "PHP",
+                    "ProtocolVersion": "1.2",
+                    "ServerHost": "localhost"
+                },
+                "service": "Objects",
+                "debug": 0,
+                "verbose": 1,
+                "tasks": {
+                    "1": {
+                        "id": 1,
+                        "name": "Get",
+                        "desc": "Read Object Data",
+                        "params": {
+                            "type": "ThirdParty",
+                            "id": "12",
+                            "fields": [
+                                "name",
+                                "email",
+                                "phone@lines"
+                            ]
+                        }
+                    }
+                },
+                "taskscount": 1,
+                "log": {
+                    "err": [],
+                    "war": [
+                        "A warning"
+                    ],
+                    "msg": [
+                        "Message 1",
+                        "Message 2"
+                    ],
+                    "deb": []
+                }
+            },
+            "encrypted": "azg3a0c2ZlV6SDZMS0ZFcDRQQmJOYmNBUE9wN3pXT0xGZnhRSDVDU3JJQ2FEekJ2VnZheWJudG9uWkJ5QTUwTVZRNVgzU3hacGpzQThLa2w3emQ5cElHdzVsSjFEa2hTNWpGM20rdndsVG9LbEg5eEtKd3h1eW05L2VGMGtQbjlrclg0cTVWaVhBNldRdmxNWnZGbmoxN1R2RDZ5aUdGNGZOazE0VGkralV4cGgyM3UzcEpZZ1lCSXVMVTI3UGQ5dTBrazlYZkFRWEZLQ1ZjZnNuUmxMclhBbzcvVnk0U0s1NUNZZjFNYW1XL0JxMlR1MmJ5ZFdJSTJTekpQSU9zb3kwTjdwRFhCSnFldDMySXFZUVFQalkvWVo0SklHUjVsV21kZzhDUkswK0NrSHNqRDJCNXYzOXhiZnFOWGFSTm5wdVlsUTNIUnZFMm1aVk8yOWV2Y09Sa1Vxek1rSUZ4YnFDMHg5TW1VWGdnc3JEZ2phZitMNlVCbUp1Z011MFBEZGdyanZ2NGhPVDVSWm1pT3M0TEl1QnJLaDhTM0o3MVcxcklHVzNqZmQ0K3h0Wk0va3R0L0lDMDVxZ2tMWi9kN3B0ZXdEdWZRTWFxRkh5dDVYRWhiSHVMRUU2NElEaUFvTURhSUNUNVZYZDgvZTRraHRWTGNrc1hDOXZxRk1wekN4YU85K3Y0QXh5Z1lsVEFHMUZZSURmMi93RDhPU2g1V1hQamJ4VXhWZUhXYm10OXlmcGdlMWZRampFSHZsZ1V4Y3FVcitaNWhzYkZ3V1M5WUJMU1lnRC9oL2N1UGhXWUZ2cENXRDQ2ak5MMU1IbXROUzVZRml1VWZQSzZXa2ZJOWxYaFU2WERTWGUzbmI1UERrTTVMLzU2WlQxc3FsWXBoVFMwTUdSOURVSmpYZEdNNDdyQTlsdWhBQkpCZUtTYmdaWGFhdTJVeGhJV1IvNUF4cGticGtybTVxUnRoMVBxQmZ5NlhTQ3FWNGhKTVc5eW1Tb3pvazhUUms5TUVPaWJoQUZzWVEyOXpIclNaVFg2ajdFS1FnV09LNlB4ZWo4SVMwZE9sSHlWOE5Ka1J1ZTl4aElFT2Z1WlJCcFhNTUtPMWNpczZaT1pmeU1hVGduUnBRd0tNS3dmS04ya2xkaDk1Y2psblJOMmMwWkQ3dEhNcFFoZTdsbHZ4U2VGWTVVYndnMkExM1lrTitRVEtqV0xreEQ3SE5QZDZDbW9VdXdUSi93aDluQ1FDcGJWQ2hLUTMwck1GdG9SR3JRd2RRRVFtM1BQU3B1Zjk0UEdxWk5vN1hCQkUxNlREM1YxOHh0OGJRaE50VUZvVWNERUx5M2ZEWHJ6U2xwS3hQOVh5bVBRbWoyNDJQRnRkeHpGcmtCVzVXeVFjSGc9PQ==",
+            "unsecured": "PFNQTEFTSD4KIDxzZXJ2ZXI+CiAgPFNlcnZlclR5cGU+VUVoUTwvU2VydmVyVHlwZT4KICA8UHJvdG9jb2xWZXJzaW9uPk1TNHk8L1Byb3RvY29sVmVyc2lvbj4KICA8U2VydmVySG9zdD5iRzlqWVd4b2IzTjA8L1NlcnZlckhvc3Q+CiA8L3NlcnZlcj4KIDxzZXJ2aWNlPlQySnFaV04wY3c9PTwvc2VydmljZT4KIDxkZWJ1Zz5NQT09PC9kZWJ1Zz4KIDx2ZXJib3NlPk1RPT08L3ZlcmJvc2U+CiA8dGFza3M+CiAgPGFycmF5LTE+CiAgIDxpZD5NUT09PC9pZD4KICAgPG5hbWU+UjJWMDwvbmFtZT4KICAgPGRlc2M+VW1WaFpDQlBZbXBsWTNRZ1JHRjBZUT09PC9kZXNjPgogICA8cGFyYW1zPgogICAgPHR5cGU+VkdocGNtUlFZWEowZVE9PTwvdHlwZT4KICAgIDxpZD5NVEk9PC9pZD4KICAgIDxmaWVsZHM+CiAgICAgPHN0cmluZy0wPmJtRnRaUT09PC9zdHJpbmctMD4KICAgICA8c3RyaW5nLTE+WlcxaGFXdz08L3N0cmluZy0xPgogICAgIDxzdHJpbmctMj5jR2h2Ym1WQWJHbHVaWE09PC9zdHJpbmctMj4KICAgIDwvZmllbGRzPgogICA8L3BhcmFtcz4KICA8L2FycmF5LTE+CiA8L3Rhc2tzPgogPHRhc2tzY291bnQ+TVE9PTwvdGFza3Njb3VudD4KIDxsb2c+CiAgPGVyci8+CiAgPHdhcj4KICAgPHN0cmluZy0wPlFTQjNZWEp1YVc1bjwvc3RyaW5nLTA+CiAgPC93YXI+CiAgPG1zZz4KICAgPHN0cmluZy0wPlRXVnpjMkZuWlNBeDwvc3RyaW5nLTA+CiAgIDxzdHJpbmctMT5UV1Z6YzJGblpTQXk8L3N0cmluZy0xPgogIDwvbXNnPgogIDxkZWIvPgogPC9sb2c+CjwvU1BMQVNIPgo="
+        }
+    ]
+}
