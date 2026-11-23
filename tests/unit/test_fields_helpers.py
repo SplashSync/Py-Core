@@ -35,6 +35,7 @@ from splashpy.fields import (
     ObjectField,
     ObjectIds,
     Prices,
+    Validators,
 )
 from splashpy.objects import FieldsGroup, Phase, PipelineError, fields_group
 from splashpy.objects.pipeline import resolve
@@ -83,6 +84,36 @@ def test_dates() -> None:
     assert Dates.parse_datetime("2026-01-02") == datetime(2026, 1, 2)
     assert Dates.parse_datetime("bad") is None
     assert Dates.parse_datetime(None) is None
+
+
+VALIDATIONS: list[tuple[str, list[Any], list[Any]]] = [
+    (
+        "is_email",
+        ["john@example.com", "a.b+c@sub.domain.fr"],
+        ["", None, 12, "john", "john@local", "a@b@c.fr", "j d@x.fr"],
+    ),
+    (
+        "is_url",
+        ["https://www.splashsync.com", "http://localhost:8000/x?y=1"],
+        ["", "www.x.com", "ftp://x.com", "http://", "http://a b.fr", "http://[::1"],
+    ),
+    ("is_phone", ["+33 (0)1.23-45-67-89", "0123456789"], ["", "+-. ()", "01 23 ab", 123]),
+    ("is_country", ["FR", "US"], ["", "fr", "FRA", "F"]),
+    ("is_state", ["CA", "75", "US-CA", "FR-75C"], ["", "ca", "USA-CA", "CALI"]),
+    ("is_lang", ["fr_FR", "en_US"], ["", "fr", "FR_fr", "fr-FR"]),
+    ("is_currency", ["EUR", "USD"], ["", "eur", "EURO", "€"]),
+    ("is_date", ["2026-01-02"], ["", "2026-13-02", "2026-01-02 10:00:00", "02/01/2026", None]),
+    ("is_datetime", ["2026-01-02 03:04:05"], ["", "2026-01-02", "2026-01-02 25:04:05", None]),
+]
+"""Validators: valid and invalid values per method."""
+
+
+@pytest.mark.parametrize(("method", "valid", "invalid"), VALIDATIONS)
+def test_validators(method: str, valid: list[Any], invalid: list[Any]) -> None:
+    """Basic values validators accept valid formats only, never empty values."""
+    check = getattr(Validators, method)
+    assert [value for value in valid if not check(value)] == []
+    assert [value for value in invalid if check(value)] == []
 
 
 def test_prices() -> None:

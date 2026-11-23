@@ -17,9 +17,7 @@ from __future__ import annotations
 
 from splashpy.fields.factory import FieldsFactory
 from splashpy.fields.field import ObjectField
-from splashpy.fields.files import Files, Images
-from splashpy.fields.helpers import Dates, Inline, Lists, ObjectIds
-from splashpy.fields.prices import Prices
+from splashpy.fields.helpers import Dates, Files, Images, Inline, Lists, ObjectIds, Prices, Validators
 from splashpy.fields.types import FieldConstraints, FieldProps, FieldType, SyncMode
 
 __all__ = [
@@ -36,4 +34,5 @@ __all__ = [
     "ObjectIds",
     "Prices",
     "SyncMode",
+    "Validators",
 ]

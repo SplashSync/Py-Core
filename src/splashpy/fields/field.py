@@ -19,7 +19,8 @@ import hashlib
 import re
 from typing import Any, Final
 
-from splashpy.fields.helpers import ID_SPLIT, Inline, Lists
+from splashpy.dictionary import SplFormats
+from splashpy.fields.helpers import Inline, Lists
 from splashpy.fields.types import FieldConstraints, FieldType, SyncMode
 
 _VALID_ID: Final = re.compile(r"^[A-Za-z0-9_@\-]+$")
@@ -37,7 +38,7 @@ def clean(text: str | None) -> str | None:
 
 def to_tag(item_type: str, item_prop: str) -> str:
     """Build the metadata tag of a microdata pair."""
-    return hashlib.md5(f"{item_prop}{ID_SPLIT}{item_type}".encode(), usedforsecurity=False).hexdigest()
+    return hashlib.md5(f"{item_prop}{SplFormats.ID_SPLIT}{item_type}".encode(), usedforsecurity=False).hexdigest()
 
 
 class ObjectField:

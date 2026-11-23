@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 from splashpy.dictionary.definition import SplDefinition
+from splashpy.dictionary.formats import SplFormats
 from splashpy.dictionary.methods import (
     SplAdminMethods,
     SplFilesMethods,
@@ -29,6 +30,7 @@ __all__ = [
     "SplAdminMethods",
     "SplDefinition",
     "SplFilesMethods",
+    "SplFormats",
     "SplObjectMethods",
     "SplOperations",
     "SplServices",

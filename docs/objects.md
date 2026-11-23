@@ -111,8 +111,32 @@ order, then calls `update(req, needed=req.is_to_update())`.
 - Values received from Splash are **strings** (`"1"` / `"0"` for booleans); `""` becomes None.
 - Lists: a group owning `sku@lines` and `qty@lines` receives the whole `lines` list on write
   (a list of dicts) and returns one value per item on read.
-- Helpers: `Lists`, `ObjectIds` (`id::Type`), `Prices`, `Dates`, `Inline`, `Files`, `Images`
-  (image size read from headers).
+- Values stay as received: the connector converts them when it uses them.
+
+### Helpers
+
+All in `splashpy.fields`, one module per helper in `splashpy/fields/helpers/`:
+
+| Helper       | Use                                                                         |
+|--------------|-----------------------------------------------------------------------------|
+| `Prices`     | build, validate, compare prices, read an amount (also from received strings) |
+| `Files`      | build a file value, answer `ReadFile`, decode received contents             |
+| `Images`     | same as `Files`, plus image type and size read from headers                 |
+| `ObjectIds`  | build and split object links `id::Type`                                     |
+| `Lists`      | build and split list field ids `field@list`                                 |
+| `Inline`     | convert inline values from / to Python lists                                |
+| `Dates`      | format and parse Splash dates and datetimes                                 |
+| `Validators` | check basic values: email, url, phone, country, state, lang, currency, dates |
+
+Validators only answer True or False, never convert nor fix a value: the connector decides
+what to do with an invalid one.
+
+```python
+from splashpy.fields import Validators
+
+if not Validators.is_email(value):
+    req.logger.warning(f"Invalid email: {value}")
+```
 
 ## Locks & commits
 

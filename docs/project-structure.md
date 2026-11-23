@@ -44,7 +44,7 @@ splashpy/
 ├── client.py      SplashClient: serves Splash, calls Splash
 ├── adapters/      HTTP gateways (WSGI)
 ├── cli.py         `splashpy version`, `splashpy serve`
-├── fields/        field types, fluent FieldsFactory, values helpers (lists, ids, prices, files...)
+├── fields/        field types, fluent FieldsFactory, values helpers (one module each) & validators
 ├── objects/       BaseObject, FieldsGroup, pipeline resolver, handler, locks, commits
 ├── widgets/       BaseWidget, per-render output, BlocksFactory
 ├── extensions/    Extension hooks, per-client registry (explicit + allowlisted entry points)
