@@ -1,0 +1,1904 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Splash Python Faker 3.0.0.dev0",
+        "description": "Demo connector of splashpy, for development and tests only.",
+        "version": "3.0.0.dev0",
+        "x-splash-server": {
+            "shortdesc": "Splash Python Faker 3.0.0.dev0",
+            "longdesc": "Demo connector of splashpy, for development and tests only.",
+            "logourl": "",
+            "scopes": "",
+            "servertype": "Splash Python Faker",
+            "serverurl": "https://www.splashsync.com",
+            "moduleauthor": "Splash Official <www.splashsync.com>",
+            "moduleversion": "3.0.0.dev0"
+        }
+    },
+    "tags": [
+        {
+            "name": "Short",
+            "description": "- **Type:** `short`\n- **Icon:** `fa fa-minus`\n\nFaker object with two fields, to check the synchronization works\n\n### Configuration\n\n| Action | Allowed | Push | Pull |\n|--------|:-------:|:----:|:----:|\n| Create | \u2705 | \u2705 | \u2705 |\n| Update | \u2705 | \u2705 | \u2705 |\n| Delete | \u2705 | \u2705 | \u2705 |\n\n<SchemaDefinition schemaRef=\"#/components/schemas/short\" />"
+        },
+        {
+            "name": "Simple",
+            "description": "- **Type:** `simple`\n- **Icon:** `fa fa-cube`\n\nFaker object with every field type but images & files\n\n### Configuration\n\n| Action | Allowed | Push | Pull |\n|--------|:-------:|:----:|:----:|\n| Create | \u2705 | \u2705 | \u2705 |\n| Update | \u2705 | \u2705 | \u2705 |\n| Delete | \u2705 | \u2705 | \u2705 |\n\n<SchemaDefinition schemaRef=\"#/components/schemas/simple\" />"
+        },
+        {
+            "name": "List",
+            "description": "- **Type:** `list`\n- **Icon:** `fa fa-list`\n\nFaker object with a list of basic field types\n\n### Configuration\n\n| Action | Allowed | Push | Pull |\n|--------|:-------:|:----:|:----:|\n| Create | \u2705 | \u2705 | \u2705 |\n| Update | \u2705 | \u2705 | \u2705 |\n| Delete | \u2705 | \u2705 | \u2705 |\n\n<SchemaDefinition schemaRef=\"#/components/schemas/list\" />"
+        },
+        {
+            "name": "Primary",
+            "description": "- **Type:** `primary`\n- **Icon:** `fa fa-key`\n\nFaker object identified by a primary key\n\n### Configuration\n\n| Action | Allowed | Push | Pull |\n|--------|:-------:|:----:|:----:|\n| Create | \u2705 | \u2705 | \u2705 |\n| Update | \u2705 | \u2705 | \u2705 |\n| Delete | \u2705 | \u2705 | \u2705 |\n\n<SchemaDefinition schemaRef=\"#/components/schemas/primary\" />"
+        },
+        {
+            "name": "Image",
+            "description": "- **Type:** `image`\n- **Icon:** `fa fa-image`\n\nFaker object with images\n\n### Configuration\n\n| Action | Allowed | Push | Pull |\n|--------|:-------:|:----:|:----:|\n| Create | \u2705 | \u2705 | \u2705 |\n| Update | \u2705 | \u2705 | \u2705 |\n| Delete | \u2705 | \u2705 | \u2705 |\n\n<SchemaDefinition schemaRef=\"#/components/schemas/image\" />"
+        },
+        {
+            "name": "File",
+            "description": "- **Type:** `file`\n- **Icon:** `fa fa-file`\n\nFaker object with a file\n\n### Configuration\n\n| Action | Allowed | Push | Pull |\n|--------|:-------:|:----:|:----:|\n| Create | \u2705 | \u2705 | \u2705 |\n| Update | \u2705 | \u2705 | \u2705 |\n| Delete | \u2705 | \u2705 | \u2705 |\n\n<SchemaDefinition schemaRef=\"#/components/schemas/file\" />"
+        }
+    ],
+    "paths": {
+        "/short/list": {
+            "post": {
+                "tags": [
+                    "Short"
+                ],
+                "summary": "List Short",
+                "operationId": "listshort",
+                "description": "Read objects list \u2014 rows only carry fields flagged `In List`.\n\nThe server appends a `meta` entry to the result: `{ total, current }` counters.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "filters": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Text filter applied on searchable fields"
+                                    },
+                                    "params": {
+                                        "type": "object",
+                                        "properties": {
+                                            "max": {
+                                                "type": "integer",
+                                                "description": "Maximum number of results"
+                                            },
+                                            "offset": {
+                                                "type": "integer",
+                                                "description": "List start offset"
+                                            },
+                                            "sortfield": {
+                                                "type": "string",
+                                                "description": "Field id used to sort the list"
+                                            },
+                                            "sortorder": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ASC",
+                                                    "DESC"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/shortListItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/short/get": {
+            "post": {
+                "tags": [
+                    "Short"
+                ],
+                "summary": "Read Short",
+                "operationId": "getshort",
+                "description": "Read object data \u2014 only requested fields are returned.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Ids of the fields to read"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/short"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/short/set": {
+            "post": {
+                "tags": [
+                    "Short"
+                ],
+                "summary": "Write Short",
+                "operationId": "setshort",
+                "description": "Create or update object data \u2014 read-only fields are not writable and hidden from this request.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "fields"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Object identifier \u2014 `null` to create a new object"
+                                    },
+                                    "fields": {
+                                        "$ref": "#/components/schemas/short"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Identifier of the created or updated object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Write failure \u2014 the server answers `null`. Check `Splash::log()` messages for error details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "nullable": true,
+                                    "description": "Always `null` on write failure"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/short/delete": {
+            "post": {
+                "tags": [
+                    "Short"
+                ],
+                "summary": "Delete Short",
+                "operationId": "deleteshort",
+                "description": "Delete an object.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean",
+                                    "description": "True when the object was deleted"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/simple/list": {
+            "post": {
+                "tags": [
+                    "Simple"
+                ],
+                "summary": "List Simple",
+                "operationId": "listsimple",
+                "description": "Read objects list \u2014 rows only carry fields flagged `In List`.\n\nThe server appends a `meta` entry to the result: `{ total, current }` counters.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "filters": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Text filter applied on searchable fields"
+                                    },
+                                    "params": {
+                                        "type": "object",
+                                        "properties": {
+                                            "max": {
+                                                "type": "integer",
+                                                "description": "Maximum number of results"
+                                            },
+                                            "offset": {
+                                                "type": "integer",
+                                                "description": "List start offset"
+                                            },
+                                            "sortfield": {
+                                                "type": "string",
+                                                "description": "Field id used to sort the list"
+                                            },
+                                            "sortorder": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ASC",
+                                                    "DESC"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/simpleListItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/simple/get": {
+            "post": {
+                "tags": [
+                    "Simple"
+                ],
+                "summary": "Read Simple",
+                "operationId": "getsimple",
+                "description": "Read object data \u2014 only requested fields are returned.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Ids of the fields to read"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/simple"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/simple/set": {
+            "post": {
+                "tags": [
+                    "Simple"
+                ],
+                "summary": "Write Simple",
+                "operationId": "setsimple",
+                "description": "Create or update object data \u2014 read-only fields are not writable and hidden from this request.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "fields"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Object identifier \u2014 `null` to create a new object"
+                                    },
+                                    "fields": {
+                                        "$ref": "#/components/schemas/simple"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Identifier of the created or updated object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Write failure \u2014 the server answers `null`. Check `Splash::log()` messages for error details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "nullable": true,
+                                    "description": "Always `null` on write failure"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/simple/delete": {
+            "post": {
+                "tags": [
+                    "Simple"
+                ],
+                "summary": "Delete Simple",
+                "operationId": "deletesimple",
+                "description": "Delete an object.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean",
+                                    "description": "True when the object was deleted"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/list/list": {
+            "post": {
+                "tags": [
+                    "List"
+                ],
+                "summary": "List List",
+                "operationId": "listlist",
+                "description": "Read objects list \u2014 rows only carry fields flagged `In List`.\n\nThe server appends a `meta` entry to the result: `{ total, current }` counters.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "filters": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Text filter applied on searchable fields"
+                                    },
+                                    "params": {
+                                        "type": "object",
+                                        "properties": {
+                                            "max": {
+                                                "type": "integer",
+                                                "description": "Maximum number of results"
+                                            },
+                                            "offset": {
+                                                "type": "integer",
+                                                "description": "List start offset"
+                                            },
+                                            "sortfield": {
+                                                "type": "string",
+                                                "description": "Field id used to sort the list"
+                                            },
+                                            "sortorder": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ASC",
+                                                    "DESC"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/listListItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/list/get": {
+            "post": {
+                "tags": [
+                    "List"
+                ],
+                "summary": "Read List",
+                "operationId": "getlist",
+                "description": "Read object data \u2014 only requested fields are returned.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Ids of the fields to read"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/list"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/list/set": {
+            "post": {
+                "tags": [
+                    "List"
+                ],
+                "summary": "Write List",
+                "operationId": "setlist",
+                "description": "Create or update object data \u2014 read-only fields are not writable and hidden from this request.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "fields"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Object identifier \u2014 `null` to create a new object"
+                                    },
+                                    "fields": {
+                                        "$ref": "#/components/schemas/list"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Identifier of the created or updated object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Write failure \u2014 the server answers `null`. Check `Splash::log()` messages for error details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "nullable": true,
+                                    "description": "Always `null` on write failure"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/list/delete": {
+            "post": {
+                "tags": [
+                    "List"
+                ],
+                "summary": "Delete List",
+                "operationId": "deletelist",
+                "description": "Delete an object.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean",
+                                    "description": "True when the object was deleted"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/primary/list": {
+            "post": {
+                "tags": [
+                    "Primary"
+                ],
+                "summary": "List Primary",
+                "operationId": "listprimary",
+                "description": "Read objects list \u2014 rows only carry fields flagged `In List`.\n\nThe server appends a `meta` entry to the result: `{ total, current }` counters.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "filters": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Text filter applied on searchable fields"
+                                    },
+                                    "params": {
+                                        "type": "object",
+                                        "properties": {
+                                            "max": {
+                                                "type": "integer",
+                                                "description": "Maximum number of results"
+                                            },
+                                            "offset": {
+                                                "type": "integer",
+                                                "description": "List start offset"
+                                            },
+                                            "sortfield": {
+                                                "type": "string",
+                                                "description": "Field id used to sort the list"
+                                            },
+                                            "sortorder": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ASC",
+                                                    "DESC"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/primaryListItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/primary/get": {
+            "post": {
+                "tags": [
+                    "Primary"
+                ],
+                "summary": "Read Primary",
+                "operationId": "getprimary",
+                "description": "Read object data \u2014 only requested fields are returned.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Ids of the fields to read"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/primary"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/primary/set": {
+            "post": {
+                "tags": [
+                    "Primary"
+                ],
+                "summary": "Write Primary",
+                "operationId": "setprimary",
+                "description": "Create or update object data \u2014 read-only fields are not writable and hidden from this request.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "fields"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Object identifier \u2014 `null` to create a new object"
+                                    },
+                                    "fields": {
+                                        "$ref": "#/components/schemas/primary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Identifier of the created or updated object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Write failure \u2014 the server answers `null`. Check `Splash::log()` messages for error details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "nullable": true,
+                                    "description": "Always `null` on write failure"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/primary/delete": {
+            "post": {
+                "tags": [
+                    "Primary"
+                ],
+                "summary": "Delete Primary",
+                "operationId": "deleteprimary",
+                "description": "Delete an object.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean",
+                                    "description": "True when the object was deleted"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/image/list": {
+            "post": {
+                "tags": [
+                    "Image"
+                ],
+                "summary": "List Image",
+                "operationId": "listimage",
+                "description": "Read objects list \u2014 rows only carry fields flagged `In List`.\n\nThe server appends a `meta` entry to the result: `{ total, current }` counters.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "filters": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Text filter applied on searchable fields"
+                                    },
+                                    "params": {
+                                        "type": "object",
+                                        "properties": {
+                                            "max": {
+                                                "type": "integer",
+                                                "description": "Maximum number of results"
+                                            },
+                                            "offset": {
+                                                "type": "integer",
+                                                "description": "List start offset"
+                                            },
+                                            "sortfield": {
+                                                "type": "string",
+                                                "description": "Field id used to sort the list"
+                                            },
+                                            "sortorder": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ASC",
+                                                    "DESC"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/imageListItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/image/get": {
+            "post": {
+                "tags": [
+                    "Image"
+                ],
+                "summary": "Read Image",
+                "operationId": "getimage",
+                "description": "Read object data \u2014 only requested fields are returned.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Ids of the fields to read"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/image"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/image/set": {
+            "post": {
+                "tags": [
+                    "Image"
+                ],
+                "summary": "Write Image",
+                "operationId": "setimage",
+                "description": "Create or update object data \u2014 read-only fields are not writable and hidden from this request.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "fields"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Object identifier \u2014 `null` to create a new object"
+                                    },
+                                    "fields": {
+                                        "$ref": "#/components/schemas/image"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Identifier of the created or updated object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Write failure \u2014 the server answers `null`. Check `Splash::log()` messages for error details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "nullable": true,
+                                    "description": "Always `null` on write failure"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/image/delete": {
+            "post": {
+                "tags": [
+                    "Image"
+                ],
+                "summary": "Delete Image",
+                "operationId": "deleteimage",
+                "description": "Delete an object.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean",
+                                    "description": "True when the object was deleted"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/file/list": {
+            "post": {
+                "tags": [
+                    "File"
+                ],
+                "summary": "List File",
+                "operationId": "listfile",
+                "description": "Read objects list \u2014 rows only carry fields flagged `In List`.\n\nThe server appends a `meta` entry to the result: `{ total, current }` counters.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "filters": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Text filter applied on searchable fields"
+                                    },
+                                    "params": {
+                                        "type": "object",
+                                        "properties": {
+                                            "max": {
+                                                "type": "integer",
+                                                "description": "Maximum number of results"
+                                            },
+                                            "offset": {
+                                                "type": "integer",
+                                                "description": "List start offset"
+                                            },
+                                            "sortfield": {
+                                                "type": "string",
+                                                "description": "Field id used to sort the list"
+                                            },
+                                            "sortorder": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ASC",
+                                                    "DESC"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/fileListItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/file/get": {
+            "post": {
+                "tags": [
+                    "File"
+                ],
+                "summary": "Read File",
+                "operationId": "getfile",
+                "description": "Read object data \u2014 only requested fields are returned.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Ids of the fields to read"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/file"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/file/set": {
+            "post": {
+                "tags": [
+                    "File"
+                ],
+                "summary": "Write File",
+                "operationId": "setfile",
+                "description": "Create or update object data \u2014 read-only fields are not writable and hidden from this request.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "fields"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Object identifier \u2014 `null` to create a new object"
+                                    },
+                                    "fields": {
+                                        "$ref": "#/components/schemas/file"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Identifier of the created or updated object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Write failure \u2014 the server answers `null`. Check `Splash::log()` messages for error details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "nullable": true,
+                                    "description": "Always `null` on write failure"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/file/delete": {
+            "post": {
+                "tags": [
+                    "File"
+                ],
+                "summary": "Delete File",
+                "operationId": "deletefile",
+                "description": "Delete an object.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean",
+                                    "description": "True when the object was deleted"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "SplashPrice": {
+                "type": "object",
+                "title": "Splash Price",
+                "description": "Price structure with tax details and currency",
+                "properties": {
+                    "ht": {
+                        "type": "number",
+                        "description": "Tax excluded amount"
+                    },
+                    "ttc": {
+                        "type": "number",
+                        "description": "Tax included amount"
+                    },
+                    "tax": {
+                        "type": "number",
+                        "description": "Tax amount"
+                    },
+                    "vat": {
+                        "type": "number",
+                        "description": "VAT rate (percent)"
+                    },
+                    "base": {
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "description": "Price base: 0 = tax excluded, 1 = tax included"
+                    },
+                    "code": {
+                        "type": "string",
+                        "description": "Currency ISO code"
+                    },
+                    "symbol": {
+                        "type": "string",
+                        "description": "Currency symbol"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Currency name"
+                    }
+                }
+            },
+            "SplashFile": {
+                "type": "object",
+                "title": "Splash File",
+                "description": "File structure with checksum for synchronization",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Human readable file name"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "File name with extension"
+                    },
+                    "path": {
+                        "type": "string",
+                        "description": "File path or identifier on server"
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Public url, if available"
+                    },
+                    "md5": {
+                        "type": "string",
+                        "description": "File contents checksum"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "description": "File size in bytes"
+                    }
+                }
+            },
+            "SplashImage": {
+                "title": "Splash Image",
+                "description": "Image structure: a Splash File with dimensions",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/SplashFile"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "width": {
+                                "type": "integer",
+                                "description": "Image width in pixels"
+                            },
+                            "height": {
+                                "type": "integer",
+                                "description": "Image height in pixels"
+                            }
+                        }
+                    }
+                ]
+            },
+            "short": {
+                "type": "object",
+                "title": "Short",
+                "description": "Faker object with two fields, to check the synchronization works",
+                "x-splash-type": "short",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "Name\n\n- **Microdata:** `http://schema.org/Thing` \u2192 `name`\n- `\ud83d\udccb In List`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Thing",
+                        "x-schema-org-itemprop": "name"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "title": "Active",
+                        "description": "Active",
+                        "x-splash-type": "bool",
+                        "format": "bool"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "shortListItem": {
+                "type": "object",
+                "title": "Short (List Item)",
+                "description": "Fields returned by objects list requests \u2014 fields flagged `In List` only.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    }
+                }
+            },
+            "simple": {
+                "type": "object",
+                "title": "Simple",
+                "description": "Faker object with every field type but images & files",
+                "x-splash-type": "simple",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "Name\n\n- **Microdata:** `http://schema.org/Thing` \u2192 `name`\n- `\ud83d\udccb In List`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Thing",
+                        "x-schema-org-itemprop": "name"
+                    },
+                    "text": {
+                        "type": "string",
+                        "title": "Text",
+                        "description": "Text",
+                        "x-splash-type": "text",
+                        "format": "text"
+                    },
+                    "bool": {
+                        "type": "boolean",
+                        "title": "Bool",
+                        "description": "Bool",
+                        "x-splash-type": "bool",
+                        "format": "bool"
+                    },
+                    "int": {
+                        "type": "integer",
+                        "title": "Int",
+                        "description": "Int",
+                        "x-splash-type": "int",
+                        "format": "int"
+                    },
+                    "double": {
+                        "type": "number",
+                        "title": "Double",
+                        "description": "Double",
+                        "x-splash-type": "double",
+                        "format": "double"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Date",
+                        "description": "Date",
+                        "x-splash-type": "date",
+                        "example": "2026-11-23"
+                    },
+                    "datetime": {
+                        "type": "string",
+                        "format": "datetime",
+                        "title": "Datetime",
+                        "description": "Datetime",
+                        "x-splash-type": "datetime",
+                        "example": "2026-11-23 13:25:58"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email",
+                        "description": "Email",
+                        "x-splash-type": "email"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "phone",
+                        "title": "Phone",
+                        "description": "Phone",
+                        "x-splash-type": "phone",
+                        "example": "+33612345678"
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "url",
+                        "title": "Url",
+                        "description": "Url",
+                        "x-splash-type": "url"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status",
+                        "description": "Status",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "enum": [
+                            "draft",
+                            "validated",
+                            "done"
+                        ]
+                    },
+                    "notes": {
+                        "type": "string",
+                        "title": "Notes (read only)",
+                        "description": "Notes (read only)",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "readOnly": true
+                    },
+                    "secret": {
+                        "type": "string",
+                        "title": "Secret (write only)",
+                        "description": "Secret (write only)",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "writeOnly": true
+                    },
+                    "lang": {
+                        "type": "string",
+                        "format": "lang",
+                        "title": "Lang",
+                        "description": "Lang",
+                        "x-splash-type": "lang"
+                    },
+                    "country": {
+                        "type": "string",
+                        "format": "country",
+                        "title": "Country",
+                        "description": "Country",
+                        "x-splash-type": "country"
+                    },
+                    "state": {
+                        "type": "string",
+                        "format": "state",
+                        "title": "State",
+                        "description": "State",
+                        "x-splash-type": "state"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "format": "currency",
+                        "title": "Currency",
+                        "description": "Currency",
+                        "x-splash-type": "currency"
+                    },
+                    "price": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/SplashPrice"
+                            }
+                        ],
+                        "title": "Price",
+                        "description": "Price",
+                        "x-splash-type": "price",
+                        "format": "price",
+                        "example": {
+                            "base": 0,
+                            "ht": 196.56,
+                            "vat": 20,
+                            "tax": 39.31,
+                            "ttc": 235.87,
+                            "code": "EUR",
+                            "symbol": "\u20ac",
+                            "name": "Euro"
+                        }
+                    },
+                    "tags": {
+                        "type": "string",
+                        "title": "Tags",
+                        "description": "Tags",
+                        "x-splash-type": "inline",
+                        "format": "inline"
+                    },
+                    "colors": {
+                        "type": "string",
+                        "title": "Colors",
+                        "description": "Colors",
+                        "x-splash-type": "inline",
+                        "format": "inline",
+                        "enum": [
+                            "red",
+                            "green",
+                            "blue"
+                        ]
+                    },
+                    "short": {
+                        "type": "string",
+                        "format": "objectid::short",
+                        "title": "Short",
+                        "description": "Short",
+                        "x-splash-type": "objectid::short",
+                        "example": "902::short"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title (en_US)",
+                        "description": "Title (en_US)\n\n- **Microdata:** `http://schema.org/Product` \u2192 `alternateName`\n- **Options:**\n    - **language** => en_US",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Product",
+                        "x-schema-org-itemprop": "alternateName"
+                    },
+                    "title_fr_FR": {
+                        "type": "string",
+                        "title": "Title (fr_FR)",
+                        "description": "Title (fr_FR)\n\n- **Microdata:** `http://schema.org/Product/fr_FR` \u2192 `alternateName`\n- **Options:**\n    - **language** => fr_FR",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Product/fr_FR",
+                        "x-schema-org-itemprop": "alternateName"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "simpleListItem": {
+                "type": "object",
+                "title": "Simple (List Item)",
+                "description": "Fields returned by objects list requests \u2014 fields flagged `In List` only.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    }
+                }
+            },
+            "list": {
+                "type": "object",
+                "title": "List",
+                "description": "Faker object with a list of basic field types",
+                "x-splash-type": "list",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "Name\n\n- **Microdata:** `http://schema.org/Thing` \u2192 `name`\n- `\ud83d\udccb In List`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Thing",
+                        "x-schema-org-itemprop": "name"
+                    },
+                    "items": {
+                        "type": "array",
+                        "title": "Items",
+                        "x-splash-list": "items",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "title": "Item Enabled",
+                                    "description": "Item Enabled",
+                                    "x-splash-type": "bool@list",
+                                    "format": "bool@list"
+                                },
+                                "label": {
+                                    "type": "string",
+                                    "title": "Item Label",
+                                    "description": "Item Label",
+                                    "x-splash-type": "varchar@list",
+                                    "format": "varchar@list"
+                                },
+                                "qty": {
+                                    "type": "number",
+                                    "title": "Item Quantity",
+                                    "description": "Item Quantity",
+                                    "x-splash-type": "double@list",
+                                    "format": "double@list"
+                                },
+                                "price": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/SplashPrice"
+                                        }
+                                    ],
+                                    "title": "Item Price",
+                                    "description": "Item Price",
+                                    "x-splash-type": "price@list",
+                                    "format": "price@list",
+                                    "example": {
+                                        "base": 0,
+                                        "ht": 53.39,
+                                        "vat": 20,
+                                        "tax": 10.68,
+                                        "ttc": 64.07,
+                                        "code": "EUR",
+                                        "symbol": "\u20ac",
+                                        "name": "Euro"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "listListItem": {
+                "type": "object",
+                "title": "List (List Item)",
+                "description": "Fields returned by objects list requests \u2014 fields flagged `In List` only.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    }
+                }
+            },
+            "primary": {
+                "type": "object",
+                "title": "Primary",
+                "description": "Faker object identified by a primary key",
+                "x-splash-type": "primary",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "title": "Code",
+                        "description": "Code\n\n- **Microdata:** `http://schema.org/Thing` \u2192 `identifier`\n- `\ud83d\udd11 Primary` `\ud83d\udccb In List`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Thing",
+                        "x-schema-org-itemprop": "identifier"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "title": "Active",
+                        "description": "Active",
+                        "x-splash-type": "bool",
+                        "format": "bool"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "Name\n\n- **Microdata:** `http://schema.org/Thing` \u2192 `name`\n- `\ud83d\udccb In List`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Thing",
+                        "x-schema-org-itemprop": "name"
+                    }
+                },
+                "required": [
+                    "code",
+                    "name"
+                ]
+            },
+            "primaryListItem": {
+                "type": "object",
+                "title": "Primary (List Item)",
+                "description": "Fields returned by objects list requests \u2014 fields flagged `In List` only.",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "title": "Code"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    }
+                }
+            },
+            "image": {
+                "type": "object",
+                "title": "Image",
+                "description": "Faker object with images",
+                "x-splash-type": "image",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "Name\n\n- **Microdata:** `http://schema.org/Thing` \u2192 `name`\n- `\ud83d\udccb In List`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Thing",
+                        "x-schema-org-itemprop": "name"
+                    },
+                    "picture": {
+                        "type": "string",
+                        "title": "Picture",
+                        "description": "Picture",
+                        "x-splash-type": "image",
+                        "format": "image"
+                    },
+                    "thumbnail": {
+                        "type": "string",
+                        "title": "Thumbnail",
+                        "description": "Thumbnail",
+                        "x-splash-type": "image",
+                        "format": "image"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "imageListItem": {
+                "type": "object",
+                "title": "Image (List Item)",
+                "description": "Fields returned by objects list requests \u2014 fields flagged `In List` only.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    }
+                }
+            },
+            "file": {
+                "type": "object",
+                "title": "File",
+                "description": "Faker object with a file",
+                "x-splash-type": "file",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "Name\n\n- **Microdata:** `http://schema.org/Thing` \u2192 `name`\n- `\ud83d\udccb In List`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Thing",
+                        "x-schema-org-itemprop": "name"
+                    },
+                    "document": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/SplashFile"
+                            }
+                        ],
+                        "title": "Document",
+                        "description": "Document",
+                        "x-splash-type": "file",
+                        "format": "file"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "fileListItem": {
+                "type": "object",
+                "title": "File (List Item)",
+                "description": "Fields returned by objects list requests \u2014 fields flagged `In List` only.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    }
+                }
+            }
+        }
+    }
+}
