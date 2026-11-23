@@ -331,6 +331,152 @@ foreach ($fieldsRecipes as $name => $recipe) {
 writeFixture($target, "fields", array("cases" => $fields));
 
 //====================================================================//
+// Widgets Fixtures
+//====================================================================//
+
+/**
+ * Widget built from a recipe: identity, parameters and blocks factory calls.
+ */
+class GoldenWidget extends \Splash\Core\Models\AbstractWidget
+{
+    /**
+     * Current widget recipe.
+     */
+    public static array $recipe = array();
+
+    /**
+     * Apply a recipe to widget static identity.
+     */
+    public static function configure(array $recipe): void
+    {
+        self::$recipe = $recipe;
+        static::$name = $recipe["name"];
+        static::$description = $recipe["description"];
+        static::$ico = $recipe["icon"];
+        static::$disabled = $recipe["disabled"];
+        static::$options = $recipe["options"];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getType(): string
+    {
+        return "GoldenWidget";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParameters(): array
+    {
+        if (empty(self::$recipe["parameters"])) {
+            return array();
+        }
+        foreach (self::$recipe["parameters"] as $call) {
+            $method = array_shift($call);
+            $this->fieldsFactory()->{$method}(...$call);
+        }
+
+        return $this->fieldsFactory()->publish();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function get(array $parameters = array()): ?array
+    {
+        $this->setTitle(static::$name);
+        $this->setIcon(static::$ico);
+        foreach (self::$recipe["blocks"] as $call) {
+            $method = array_shift($call);
+            self::blocksFactory()->{$method}(...$call);
+        }
+        $this->setBlocks(self::blocksFactory()->render() ?? array());
+
+        return $this->render();
+    }
+}
+
+$chartOptions = array("title" => "Sales", "xkey" => "day", "ykeys" => array("total"), "labels" => array("Total"));
+$dataset = array(array("day" => "Mon", "total" => 12), array("day" => "Tue", "total" => 7.5));
+$widgetsRecipes = array(
+    "text" => array(
+        array("addTextBlock", "Hello <b>World</b>"),
+    ),
+    "text_options" => array(
+        array("addTextBlock", "Half", array("Width" => "col-xs-6", "AllowHtml" => true)),
+    ),
+    "set_data" => array(
+        array("addTextBlock", "Text"),
+        array("setData", "extra", "value"),
+    ),
+    "notifications" => array(
+        array("addNotificationsBlock", array(
+            "success" => "S", "info" => "I", "warning" => "W", "error" => "E", "other" => "ignored",
+        )),
+        array("addNotificationsBlock", array("info" => "Only info")),
+    ),
+    "table" => array(
+        array("addTableBlock", array(array("Name", "Value"), array("Int", 12), array("Float", 2.5), array("Bool", true))),
+    ),
+    "spark_info" => array(
+        array("addSparkInfoBlock", array(
+            "title" => "Orders", "fa_icon" => "fa-cart", "value" => 42, "chart" => array(1, 2, 3), "extra" => "x",
+        )),
+    ),
+    "morris" => array(
+        array("addMorrisGraphBlock", $dataset, "Bar", $chartOptions),
+        array("addMorrisGraphBlock", $dataset, "Area", array("xkey" => "day")),
+        array("addMorrisGraphBlock", $dataset, "Line", $chartOptions, array("Width" => "col-xs-6", "AllowHtml" => false)),
+    ),
+    "morris_wrong_type" => array(
+        array("addMorrisGraphBlock", $dataset, "Pie", $chartOptions),
+    ),
+    "morris_donut" => array(
+        array("addMorrisDonutBlock", array(array("label" => "A", "value" => 1)), array("title" => "Donut", "xkey" => "x")),
+    ),
+);
+$widgetsIdentities = array(
+    "default" => array(
+        "name" => "Golden", "description" => "Golden Widget", "icon" => "fa fa-info", "disabled" => false,
+        "options" => array("Width" => \Splash\Core\Models\AbstractWidget::SIZE_DEFAULT), "parameters" => array(),
+    ),
+    "custom" => array(
+        "name" => "Sales", "description" => "Last sales", "icon" => "fa fa-chart-line", "disabled" => true,
+        "options" => array("Width" => \Splash\Core\Models\AbstractWidget::SIZE_XL, "Header" => true, "UseCache" => false),
+        "parameters" => array(
+            array("create", "int", "days", "Days"),
+            array("create", "varchar", "mode", "Mode"),
+            array("addChoices", array("day" => "Day", "week" => "Week")),
+        ),
+    ),
+);
+
+$widgets = array("descriptions" => array(), "renders" => array());
+foreach ($widgetsIdentities as $name => $identity) {
+    GoldenWidget::configure($identity + array("blocks" => array()));
+    $description = (new GoldenWidget())->description();
+    $widgets["descriptions"][] = array(
+        "name" => $name,
+        "identity" => $identity,
+        "description" => $description,
+        "xml" => xmlManager()->arrayToXml($description),
+    );
+}
+foreach ($widgetsRecipes as $name => $recipe) {
+    GoldenWidget::configure($widgetsIdentities["default"] + array("blocks" => $recipe));
+    $render = (new GoldenWidget())->get();
+    $widgets["renders"][] = array(
+        "name" => $name,
+        "recipe" => $recipe,
+        "render" => $render,
+        "xml" => xmlManager()->arrayToXml($render),
+    );
+}
+writeFixture($target, "widgets", $widgets);
+
+//====================================================================//
 // SOAP Envelopes Fixtures
 //====================================================================//
 

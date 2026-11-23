@@ -18,9 +18,11 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Any, ClassVar
 
-from splashpy import Extension, RequestContext
+from splashpy import Extension, RequestContext, SplashConfig
+from splashpy.dictionary import SplServices
 from splashpy.fields import FieldsFactory, FieldType, Files, Lists
 from splashpy.objects import BaseObject, CommitEvent, FieldsGroup, ObjectRequest, Phase, fields_group
+from splashpy.protocol import MessageCodec, soap
 from splashpy.widgets import BaseWidget, WidgetRender
 
 JOURNAL: list[str] = []
@@ -233,3 +235,44 @@ class Recorder(Extension):
     def on_commit(self, ctx: RequestContext, event: CommitEvent) -> None:
         """Record."""
         self.commits.append(event)
+
+
+class FakeSplashServer:
+    """Transport answering like the Splash server, recording requests."""
+
+    def __init__(
+        self,
+        config: SplashConfig,
+        result: bool = True,
+        fault: bool = False,
+        empty: bool = False,
+        files: Mapping[str, bytes] | None = None,
+    ) -> None:
+        """Prepare the fake server answers (``files``: contents served by ``ReadFile``, by path)."""
+        self.codec = MessageCodec(config.ws_key, config.ws_id)
+        self.result = result
+        self.fault = fault
+        self.empty = empty
+        self.files = dict(files or {})
+        self.requests: list[dict[str, Any]] = []
+
+    def post(self, url: str, body: bytes, headers: Mapping[str, str], timeout: float) -> bytes:
+        """Decode the request and answer."""
+        call = soap.parse_request(body)
+        secured = call.service != SplServices.PING
+        inputs = self.codec.unpack(call.params[1] or "", secured)
+        self.requests.append({"url": url, "headers": dict(headers), "call": call, "inputs": inputs})
+        if self.fault:
+            return soap.build_fault(soap.FAULT_SERVER, "Server down")
+        if self.empty:
+            return soap.build_response(call.service, None)
+        outputs: dict[str, Any] = {"result": self.result, "log": {"msg": ["Hello from Splash"]}}
+        if call.service == SplServices.FILES:
+            outputs["tasks"] = {key: self._read_file(task) for key, task in inputs["tasks"].items()}
+        return soap.build_response(call.service, self.codec.pack(outputs, secured))
+
+    def _read_file(self, task: Mapping[str, Any]) -> dict[str, Any]:
+        """Answer a ``ReadFile`` task from the served files."""
+        raw = self.files.get(task["params"]["file"])
+        data = Files.read("file.bin", raw) if raw is not None else None
+        return {"id": task["id"], "name": task["name"], "result": data is not None, "data": data}

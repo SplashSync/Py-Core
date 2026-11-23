@@ -17,14 +17,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from splashpy.faker.objects.base import StoredGroup
+from splashpy.faker.objects.files import StoredFileGroup
 from splashpy.fields import FieldsFactory, FieldType
 from splashpy.objects import ObjectRequest, fields_group
 
 
 @fields_group("document", priority=50, after=("core",))
-class FileDocument(StoredGroup):
-    """One file, stored as received."""
+class FileDocument(StoredFileGroup):
+    """One file, downloaded and stored by checksum."""
 
     def build(self, factory: FieldsFactory, req: ObjectRequest) -> None:
         """Declare the file."""
@@ -32,8 +32,8 @@ class FileDocument(StoredGroup):
 
     def get(self, req: ObjectRequest, field_id: str) -> Any:
         """Read the file."""
-        return self.read(req, field_id)
+        return self.read_file(req, field_id)
 
     def set(self, req: ObjectRequest, field_id: str, value: Any) -> bool | None:
         """Write the file."""
-        return self.write(req, field_id, value)
+        return self.write_file(req, field_id, value)

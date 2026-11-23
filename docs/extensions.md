@@ -89,3 +89,21 @@ Php-Core faker types:
 
 Plus two widgets. It is for development and tests only: enable it with
 `splashpy serve --faker` or by name (`faker`), never in production.
+
+### Faker files
+
+Files and images received by the faker are really downloaded, like a real connector would:
+
+1. the received value gives a path and a checksum: the faker asks Splash for the file
+   (`ReadFile`, `client.get_file()` / `ctx.get_file()`) and checks its md5;
+2. the raw file is stored once, by checksum, in the `files` table, with its size, mime type
+   and image dimensions. The same contents received under another name are not stored twice;
+3. objects only keep the name, the filename and the checksum. Read values are rebuilt from
+   the stored file (path, size, dimensions), never from what was received.
+
+Stored files are published:
+
+| To     | How                                                                     |
+|--------|-------------------------------------------------------------------------|
+| Splash | `ReadFile` with path `faker/files/<md5>` and the checksum               |
+| Humans | `GET <server path>/files/<md5>`, the `url` of read values (`splashpy serve --faker`) |

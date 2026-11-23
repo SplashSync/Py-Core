@@ -22,34 +22,8 @@ import pytest
 
 from splashpy import SplashClient, SplashConfig
 from splashpy.dictionary import SplObjectMethods, SplOperations, SplServices
-from splashpy.protocol import MessageCodec, soap
 from splashpy.transport import TransportError
-from tests.support import Memory
-
-
-class FakeSplashServer:
-    """Transport answering like the Splash server, recording requests."""
-
-    def __init__(self, config: SplashConfig, result: bool = True, fault: bool = False, empty: bool = False) -> None:
-        """Prepare the fake server answers."""
-        self.codec = MessageCodec(config.ws_key, config.ws_id)
-        self.result = result
-        self.fault = fault
-        self.empty = empty
-        self.requests: list[dict[str, Any]] = []
-
-    def post(self, url: str, body: bytes, headers: Mapping[str, str], timeout: float) -> bytes:
-        """Decode the request and answer."""
-        call = soap.parse_request(body)
-        secured = call.service != SplServices.PING
-        inputs = self.codec.unpack(call.params[1] or "", secured)
-        self.requests.append({"url": url, "headers": dict(headers), "call": call, "inputs": inputs})
-        if self.fault:
-            return soap.build_fault(soap.FAULT_SERVER, "Server down")
-        if self.empty:
-            return soap.build_response(call.service, None)
-        outputs = {"result": self.result, "log": {"msg": ["Hello from Splash"]}}
-        return soap.build_response(call.service, self.codec.pack(outputs, secured))
+from tests.support import FakeSplashServer, Memory
 
 
 class DownTransport:

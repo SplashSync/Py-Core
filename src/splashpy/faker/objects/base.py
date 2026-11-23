@@ -88,6 +88,10 @@ class FakerObject(BaseObject):
         self.store.delete(self.object_type(), object_id)
         return True
 
+    def read_file(self, ctx: RequestContext, path: str, md5: str) -> dict[str, Any] | None:
+        """Read a stored file (files and images of every faker object)."""
+        return self.store.read_file(path, md5)
+
     def objects_list(self, ctx: RequestContext, filter: str | None, params: Mapping[str, Any]) -> dict[str, Any]:
         """List records, with listed fields."""
         records = self.store.all(self.object_type())

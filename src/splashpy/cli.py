@@ -20,6 +20,7 @@ import importlib
 import logging
 import sys
 from socketserver import ThreadingMixIn
+from typing import TYPE_CHECKING
 from wsgiref.simple_server import WSGIRequestHandler, WSGIServer, make_server
 
 from splashpy.adapters import SplashWsgiApp
@@ -27,8 +28,12 @@ from splashpy.client import SplashClient
 from splashpy.config import ConfigError, EnvConfig, JsonConfig, SplashConfig, resolve
 from splashpy.extensions import Extension
 from splashpy.faker import FAKER_WS_ID, FAKER_WS_KEY, FakerExtension
+from splashpy.faker.http import FakerFilesApp
 from splashpy.objects import PipelineError
 from splashpy.version import __version__
+
+if TYPE_CHECKING:
+    from splashpy.faker.http import WsgiApp
 
 _LOGGER = logging.getLogger("splashpy.cli")
 """Command line logger."""
@@ -82,11 +87,13 @@ def load_config(path: str | None, faker: bool) -> SplashConfig:
 def serve(args: argparse.Namespace) -> int:
     """Run the development server."""
     config = load_config(args.config, args.faker)
-    extensions: list[Extension] = []
-    if args.faker:
+    faker = FakerExtension() if args.faker else None
+    if faker is not None:
         _LOGGER.warning("Faker connector ENABLED: development and tests only, never in production.")
-        extensions.append(FakerExtension())
-    app = SplashWsgiApp(SplashClient(config, extensions=extensions), path=args.path)
+    client = SplashClient(config, extensions=[faker] if faker else [])
+    app: WsgiApp = SplashWsgiApp(client, path=args.path)
+    if faker is not None:
+        app = FakerFilesApp(app, faker.store)
     with make_server(args.host, args.port, app, ThreadingWsgiServer, QuietHandler) as server:
         _LOGGER.info("splashpy %s serving %s on http://%s:%s", __version__, config.ws_id, args.host, args.port)
         try:

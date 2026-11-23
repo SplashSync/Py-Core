@@ -20,8 +20,11 @@ from typing import Any
 
 import pytest
 
+from splashpy import SplashClient, SplashConfig
+from splashpy.core.context import RequestContext
 from splashpy.fields import FieldsFactory
 from splashpy.protocol import LegacyCipher, MessageCodec, SoapFault, XmlCodec, soap
+from splashpy.widgets import BaseWidget, WidgetRender
 from tests.conftest import load_golden
 
 pytestmark = pytest.mark.golden
@@ -120,3 +123,51 @@ def test_fields_definitions_are_identical(case: dict[str, Any]) -> None:
     for method, *args in case["recipe"]:
         getattr(factory, _snake(method))(*args)
     assert _empty_as_list(factory.publish()) == _empty_as_list(case["published"])
+
+
+WIDGETS = load_golden("widgets")
+DESCRIPTIONS = WIDGETS["descriptions"]
+RENDERS = WIDGETS["renders"]
+
+
+def _golden_widget(identity: dict[str, Any], blocks: list[list[Any]]) -> BaseWidget:
+    """Build the Python twin of the Php-Core golden widget."""
+
+    class GoldenWidget(BaseWidget):
+        """Widget replaying a Php-Core recipe."""
+
+        name = identity["name"]
+        description = identity["description"]
+        icon = identity["icon"]
+        disabled = identity["disabled"]
+        options = identity["options"]
+
+        def build_parameters(self, factory: FieldsFactory, ctx: RequestContext) -> None:
+            """Replay the parameters recipe."""
+            for method, *args in identity["parameters"]:
+                getattr(factory, _snake(method))(*args)
+
+        def render(self, ctx: RequestContext, params: Any, output: WidgetRender) -> bool:
+            """Replay the blocks recipe."""
+            for method, *args in blocks:
+                getattr(output.blocks, _snake(method))(*args)
+            return True
+
+    return GoldenWidget()
+
+
+@pytest.mark.parametrize("case", DESCRIPTIONS, ids=[case["name"] for case in DESCRIPTIONS])
+def test_widget_description_is_identical(case: dict[str, Any], config: SplashConfig) -> None:
+    """A widget describes itself exactly like Php-Core, down to the XML."""
+    description = _golden_widget(case["identity"], []).describe(SplashClient(config).new_context())
+    assert _empty_as_list(description) == _empty_as_list(case["description"])
+    assert XmlCodec().encode(description, declaration=True) == case["xml"]
+
+
+@pytest.mark.parametrize("case", RENDERS, ids=[case["name"] for case in RENDERS])
+def test_widget_render_is_identical(case: dict[str, Any], config: SplashConfig) -> None:
+    """Replaying a BlocksFactory recipe renders exactly what Php-Core renders, down to the XML."""
+    widget = _golden_widget(DESCRIPTIONS[0]["identity"], case["recipe"])
+    render = widget.get(SplashClient(config).new_context(), {})
+    assert render == case["render"]
+    assert XmlCodec().encode(render or {}, declaration=True) == case["xml"]

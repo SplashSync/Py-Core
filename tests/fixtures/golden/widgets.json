@@ -1,0 +1,647 @@
+{
+    "descriptions": [
+        {
+            "name": "default",
+            "identity": {
+                "name": "Golden",
+                "description": "Golden Widget",
+                "icon": "fa fa-info",
+                "disabled": false,
+                "options": {
+                    "Width": "col-sm-12 col-md-6 col-lg-6"
+                },
+                "parameters": []
+            },
+            "description": {
+                "type": "GoldenWidget",
+                "name": "Golden",
+                "description": "Golden Widget",
+                "icon": "fa fa-info",
+                "disabled": false,
+                "options": {
+                    "Width": "col-sm-12 col-md-6 col-lg-6"
+                },
+                "parameters": []
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <type>R29sZGVuV2lkZ2V0</type>\n <name>R29sZGVu</name>\n <description>R29sZGVuIFdpZGdldA==</description>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <disabled>MA==</disabled>\n <options>\n  <Width>Y29sLXNtLTEyIGNvbC1tZC02IGNvbC1sZy02</Width>\n </options>\n <parameters/>\n</SPLASH>\n"
+        },
+        {
+            "name": "custom",
+            "identity": {
+                "name": "Sales",
+                "description": "Last sales",
+                "icon": "fa fa-chart-line",
+                "disabled": true,
+                "options": {
+                    "Width": "col-sm-12 col-md-12 col-lg-12",
+                    "Header": true,
+                    "UseCache": false
+                },
+                "parameters": [
+                    [
+                        "create",
+                        "int",
+                        "days",
+                        "Days"
+                    ],
+                    [
+                        "create",
+                        "varchar",
+                        "mode",
+                        "Mode"
+                    ],
+                    [
+                        "addChoices",
+                        {
+                            "day": "Day",
+                            "week": "Week"
+                        }
+                    ]
+                ]
+            },
+            "description": {
+                "type": "GoldenWidget",
+                "name": "Sales",
+                "description": "Last sales",
+                "icon": "fa fa-chart-line",
+                "disabled": true,
+                "options": {
+                    "Width": "col-sm-12 col-md-12 col-lg-12",
+                    "Header": true,
+                    "UseCache": false
+                },
+                "parameters": {
+                    "days": {
+                        "type": "int",
+                        "id": "days",
+                        "name": "Days",
+                        "desc": "Days",
+                        "group": null,
+                        "required": false,
+                        "read": true,
+                        "write": true,
+                        "index": false,
+                        "inlist": false,
+                        "hlist": false,
+                        "log": false,
+                        "primary": false,
+                        "syncmode": "both",
+                        "itemtype": null,
+                        "itemprop": null,
+                        "tag": null,
+                        "choices": [],
+                        "asso": [],
+                        "options": [],
+                        "notest": false
+                    },
+                    "mode": {
+                        "type": "varchar",
+                        "id": "mode",
+                        "name": "Mode",
+                        "desc": "Mode",
+                        "group": null,
+                        "required": false,
+                        "read": true,
+                        "write": true,
+                        "index": false,
+                        "inlist": false,
+                        "hlist": false,
+                        "log": false,
+                        "primary": false,
+                        "syncmode": "both",
+                        "itemtype": null,
+                        "itemprop": null,
+                        "tag": null,
+                        "choices": [
+                            {
+                                "key": "day",
+                                "value": "Day"
+                            },
+                            {
+                                "key": "week",
+                                "value": "Week"
+                            }
+                        ],
+                        "asso": [],
+                        "options": [],
+                        "notest": false
+                    }
+                }
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <type>R29sZGVuV2lkZ2V0</type>\n <name>U2FsZXM=</name>\n <description>TGFzdCBzYWxlcw==</description>\n <icon>ZmEgZmEtY2hhcnQtbGluZQ==</icon>\n <disabled>MQ==</disabled>\n <options>\n  <Width>Y29sLXNtLTEyIGNvbC1tZC0xMiBjb2wtbGctMTI=</Width>\n  <Header>MQ==</Header>\n  <UseCache>MA==</UseCache>\n </options>\n <parameters>\n  <days>\n   <type>aW50</type>\n   <id>ZGF5cw==</id>\n   <name>RGF5cw==</name>\n   <desc>RGF5cw==</desc>\n   <group></group>\n   <required>MA==</required>\n   <read>MQ==</read>\n   <write>MQ==</write>\n   <index>MA==</index>\n   <inlist>MA==</inlist>\n   <hlist>MA==</hlist>\n   <log>MA==</log>\n   <primary>MA==</primary>\n   <syncmode>Ym90aA==</syncmode>\n   <itemtype></itemtype>\n   <itemprop></itemprop>\n   <tag></tag>\n   <choices/>\n   <asso/>\n   <options/>\n   <notest>MA==</notest>\n  </days>\n  <mode>\n   <type>dmFyY2hhcg==</type>\n   <id>bW9kZQ==</id>\n   <name>TW9kZQ==</name>\n   <desc>TW9kZQ==</desc>\n   <group></group>\n   <required>MA==</required>\n   <read>MQ==</read>\n   <write>MQ==</write>\n   <index>MA==</index>\n   <inlist>MA==</inlist>\n   <hlist>MA==</hlist>\n   <log>MA==</log>\n   <primary>MA==</primary>\n   <syncmode>Ym90aA==</syncmode>\n   <itemtype></itemtype>\n   <itemprop></itemprop>\n   <tag></tag>\n   <choices>\n    <array-0>\n     <key>ZGF5</key>\n     <value>RGF5</value>\n    </array-0>\n    <array-1>\n     <key>d2Vlaw==</key>\n     <value>V2Vlaw==</value>\n    </array-1>\n   </choices>\n   <asso/>\n   <options/>\n   <notest>MA==</notest>\n  </mode>\n </parameters>\n</SPLASH>\n"
+        }
+    ],
+    "renders": [
+        {
+            "name": "text",
+            "recipe": [
+                [
+                    "addTextBlock",
+                    "Hello <b>World</b>"
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "TextBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "text": "Hello <b>World</b>"
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>VGV4dEJsb2Nr</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <text>SGVsbG8gPGI+V29ybGQ8L2I+</text>\n   </data>\n  </array-0>\n </blocks>\n</SPLASH>\n"
+        },
+        {
+            "name": "text_options",
+            "recipe": [
+                [
+                    "addTextBlock",
+                    "Half",
+                    {
+                        "Width": "col-xs-6",
+                        "AllowHtml": true
+                    }
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "TextBlock",
+                        "options": {
+                            "Width": "col-xs-6",
+                            "AllowHtml": true
+                        },
+                        "data": {
+                            "text": "Half"
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>VGV4dEJsb2Nr</type>\n   <options>\n    <Width>Y29sLXhzLTY=</Width>\n    <AllowHtml>MQ==</AllowHtml>\n   </options>\n   <data>\n    <text>SGFsZg==</text>\n   </data>\n  </array-0>\n </blocks>\n</SPLASH>\n"
+        },
+        {
+            "name": "set_data",
+            "recipe": [
+                [
+                    "addTextBlock",
+                    "Text"
+                ],
+                [
+                    "setData",
+                    "extra",
+                    "value"
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "TextBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "text": "Text",
+                            "extra": "value"
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>VGV4dEJsb2Nr</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <text>VGV4dA==</text>\n    <extra>dmFsdWU=</extra>\n   </data>\n  </array-0>\n </blocks>\n</SPLASH>\n"
+        },
+        {
+            "name": "notifications",
+            "recipe": [
+                [
+                    "addNotificationsBlock",
+                    {
+                        "success": "S",
+                        "info": "I",
+                        "warning": "W",
+                        "error": "E",
+                        "other": "ignored"
+                    }
+                ],
+                [
+                    "addNotificationsBlock",
+                    {
+                        "info": "Only info"
+                    }
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "NotificationsBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "error": "E",
+                            "warning": "W",
+                            "info": "I",
+                            "success": "S"
+                        }
+                    },
+                    {
+                        "type": "NotificationsBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "info": "Only info"
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>Tm90aWZpY2F0aW9uc0Jsb2Nr</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <error>RQ==</error>\n    <warning>Vw==</warning>\n    <info>SQ==</info>\n    <success>Uw==</success>\n   </data>\n  </array-0>\n  <array-1>\n   <type>Tm90aWZpY2F0aW9uc0Jsb2Nr</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <info>T25seSBpbmZv</info>\n   </data>\n  </array-1>\n </blocks>\n</SPLASH>\n"
+        },
+        {
+            "name": "table",
+            "recipe": [
+                [
+                    "addTableBlock",
+                    [
+                        [
+                            "Name",
+                            "Value"
+                        ],
+                        [
+                            "Int",
+                            12
+                        ],
+                        [
+                            "Float",
+                            2.5
+                        ],
+                        [
+                            "Bool",
+                            true
+                        ]
+                    ]
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "TableBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "rows": [
+                                [
+                                    "Name",
+                                    "Value"
+                                ],
+                                [
+                                    "Int",
+                                    12
+                                ],
+                                [
+                                    "Float",
+                                    2.5
+                                ],
+                                [
+                                    "Bool",
+                                    true
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>VGFibGVCbG9jaw==</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <rows>\n     <array-0>\n      <string-0>TmFtZQ==</string-0>\n      <string-1>VmFsdWU=</string-1>\n     </array-0>\n     <array-1>\n      <string-0>SW50</string-0>\n      <int-1>MTI=</int-1>\n     </array-1>\n     <array-2>\n      <string-0>RmxvYXQ=</string-0>\n      <int-1>Mi41</int-1>\n     </array-2>\n     <array-3>\n      <string-0>Qm9vbA==</string-0>\n      <bool-1>MQ==</bool-1>\n     </array-3>\n    </rows>\n   </data>\n  </array-0>\n </blocks>\n</SPLASH>\n"
+        },
+        {
+            "name": "spark_info",
+            "recipe": [
+                [
+                    "addSparkInfoBlock",
+                    {
+                        "title": "Orders",
+                        "fa_icon": "fa-cart",
+                        "value": 42,
+                        "chart": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "extra": "x"
+                    }
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "SparkInfoBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "title": "Orders",
+                            "fa_icon": "fa-cart",
+                            "value": 42,
+                            "chart": [
+                                1,
+                                2,
+                                3
+                            ]
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>U3BhcmtJbmZvQmxvY2s=</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <title>T3JkZXJz</title>\n    <fa_icon>ZmEtY2FydA==</fa_icon>\n    <value>NDI=</value>\n    <chart>\n     <int-0>MQ==</int-0>\n     <int-1>Mg==</int-1>\n     <int-2>Mw==</int-2>\n    </chart>\n   </data>\n  </array-0>\n </blocks>\n</SPLASH>\n"
+        },
+        {
+            "name": "morris",
+            "recipe": [
+                [
+                    "addMorrisGraphBlock",
+                    [
+                        {
+                            "day": "Mon",
+                            "total": 12
+                        },
+                        {
+                            "day": "Tue",
+                            "total": 7.5
+                        }
+                    ],
+                    "Bar",
+                    {
+                        "title": "Sales",
+                        "xkey": "day",
+                        "ykeys": [
+                            "total"
+                        ],
+                        "labels": [
+                            "Total"
+                        ]
+                    }
+                ],
+                [
+                    "addMorrisGraphBlock",
+                    [
+                        {
+                            "day": "Mon",
+                            "total": 12
+                        },
+                        {
+                            "day": "Tue",
+                            "total": 7.5
+                        }
+                    ],
+                    "Area",
+                    {
+                        "xkey": "day"
+                    }
+                ],
+                [
+                    "addMorrisGraphBlock",
+                    [
+                        {
+                            "day": "Mon",
+                            "total": 12
+                        },
+                        {
+                            "day": "Tue",
+                            "total": 7.5
+                        }
+                    ],
+                    "Line",
+                    {
+                        "title": "Sales",
+                        "xkey": "day",
+                        "ykeys": [
+                            "total"
+                        ],
+                        "labels": [
+                            "Total"
+                        ]
+                    },
+                    {
+                        "Width": "col-xs-6",
+                        "AllowHtml": false
+                    }
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "MorrisBarBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "dataset": [
+                                {
+                                    "day": "Mon",
+                                    "total": 12
+                                },
+                                {
+                                    "day": "Tue",
+                                    "total": 7.5
+                                }
+                            ],
+                            "title": "Sales",
+                            "xkey": "day",
+                            "ykeys": [
+                                "total"
+                            ],
+                            "labels": [
+                                "Total"
+                            ]
+                        }
+                    },
+                    {
+                        "type": "MorrisAreaBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "dataset": [
+                                {
+                                    "day": "Mon",
+                                    "total": 12
+                                },
+                                {
+                                    "day": "Tue",
+                                    "total": 7.5
+                                }
+                            ],
+                            "xkey": "day"
+                        }
+                    },
+                    {
+                        "type": "MorrisLineBlock",
+                        "options": {
+                            "Width": "col-xs-6",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "dataset": [
+                                {
+                                    "day": "Mon",
+                                    "total": 12
+                                },
+                                {
+                                    "day": "Tue",
+                                    "total": 7.5
+                                }
+                            ],
+                            "title": "Sales",
+                            "xkey": "day",
+                            "ykeys": [
+                                "total"
+                            ],
+                            "labels": [
+                                "Total"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>TW9ycmlzQmFyQmxvY2s=</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <dataset>\n     <array-0>\n      <day>TW9u</day>\n      <total>MTI=</total>\n     </array-0>\n     <array-1>\n      <day>VHVl</day>\n      <total>Ny41</total>\n     </array-1>\n    </dataset>\n    <title>U2FsZXM=</title>\n    <xkey>ZGF5</xkey>\n    <ykeys>\n     <string-0>dG90YWw=</string-0>\n    </ykeys>\n    <labels>\n     <string-0>VG90YWw=</string-0>\n    </labels>\n   </data>\n  </array-0>\n  <array-1>\n   <type>TW9ycmlzQXJlYUJsb2Nr</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <dataset>\n     <array-0>\n      <day>TW9u</day>\n      <total>MTI=</total>\n     </array-0>\n     <array-1>\n      <day>VHVl</day>\n      <total>Ny41</total>\n     </array-1>\n    </dataset>\n    <xkey>ZGF5</xkey>\n   </data>\n  </array-1>\n  <array-2>\n   <type>TW9ycmlzTGluZUJsb2Nr</type>\n   <options>\n    <Width>Y29sLXhzLTY=</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <dataset>\n     <array-0>\n      <day>TW9u</day>\n      <total>MTI=</total>\n     </array-0>\n     <array-1>\n      <day>VHVl</day>\n      <total>Ny41</total>\n     </array-1>\n    </dataset>\n    <title>U2FsZXM=</title>\n    <xkey>ZGF5</xkey>\n    <ykeys>\n     <string-0>dG90YWw=</string-0>\n    </ykeys>\n    <labels>\n     <string-0>VG90YWw=</string-0>\n    </labels>\n   </data>\n  </array-2>\n </blocks>\n</SPLASH>\n"
+        },
+        {
+            "name": "morris_wrong_type",
+            "recipe": [
+                [
+                    "addMorrisGraphBlock",
+                    [
+                        {
+                            "day": "Mon",
+                            "total": 12
+                        },
+                        {
+                            "day": "Tue",
+                            "total": 7.5
+                        }
+                    ],
+                    "Pie",
+                    {
+                        "title": "Sales",
+                        "xkey": "day",
+                        "ykeys": [
+                            "total"
+                        ],
+                        "labels": [
+                            "Total"
+                        ]
+                    }
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "NotificationsBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "warning": "Wrong Morris Chart Block Type (ie: Bar, Area, Line)"
+                        }
+                    },
+                    {
+                        "type": "MorrisPieBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "dataset": [
+                                {
+                                    "day": "Mon",
+                                    "total": 12
+                                },
+                                {
+                                    "day": "Tue",
+                                    "total": 7.5
+                                }
+                            ],
+                            "title": "Sales",
+                            "xkey": "day",
+                            "ykeys": [
+                                "total"
+                            ],
+                            "labels": [
+                                "Total"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>Tm90aWZpY2F0aW9uc0Jsb2Nr</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <warning>V3JvbmcgTW9ycmlzIENoYXJ0IEJsb2NrIFR5cGUgKGllOiBCYXIsIEFyZWEsIExpbmUp</warning>\n   </data>\n  </array-0>\n  <array-1>\n   <type>TW9ycmlzUGllQmxvY2s=</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <dataset>\n     <array-0>\n      <day>TW9u</day>\n      <total>MTI=</total>\n     </array-0>\n     <array-1>\n      <day>VHVl</day>\n      <total>Ny41</total>\n     </array-1>\n    </dataset>\n    <title>U2FsZXM=</title>\n    <xkey>ZGF5</xkey>\n    <ykeys>\n     <string-0>dG90YWw=</string-0>\n    </ykeys>\n    <labels>\n     <string-0>VG90YWw=</string-0>\n    </labels>\n   </data>\n  </array-1>\n </blocks>\n</SPLASH>\n"
+        },
+        {
+            "name": "morris_donut",
+            "recipe": [
+                [
+                    "addMorrisDonutBlock",
+                    [
+                        {
+                            "label": "A",
+                            "value": 1
+                        }
+                    ],
+                    {
+                        "title": "Donut",
+                        "xkey": "x"
+                    }
+                ]
+            ],
+            "render": {
+                "title": "Golden",
+                "icon": "fa fa-info",
+                "blocks": [
+                    {
+                        "type": "MorrisDonutBlock",
+                        "options": {
+                            "Width": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+                            "AllowHtml": false
+                        },
+                        "data": {
+                            "dataset": [
+                                {
+                                    "label": "A",
+                                    "value": 1
+                                }
+                            ],
+                            "title": "Donut"
+                        }
+                    }
+                ]
+            },
+            "xml": "<?xml version=\"1.0\"?>\n<SPLASH>\n <title>R29sZGVu</title>\n <icon>ZmEgZmEtaW5mbw==</icon>\n <blocks>\n  <array-0>\n   <type>TW9ycmlzRG9udXRCbG9jaw==</type>\n   <options>\n    <Width>Y29sLXhzLTEyIGNvbC1zbS0xMiBjb2wtbWQtMTIgY29sLWxnLTEy</Width>\n    <AllowHtml>MA==</AllowHtml>\n   </options>\n   <data>\n    <dataset>\n     <array-0>\n      <label>QQ==</label>\n      <value>MQ==</value>\n     </array-0>\n    </dataset>\n    <title>RG9udXQ=</title>\n   </data>\n  </array-0>\n </blocks>\n</SPLASH>\n"
+        }
+    ]
+}

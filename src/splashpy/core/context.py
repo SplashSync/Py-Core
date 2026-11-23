@@ -16,7 +16,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Callable
 
 from splashpy.config import SplashConfig
 from splashpy.core.logger import Logger
@@ -53,6 +53,24 @@ class RequestContext:
 
     user_agent: str | None = None
     """User agent of the incoming HTTP request."""
+
+    file_reader: Callable[[str, str, RequestContext], dict[str, Any] | None] | None = field(
+        default=None, repr=False, compare=False
+    )
+    """Reads a file from Splash (set by the client): see :meth:`get_file`."""
+
+    def get_file(self, path: str, md5: str) -> dict[str, Any] | None:
+        """Download a file from Splash, as received in a file or image field value.
+
+        Mirror of Php-Core ``Splash::file()->getFile()``: Splash reads the file on the node
+        that owns it.
+
+        :return: ``filename``, ``md5``, ``size`` and base64 ``raw`` contents, None on failure.
+        """
+        if self.file_reader is None:
+            self.logger.error("Files cannot be read from Splash: no client.")
+            return None
+        return self.file_reader(path, md5, self)
 
 
 def php_truthy(value: Any) -> bool:

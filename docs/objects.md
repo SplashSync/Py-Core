@@ -128,6 +128,10 @@ All in `splashpy.fields`, one module per helper in `splashpy/fields/helpers/`:
 | `Dates`      | format and parse Splash dates and datetimes                                 |
 | `Validators` | check basic values: email, url, phone, country, state, lang, currency, dates |
 
+A received file or image value only describes the file: download it with
+`req.ctx.get_file(path, md5)` (Splash reads it on the node that owns it), check its md5
+(`Files.decode_raw`, `Files.md5`) and store it.
+
 Validators only answer True or False, never convert nor fix a value: the connector decides
 what to do with an invalid one.
 

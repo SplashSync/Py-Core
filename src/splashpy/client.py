@@ -29,7 +29,7 @@ from typing import Any
 from splashpy.config import ConfigProvider, SplashConfig, resolve
 from splashpy.core.context import RequestContext, php_truthy
 from splashpy.core.info import ClientInfo, server_info
-from splashpy.dictionary import SplObjectMethods, SplServices
+from splashpy.dictionary import SplFilesMethods, SplObjectMethods, SplServices
 from splashpy.extensions import Extension
 from splashpy.extensions.registry import ExtensionsRegistry
 from splashpy.objects.base import BaseObject
@@ -185,7 +185,7 @@ class SplashClient:
 
     def new_context(self, *, server_mode: bool = True, **kwargs: Any) -> RequestContext:
         """Create the context of a new request."""
-        return RequestContext(config=self.config, server_mode=server_mode, **kwargs)
+        return RequestContext(config=self.config, server_mode=server_mode, file_reader=self.get_file, **kwargs)
 
     # ====================================================================#
     # Incoming Requests (Splash -> this node)
@@ -318,6 +318,30 @@ class SplashClient:
         response = self.call(SplServices.OBJECTS, {1: task}, ctx=ctx)
 
         return response is not None and "result" in response
+
+    def get_file(self, path: str, md5: str, ctx: RequestContext | None = None) -> dict[str, Any] | None:
+        """Download a file from Splash (mirror of Php-Core ``Splash::file()->getFile()``).
+
+        :param path: file path, as received in the file or image field value.
+        :param md5: file checksum, as received in the field value.
+        :return: ``filename``, ``md5``, ``size`` and base64 ``raw`` contents, None on failure.
+        """
+        ctx = ctx or self.new_context(server_mode=False)
+        task = {
+            "id": 1,
+            "name": SplFilesMethods.GET,
+            "desc": f"Read remote file {path}",
+            "params": {"file": path, "md5": md5},
+        }
+        response = self.call(SplServices.FILES, {1: task}, ctx=ctx)
+        tasks = response.get("tasks") if response else None
+        result = next(iter(tasks.values()), None) if isinstance(tasks, Mapping) else None
+        if not isinstance(result, Mapping) or not php_truthy(result.get("result")):
+            ctx.logger.error(f"Unable to read file {path} from Splash.")
+            return None
+        data = result.get("data")
+
+        return dict(data) if isinstance(data, Mapping) else None
 
     def call(
         self,
