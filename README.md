@@ -51,7 +51,6 @@ never enabled implicitly.
 | [Objects & fields groups](docs/objects.md)       | Objects, ordered fields groups, phases, values, commits     |
 | [Extensions & widgets](docs/extensions.md)       | Extensions registry, hooks, widgets, faker                  |
 | [Project structure](docs/project-structure.md)   | Repository layout, package layers, request flow             |
-| [Wire protocol](docs/protocol.md)                | SOAP envelope, message encoding and encryption              |
 | [Development](docs/development.md)               | Quality tools, tests, golden fixtures, Docker E2E stack, CI |
 
 ## Status
