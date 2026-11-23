@@ -272,15 +272,15 @@ class SplashClient:
     # Outgoing Requests (this node -> Splash)
     # ====================================================================#
 
-    def ping(self) -> bool:
+    def ping(self, ctx: RequestContext | None = None) -> bool:
         """Ping the Splash server (no encryption)."""
-        response = self.call(SplServices.PING, None, secured=False)
+        response = self.call(SplServices.PING, None, secured=False, ctx=ctx)
 
         return response is not None and php_truthy(response.get("result"))
 
-    def connect(self) -> bool:
+    def connect(self, ctx: RequestContext | None = None) -> bool:
         """Check the connection to the Splash server (encrypted)."""
-        response = self.call(SplServices.CONNECT, {})
+        response = self.call(SplServices.CONNECT, {}, ctx=ctx)
 
         return response is not None and php_truthy(response.get("result"))
 
@@ -353,8 +353,10 @@ class SplashClient:
     ) -> dict[str, Any] | None:
         """Call a Splash service and return the decoded response (None on failure).
 
-        Errors are logged in ``ctx`` (a new context when not given) and in the Python logger.
+        Errors are logged in ``ctx``. Without ``ctx``, a new context is used and its log is
+        written to the Python logger.
         """
+        owned = ctx is None
         ctx = ctx or self.new_context(server_mode=False)
         outputs: dict[str, Any] = {
             "server": server_info(ctx),
@@ -376,7 +378,8 @@ class SplashClient:
             ctx.logger.error(f"No response from Splash server for {service}.")
         else:
             ctx.logger.merge(decoded.get("log"))
-        ctx.logger.flush(_LOGGER)
+        if owned:
+            ctx.logger.flush(_LOGGER)
 
         return decoded
 

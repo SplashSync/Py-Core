@@ -21,9 +21,11 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from typing import TYPE_CHECKING, Callable, Final
+from urllib.parse import parse_qs
 
 from splashpy.client import SplashClient
 from splashpy.dictionary import SplDefinition
+from splashpy.server.debug import NODE_PARAM, is_debug_request, render_debug_page
 
 if TYPE_CHECKING:
     from _typeshed.wsgi import StartResponse, WSGIEnvironment
@@ -62,7 +64,7 @@ class SplashWsgiApp:
             return self._reply(start_response, 404, b"Not Found", "text/plain")
         method = environ.get("REQUEST_METHOD", "GET")
         if method == "GET":
-            return self._reply(start_response, 200, f"{SplDefinition.NAME}".encode(), "text/plain")
+            return self._get(environ, start_response, path)
         if method != "POST":
             return self._reply(start_response, 405, b"Method Not Allowed", "text/plain")
         try:
@@ -86,6 +88,22 @@ class SplashWsgiApp:
     # Private Methods
     # ====================================================================#
 
+    def _get(self, environ: WSGIEnvironment, start_response: StartResponse, path: str) -> list[bytes]:
+        """Answer a GET: the node debug page when the node id is given, a status text otherwise."""
+        node = parse_qs(environ.get("QUERY_STRING", "")).get(NODE_PARAM, [None])[0]
+        client = self._client if self._client is not None else self._build(environ)
+        if not is_debug_request(client, node):
+            return self._reply(start_response, 200, f"{SplDefinition.NAME}".encode(), "text/plain")
+        ctx = client.new_context(
+            server_mode=False,
+            server_host=self._host(environ),
+            server_path=path or "/",
+            user_agent=environ.get("HTTP_USER_AGENT"),
+        )
+        page = render_debug_page(client, ctx)
+
+        return self._reply(start_response, 200, page.encode(), "text/html; charset=utf-8")
+
     def _build(self, environ: WSGIEnvironment) -> SplashClient:
         """Build the client of this request."""
         if self._factory is None:
@@ -104,7 +122,11 @@ class SplashWsgiApp:
     @staticmethod
     def _reply(start_response: StartResponse, status: int, body: bytes, content_type: str) -> list[bytes]:
         """Send a response."""
-        headers: list[tuple[str, str]] = [("Content-Type", content_type), ("Content-Length", str(len(body)))]
+        headers: list[tuple[str, str]] = [
+            ("Content-Type", content_type),
+            ("Content-Length", str(len(body))),
+            ("Cache-Control", "no-store"),
+        ]
         start_response(_STATUS.get(status, f"{status} Internal Server Error"), headers)
 
         return [body]

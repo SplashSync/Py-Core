@@ -58,6 +58,18 @@ from splashpy.adapters import SplashWsgiApp
 application = SplashWsgiApp(factory=lambda environ: build_client_for(environ["HTTP_HOST"]))
 ```
 
+### Debug page
+
+Open the Splash endpoint in a browser with the node id: `https://my.host/splash?node=<ws_id>`.
+The page shows the server information and a summary (number of objects and widgets,
+enabled and installed extensions), then runs the checks (self test, ping and connect to
+Splash) and prints the log (errors, warnings and messages). Without the right node id, the
+endpoint only shows its name.
+
+Nothing security related is shown: no configuration, no credentials, no details of what is
+synchronized. In your own framework, use
+`splashpy.server.debug.is_debug_request()` and `render_debug_page()`.
+
 ## Expose objects & widgets
 
 ```python

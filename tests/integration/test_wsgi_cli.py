@@ -27,8 +27,9 @@ from splashpy import SplashClient, SplashConfig, cli
 from splashpy.adapters import SplashWsgiApp, make_app
 from splashpy.adapters.wsgi import MAX_BODY
 from splashpy.config import ConfigError
-from splashpy.faker import FAKER_WS_ID
+from splashpy.faker import FAKER_WS_ID, FakerExtension
 from splashpy.protocol import soap
+from tests.support import FakeSplashServer
 
 
 def run_wsgi(
@@ -68,6 +69,38 @@ def test_wsgi_get_and_methods(client: SplashClient) -> None:
     assert run_wsgi(app, "PUT")[0] == "405 Method Not Allowed"
     assert run_wsgi(app, "POST", path="/other")[0] == "404 Not Found"
     assert run_wsgi(app, "POST", CONTENT_LENGTH=str(MAX_BODY + 1))[0] == "413 Payload Too Large"
+
+
+def test_wsgi_debug_page(config: SplashConfig) -> None:
+    """GET with the node id shows the debug page: description, checks and log, never secrets."""
+    secured = SplashConfig(**{**config.__dict__, "http_user": "admin", "http_password": "S3cr3t-Pass"})
+    client = SplashClient(secured, extensions=[FakerExtension()], transport=FakeSplashServer(secured))
+    app = SplashWsgiApp(client, path="/splash")
+    assert run_wsgi(app, "GET", QUERY_STRING="node=wrong")[1] == b"Splash Python Core"
+    assert run_wsgi(app, "GET")[1] == b"Splash Python Core"
+    status, body = run_wsgi(app, "GET", QUERY_STRING=f"node={config.ws_id}")
+    page = body.decode()
+    assert status == "200 OK"
+    assert page.startswith("<!DOCTYPE html>")
+    for expected in ("Summary", "Extensions installed", "Ping Splash", "Hello from Splash"):
+        assert expected in page
+    for hidden in ("Configuration", "Client Informations", "Object simple", "[SOAP]"):
+        assert hidden not in page
+    assert page.count("text-bg-success'>OK<") == 3
+    assert "data-bs-theme='dark'" in page
+    assert "http://python.test" in page
+    for secret in (config.ws_key, "S3cr3t-Pass", "admin"):
+        assert secret not in page
+
+
+def test_wsgi_debug_page_failures(config: SplashConfig) -> None:
+    """Failed checks and errors are shown; values are escaped."""
+    client = SplashClient(config, transport=FakeSplashServer(config, fault=True))
+    page = run_wsgi(SplashWsgiApp(client), "GET", QUERY_STRING=f"node={config.ws_id}", HTTP_USER_AGENT="<b>ua</b>")[1]
+    page_text = page.decode()
+    assert page_text.count("text-bg-danger'>FAILED<") == 2
+    assert "&lt;b&gt;ua&lt;/b&gt;" in page_text
+    assert "Errors <span class='badge text-bg-danger'>" in page_text
 
 
 def test_wsgi_fault_status(client: SplashClient) -> None:
