@@ -1,0 +1,1415 @@
+{
+    "cases": [
+        {
+            "name": "simple",
+            "recipe": [
+                [
+                    "create",
+                    "varchar",
+                    "name",
+                    "Name"
+                ],
+                [
+                    "create",
+                    "text",
+                    "notes"
+                ],
+                [
+                    "description",
+                    "  Some notes  "
+                ]
+            ],
+            "published": {
+                "name": {
+                    "type": "varchar",
+                    "id": "name",
+                    "name": "Name",
+                    "desc": "Name",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "notes": {
+                    "type": "text",
+                    "id": "notes",
+                    "name": "notes",
+                    "desc": "Some notes",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "flags",
+            "recipe": [
+                [
+                    "create",
+                    "varchar",
+                    "code",
+                    "Code"
+                ],
+                [
+                    "isRequired"
+                ],
+                [
+                    "isPrimary"
+                ],
+                [
+                    "isIndexed"
+                ],
+                [
+                    "isListed"
+                ],
+                [
+                    "isLogged"
+                ],
+                [
+                    "group",
+                    "General"
+                ],
+                [
+                    "create",
+                    "int",
+                    "count",
+                    "Count"
+                ],
+                [
+                    "isReadOnly"
+                ],
+                [
+                    "isListHidden"
+                ],
+                [
+                    "isNotTested"
+                ],
+                [
+                    "create",
+                    "varchar",
+                    "secret",
+                    "Secret"
+                ],
+                [
+                    "isWriteOnly"
+                ],
+                [
+                    "create",
+                    "bool",
+                    "active",
+                    "Active"
+                ],
+                [
+                    "isRequired",
+                    false
+                ],
+                [
+                    "isReadOnly",
+                    false
+                ]
+            ],
+            "published": {
+                "code": {
+                    "type": "varchar",
+                    "id": "code",
+                    "name": "Code",
+                    "desc": "Code",
+                    "group": "General",
+                    "required": true,
+                    "read": true,
+                    "write": true,
+                    "index": true,
+                    "inlist": true,
+                    "hlist": false,
+                    "log": true,
+                    "primary": true,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "count": {
+                    "type": "int",
+                    "id": "count",
+                    "name": "Count",
+                    "desc": "Count",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": false,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": true,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": true
+                },
+                "secret": {
+                    "type": "varchar",
+                    "id": "secret",
+                    "name": "Secret",
+                    "desc": "Secret",
+                    "group": null,
+                    "required": false,
+                    "read": false,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "active": {
+                    "type": "bool",
+                    "id": "active",
+                    "name": "Active",
+                    "desc": "Active",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "sync_modes",
+            "recipe": [
+                [
+                    "create",
+                    "varchar",
+                    "a",
+                    "A"
+                ],
+                [
+                    "setPreferRead"
+                ],
+                [
+                    "create",
+                    "varchar",
+                    "b",
+                    "B"
+                ],
+                [
+                    "setPreferWrite"
+                ],
+                [
+                    "create",
+                    "varchar",
+                    "c",
+                    "C"
+                ],
+                [
+                    "setPreferNone"
+                ],
+                [
+                    "create",
+                    "varchar",
+                    "d",
+                    "D"
+                ],
+                [
+                    "setPreferNone"
+                ],
+                [
+                    "setPreferBoth"
+                ]
+            ],
+            "published": {
+                "a": {
+                    "type": "varchar",
+                    "id": "a",
+                    "name": "A",
+                    "desc": "A",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "export",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "b": {
+                    "type": "varchar",
+                    "id": "b",
+                    "name": "B",
+                    "desc": "B",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "import",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "c": {
+                    "type": "varchar",
+                    "id": "c",
+                    "name": "C",
+                    "desc": "C",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "none",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "d": {
+                    "type": "varchar",
+                    "id": "d",
+                    "name": "D",
+                    "desc": "D",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "metadata",
+            "recipe": [
+                [
+                    "create",
+                    "email",
+                    "email",
+                    "Email"
+                ],
+                [
+                    "microData",
+                    "http://schema.org/ContactPoint",
+                    "email"
+                ],
+                [
+                    "create",
+                    "phone",
+                    "phone",
+                    "Phone"
+                ],
+                [
+                    "microData",
+                    "http://schema.org/PostalAddress",
+                    "telephone"
+                ],
+                [
+                    "alternateMicroData",
+                    "http://schema.org/Person",
+                    "telephone"
+                ],
+                [
+                    "alternateMicroData",
+                    "http://schema.org/PostalAddress",
+                    "telephone"
+                ],
+                [
+                    "create",
+                    "url",
+                    "site",
+                    "Site"
+                ],
+                [
+                    "microData",
+                    "http://schema.org/Organization",
+                    "url"
+                ],
+                [
+                    "microData",
+                    "",
+                    "sameAs"
+                ]
+            ],
+            "published": {
+                "email": {
+                    "type": "email",
+                    "id": "email",
+                    "name": "Email",
+                    "desc": "Email",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/ContactPoint",
+                    "itemprop": "email",
+                    "tag": "14206568f5ed1d96b7e115a05b8c22ec",
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "phone": {
+                    "type": "phone",
+                    "id": "phone",
+                    "name": "Phone",
+                    "desc": "Phone",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/PostalAddress",
+                    "itemprop": "telephone",
+                    "tag": "e36322c8dced60b7cc812259609443e5",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "altTags": "[\"f6d82ce66b8bf61c95687b9c92ef7b6d\"]"
+                    },
+                    "notest": false
+                },
+                "site": {
+                    "type": "url",
+                    "id": "site",
+                    "name": "Site",
+                    "desc": "Site",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/Organization",
+                    "itemprop": "sameAs",
+                    "tag": "1aa913be14f0d2600489495c520d058d",
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "choices_options",
+            "recipe": [
+                [
+                    "create",
+                    "varchar",
+                    "status",
+                    "Status"
+                ],
+                [
+                    "addChoices",
+                    {
+                        "draft": "Draft",
+                        "done": "  Done  "
+                    }
+                ],
+                [
+                    "addChoice",
+                    "canceled",
+                    "Canceled"
+                ],
+                [
+                    "addOption",
+                    "maxLength",
+                    12
+                ],
+                [
+                    "addOptions",
+                    {
+                        "isLowerCase": true,
+                        "unit": "kg"
+                    }
+                ],
+                [
+                    "create",
+                    "varchar",
+                    "firstname",
+                    "Firstname"
+                ],
+                [
+                    "association",
+                    "firstname",
+                    "lastname",
+                    "firstname"
+                ]
+            ],
+            "published": {
+                "status": {
+                    "type": "varchar",
+                    "id": "status",
+                    "name": "Status",
+                    "desc": "Status",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [
+                        {
+                            "key": "draft",
+                            "value": "Draft"
+                        },
+                        {
+                            "key": "done",
+                            "value": "Done"
+                        },
+                        {
+                            "key": "canceled",
+                            "value": "Canceled"
+                        }
+                    ],
+                    "asso": [],
+                    "options": {
+                        "maxLength": 12,
+                        "isLowerCase": true,
+                        "unit": "kg"
+                    },
+                    "notest": false
+                },
+                "firstname": {
+                    "type": "varchar",
+                    "id": "firstname",
+                    "name": "Firstname",
+                    "desc": "Firstname",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [
+                        "firstname",
+                        "lastname"
+                    ],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "lists",
+            "recipe": [
+                [
+                    "create",
+                    "varchar",
+                    "sku",
+                    "SKU"
+                ],
+                [
+                    "inList",
+                    "lines"
+                ],
+                [
+                    "isReadOnly"
+                ],
+                [
+                    "create",
+                    "double",
+                    "qty",
+                    "Quantity"
+                ],
+                [
+                    "inList",
+                    "lines"
+                ],
+                [
+                    "create",
+                    "objectid::Product",
+                    "product",
+                    "Product"
+                ],
+                [
+                    "inList",
+                    "lines"
+                ],
+                [
+                    "create",
+                    "price",
+                    "unit_price",
+                    "Unit Price"
+                ],
+                [
+                    "inList",
+                    "lines"
+                ]
+            ],
+            "published": {
+                "sku@lines": {
+                    "type": "varchar@list",
+                    "id": "sku@lines",
+                    "name": "SKU",
+                    "desc": "SKU",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": false,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "qty@lines": {
+                    "type": "double@list",
+                    "id": "qty@lines",
+                    "name": "Quantity",
+                    "desc": "Quantity",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "product@lines": {
+                    "type": "objectid::Product@list",
+                    "id": "product@lines",
+                    "name": "Product",
+                    "desc": "Product",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "unit_price@lines": {
+                    "type": "price@list",
+                    "id": "unit_price@lines",
+                    "name": "Unit Price",
+                    "desc": "Unit Price",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "multilang",
+            "recipe": [
+                [
+                    "setDefaultLanguage",
+                    "en_US"
+                ],
+                [
+                    "create",
+                    "mvarchar",
+                    "title",
+                    "Title"
+                ],
+                [
+                    "microData",
+                    "http://schema.org/Product",
+                    "name"
+                ],
+                [
+                    "setMultiLang",
+                    "en_US"
+                ],
+                [
+                    "create",
+                    "mvarchar",
+                    "title",
+                    "Title FR"
+                ],
+                [
+                    "microData",
+                    "http://schema.org/Product",
+                    "name"
+                ],
+                [
+                    "setMultiLang",
+                    "fr_FR"
+                ],
+                [
+                    "create",
+                    "mtext",
+                    "desc",
+                    "Description ES"
+                ],
+                [
+                    "setMultiLang",
+                    "es_ES"
+                ],
+                [
+                    "create",
+                    "varchar",
+                    "not_ml",
+                    "Not ML"
+                ],
+                [
+                    "setMultiLang",
+                    "fr_FR"
+                ],
+                [
+                    "create",
+                    "mvarchar",
+                    "bad_iso",
+                    "Bad ISO"
+                ],
+                [
+                    "setMultiLang",
+                    "xx"
+                ]
+            ],
+            "published": {
+                "title": {
+                    "type": "mvarchar",
+                    "id": "title",
+                    "name": "Title FR",
+                    "desc": "Title FR",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/Product",
+                    "itemprop": "name",
+                    "tag": "ce5440b4b98a42ffb04bf89c0fd66fcb",
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "desc": {
+                    "type": "mtext",
+                    "id": "desc",
+                    "name": "Description ES",
+                    "desc": "Description ES",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "not_ml_fr_FR": {
+                    "type": "varchar",
+                    "id": "not_ml_fr_FR",
+                    "name": "Not ML",
+                    "desc": "Not ML",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "language": "fr_FR"
+                    },
+                    "notest": false
+                },
+                "bad_iso": {
+                    "type": "mvarchar",
+                    "id": "bad_iso",
+                    "name": "Bad ISO",
+                    "desc": "Bad ISO",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "types",
+            "recipe": [
+                [
+                    "create",
+                    "bool",
+                    "f_bool",
+                    "Bool"
+                ],
+                [
+                    "create",
+                    "int",
+                    "f_int",
+                    "Int"
+                ],
+                [
+                    "create",
+                    "double",
+                    "f_double",
+                    "Double"
+                ],
+                [
+                    "create",
+                    "date",
+                    "f_date",
+                    "Date"
+                ],
+                [
+                    "create",
+                    "datetime",
+                    "f_datetime",
+                    "Datetime"
+                ],
+                [
+                    "create",
+                    "lang",
+                    "f_lang",
+                    "Lang"
+                ],
+                [
+                    "create",
+                    "country",
+                    "f_country",
+                    "Country"
+                ],
+                [
+                    "create",
+                    "state",
+                    "f_state",
+                    "State"
+                ],
+                [
+                    "create",
+                    "currency",
+                    "f_currency",
+                    "Currency"
+                ],
+                [
+                    "create",
+                    "price",
+                    "f_price",
+                    "Price"
+                ],
+                [
+                    "create",
+                    "image",
+                    "f_image",
+                    "Image"
+                ],
+                [
+                    "create",
+                    "file",
+                    "f_file",
+                    "File"
+                ],
+                [
+                    "create",
+                    "inline",
+                    "f_inline",
+                    "Inline"
+                ],
+                [
+                    "create",
+                    "objectid::ThirdParty",
+                    "f_parent",
+                    "Parent"
+                ]
+            ],
+            "published": {
+                "f_bool": {
+                    "type": "bool",
+                    "id": "f_bool",
+                    "name": "Bool",
+                    "desc": "Bool",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_int": {
+                    "type": "int",
+                    "id": "f_int",
+                    "name": "Int",
+                    "desc": "Int",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_double": {
+                    "type": "double",
+                    "id": "f_double",
+                    "name": "Double",
+                    "desc": "Double",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_date": {
+                    "type": "date",
+                    "id": "f_date",
+                    "name": "Date",
+                    "desc": "Date",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_datetime": {
+                    "type": "datetime",
+                    "id": "f_datetime",
+                    "name": "Datetime",
+                    "desc": "Datetime",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_lang": {
+                    "type": "lang",
+                    "id": "f_lang",
+                    "name": "Lang",
+                    "desc": "Lang",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_country": {
+                    "type": "country",
+                    "id": "f_country",
+                    "name": "Country",
+                    "desc": "Country",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_state": {
+                    "type": "state",
+                    "id": "f_state",
+                    "name": "State",
+                    "desc": "State",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_currency": {
+                    "type": "currency",
+                    "id": "f_currency",
+                    "name": "Currency",
+                    "desc": "Currency",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_price": {
+                    "type": "price",
+                    "id": "f_price",
+                    "name": "Price",
+                    "desc": "Price",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_image": {
+                    "type": "image",
+                    "id": "f_image",
+                    "name": "Image",
+                    "desc": "Image",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_file": {
+                    "type": "file",
+                    "id": "f_file",
+                    "name": "File",
+                    "desc": "File",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_inline": {
+                    "type": "inline",
+                    "id": "f_inline",
+                    "name": "Inline",
+                    "desc": "Inline",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "f_parent": {
+                    "type": "objectid::ThirdParty",
+                    "id": "f_parent",
+                    "name": "Parent",
+                    "desc": "Parent",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "invalid",
+            "recipe": [
+                [
+                    "create",
+                    "varchar",
+                    "",
+                    "No Id"
+                ],
+                [
+                    "create",
+                    "image",
+                    "picture",
+                    "Picture"
+                ],
+                [
+                    "isPrimary"
+                ],
+                [
+                    "create",
+                    "varchar",
+                    "ok",
+                    "Ok"
+                ],
+                [
+                    "identifier",
+                    "renamed"
+                ],
+                [
+                    "name",
+                    "Renamed"
+                ]
+            ],
+            "published": {
+                "picture": {
+                    "type": "image",
+                    "id": "picture",
+                    "name": "Picture",
+                    "desc": "Picture",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                },
+                "renamed": {
+                    "type": "varchar",
+                    "id": "renamed",
+                    "name": "Renamed",
+                    "desc": "Ok",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": null,
+                    "itemprop": null,
+                    "tag": null,
+                    "choices": [],
+                    "asso": [],
+                    "options": [],
+                    "notest": false
+                }
+            }
+        }
+    ]
+}

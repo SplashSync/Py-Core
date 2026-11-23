@@ -19,9 +19,11 @@ DEV_PYTHON  ?= 3.9
 BIN         := $(VENV)/bin
 PY_VERSIONS ?= 3.9 3.10 3.11 3.12 3.13 3.14
 TOOLKIT     ?= splashsync/toolkit:3.0
+WS          ?= ThisIsSplashWsId3p14
+MANIFESTS   := splash.yml splash.json swagger.json
 
 .DEFAULT_GOAL := help
-.PHONY: help install lint style stan pytest quality matrix golden up test stop prune build clean
+.PHONY: help install lint style stan pytest quality matrix golden up test manifest stop prune build clean
 
 help:		## Show this help
 	@grep -hE '^[a-zA-Z0-9_-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -72,8 +74,12 @@ up:		## Start Toolkit 3.0 and the Python fakers (Docker)
 	docker compose up -d --build --wait
 
 test:		## Run the Toolkit 3.0 suites against the Python fakers (Docker)
-	docker compose exec -T toolkit php vendor/bin/phpunit -c phpunit.xml.dist --testsuite Validator \
-		--filter 'A01PingTest|A02ConnectTest|A05SelfTestsTest|A06InfosTest'
+	docker compose exec -T toolkit php vendor/bin/phpunit -c phpunit.xml.dist --testsuite Validator
+
+manifest:	## Generate Splash manifests (splash.yml, splash.json, swagger.json) with the Toolkit (WS=...)
+	docker compose exec -T toolkit bin/console splash:server:manifest --ws=$(WS)
+	docker compose exec -T toolkit bin/console splash:server:swagger --ws=$(WS)
+	@for file in $(MANIFESTS); do docker compose cp toolkit:/app/$$file ./$$file || exit 1; done
 
 stop:		## Stop the Docker stack
 	docker compose stop

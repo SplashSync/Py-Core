@@ -203,6 +203,134 @@ foreach (array("scalars", "message") as $name) {
 writeFixture($target, "messages", array("cases" => $messages));
 
 //====================================================================//
+// Fields Definitions Fixtures
+//====================================================================//
+// Each case is a recipe: a list of FieldsFactory calls [method, ...args],
+// replayed as is by the Python tests.
+
+$fieldsRecipes = array(
+    "simple" => array(
+        array("create", "varchar", "name", "Name"),
+        array("create", "text", "notes"),
+        array("description", "  Some notes  "),
+    ),
+    "flags" => array(
+        array("create", "varchar", "code", "Code"),
+        array("isRequired"),
+        array("isPrimary"),
+        array("isIndexed"),
+        array("isListed"),
+        array("isLogged"),
+        array("group", "General"),
+        array("create", "int", "count", "Count"),
+        array("isReadOnly"),
+        array("isListHidden"),
+        array("isNotTested"),
+        array("create", "varchar", "secret", "Secret"),
+        array("isWriteOnly"),
+        array("create", "bool", "active", "Active"),
+        array("isRequired", false),
+        array("isReadOnly", false),
+    ),
+    "sync_modes" => array(
+        array("create", "varchar", "a", "A"),
+        array("setPreferRead"),
+        array("create", "varchar", "b", "B"),
+        array("setPreferWrite"),
+        array("create", "varchar", "c", "C"),
+        array("setPreferNone"),
+        array("create", "varchar", "d", "D"),
+        array("setPreferNone"),
+        array("setPreferBoth"),
+    ),
+    "metadata" => array(
+        array("create", "email", "email", "Email"),
+        array("microData", "http://schema.org/ContactPoint", "email"),
+        array("create", "phone", "phone", "Phone"),
+        array("microData", "http://schema.org/PostalAddress", "telephone"),
+        array("alternateMicroData", "http://schema.org/Person", "telephone"),
+        array("alternateMicroData", "http://schema.org/PostalAddress", "telephone"),
+        array("create", "url", "site", "Site"),
+        array("microData", "http://schema.org/Organization", "url"),
+        array("microData", "", "sameAs"),
+    ),
+    "choices_options" => array(
+        array("create", "varchar", "status", "Status"),
+        array("addChoices", array("draft" => "Draft", "done" => "  Done  ")),
+        array("addChoice", "canceled", "Canceled"),
+        array("addOption", "maxLength", 12),
+        array("addOptions", array("isLowerCase" => true, "unit" => "kg")),
+        array("create", "varchar", "firstname", "Firstname"),
+        array("association", "firstname", "lastname", "firstname"),
+    ),
+    "lists" => array(
+        array("create", "varchar", "sku", "SKU"),
+        array("inList", "lines"),
+        array("isReadOnly"),
+        array("create", "double", "qty", "Quantity"),
+        array("inList", "lines"),
+        array("create", "objectid::Product", "product", "Product"),
+        array("inList", "lines"),
+        array("create", "price", "unit_price", "Unit Price"),
+        array("inList", "lines"),
+    ),
+    "multilang" => array(
+        array("setDefaultLanguage", "en_US"),
+        array("create", "mvarchar", "title", "Title"),
+        array("microData", "http://schema.org/Product", "name"),
+        array("setMultiLang", "en_US"),
+        array("create", "mvarchar", "title", "Title FR"),
+        array("microData", "http://schema.org/Product", "name"),
+        array("setMultiLang", "fr_FR"),
+        array("create", "mtext", "desc", "Description ES"),
+        array("setMultiLang", "es_ES"),
+        array("create", "varchar", "not_ml", "Not ML"),
+        array("setMultiLang", "fr_FR"),
+        array("create", "mvarchar", "bad_iso", "Bad ISO"),
+        array("setMultiLang", "xx"),
+    ),
+    "types" => array(
+        array("create", "bool", "f_bool", "Bool"),
+        array("create", "int", "f_int", "Int"),
+        array("create", "double", "f_double", "Double"),
+        array("create", "date", "f_date", "Date"),
+        array("create", "datetime", "f_datetime", "Datetime"),
+        array("create", "lang", "f_lang", "Lang"),
+        array("create", "country", "f_country", "Country"),
+        array("create", "state", "f_state", "State"),
+        array("create", "currency", "f_currency", "Currency"),
+        array("create", "price", "f_price", "Price"),
+        array("create", "image", "f_image", "Image"),
+        array("create", "file", "f_file", "File"),
+        array("create", "inline", "f_inline", "Inline"),
+        array("create", "objectid::ThirdParty", "f_parent", "Parent"),
+    ),
+    "invalid" => array(
+        array("create", "varchar", "", "No Id"),
+        array("create", "image", "picture", "Picture"),
+        array("isPrimary"),
+        array("create", "varchar", "ok", "Ok"),
+        array("identifier", "renamed"),
+        array("name", "Renamed"),
+    ),
+);
+
+$fields = array();
+foreach ($fieldsRecipes as $name => $recipe) {
+    $factory = new \Splash\Core\Components\FieldsFactory();
+    foreach ($recipe as $call) {
+        $method = array_shift($call);
+        $factory->{$method}(...$call);
+    }
+    $fields[] = array(
+        "name" => $name,
+        "recipe" => $fieldsRecipes[$name],
+        "published" => $factory->publish(),
+    );
+}
+writeFixture($target, "fields", array("cases" => $fields));
+
+//====================================================================//
 // SOAP Envelopes Fixtures
 //====================================================================//
 

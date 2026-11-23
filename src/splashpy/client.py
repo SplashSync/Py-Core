@@ -31,10 +31,21 @@ from splashpy.core.context import RequestContext, php_truthy
 from splashpy.core.info import ClientInfo, server_info
 from splashpy.dictionary import SplObjectMethods, SplServices
 from splashpy.extensions import Extension
+from splashpy.extensions.registry import ExtensionsRegistry
+from splashpy.objects.base import BaseObject
+from splashpy.objects.commits import CommitsManager
+from splashpy.objects.events import CommitEvent
+from splashpy.objects.handler import ObjectHandler
+from splashpy.objects.locks import Locks
+from splashpy.objects.pipeline import PipelineError
 from splashpy.protocol import MessageCodec, ProtocolError, soap
 from splashpy.server import ServiceHandler, TaskRunner
 from splashpy.server.routers import AdminRouter
+from splashpy.server.routers.files import FilesRouter
+from splashpy.server.routers.objects import ObjectsRouter
+from splashpy.server.routers.widgets import WidgetsRouter
 from splashpy.transport import Transport, TransportError, UrllibTransport
+from splashpy.widgets.base import BaseWidget
 
 _LOGGER = logging.getLogger("splashpy")
 """Python logger receiving the Splash logs of each request."""
@@ -72,6 +83,8 @@ class SplashClient:
         config: SplashConfig | ConfigProvider,
         *,
         info: ClientInfo | None = None,
+        objects: Iterable[BaseObject | type[BaseObject]] = (),
+        widgets: Iterable[BaseWidget | type[BaseWidget]] = (),
         extensions: Iterable[Extension] = (),
         transport: Transport | None = None,
     ) -> None:
@@ -79,28 +92,74 @@ class SplashClient:
 
         :param config: configuration, or a provider able to build it.
         :param info: client information shown in Splash.
-        :param extensions: explicitly enabled extensions.
+        :param objects: objects exposed by the host application (classes or instances).
+        :param widgets: widgets exposed by the host application (classes or instances).
+        :param extensions: explicitly enabled extensions (installed ones are enabled by ``config.extensions``).
         :param transport: HTTP transport for outgoing calls (``urllib`` by default).
-        :raises ConfigError: when the configuration is invalid.
+        :raises ConfigError: when the configuration or an enabled extension is invalid.
+        :raises PipelineError: when objects fields groups are inconsistent.
         """
         self.config = resolve(config)
-        self.extensions: tuple[Extension, ...] = tuple(sorted(extensions, key=lambda ext: (ext.priority, ext.name)))
+        self.extensions = ExtensionsRegistry(extensions, self.config.extensions).all()
+        self.locks = Locks()
         self._info = info or ClientInfo()
         self._transport = transport or UrllibTransport(self.config.http_user, self.config.http_password)
         self._codec = MessageCodec(self.config.ws_key, self.config.ws_id)
-        self._handler = ServiceHandler(self._codec, TaskRunner({SplServices.ADMIN: AdminRouter(self)}))
+        self._objects = self._build_objects(objects)
+        self._widgets = self._build_widgets(widgets)
+        self._commits = CommitsManager(lambda: self._objects, self.extensions)
+        self._handler = ServiceHandler(
+            self._codec,
+            TaskRunner(
+                {
+                    SplServices.ADMIN: AdminRouter(self),
+                    SplServices.OBJECTS: ObjectsRouter(self),
+                    SplServices.WIDGETS: WidgetsRouter(self),
+                    SplServices.FILES: FilesRouter(self),
+                }
+            ),
+        )
 
     # ====================================================================#
     # Client Description
     # ====================================================================#
 
     def object_types(self) -> list[str]:
-        """Get available object types (objects come in milestone 2)."""
-        return []
+        """Get available (enabled) object types, by priority then type."""
+        handlers = sorted(self._objects.values(), key=lambda handler: (handler.object.priority, handler.type))
+        return [handler.type for handler in handlers if not handler.object.disabled]
+
+    def object_handler(self, object_type: str) -> ObjectHandler | None:
+        """Get the handler of an available object type."""
+        handler = self._objects.get(object_type)
+        return handler if handler is not None and not handler.object.disabled else None
 
     def widget_types(self) -> list[str]:
-        """Get available widget types (widgets come in milestone 2)."""
-        return []
+        """Get available (enabled) widget types."""
+        return [widget_type for widget_type, widget in self._widgets.items() if not widget.disabled]
+
+    def widget(self, widget_type: str) -> BaseWidget | None:
+        """Get an available widget."""
+        widget = self._widgets.get(widget_type)
+        return widget if widget is not None and not widget.disabled else None
+
+    def read_file(self, ctx: RequestContext, path: str, md5: str) -> dict[str, Any] | None:
+        """Read a file published by one of the objects."""
+        for handler in self._objects.values():
+            try:
+                found = handler.object.read_file(ctx, path, md5)
+            except Exception as error:
+                ctx.logger.exception(error)
+                continue
+            if found:
+                return found
+        ctx.logger.error(f"File not found: {path}")
+        return None
+
+    @property
+    def commits(self) -> list[CommitEvent]:
+        """Recent commit events, sent or skipped (oldest first)."""
+        return self._commits.history
 
     def informations(self, ctx: RequestContext) -> dict[str, Any]:
         """Get client information, completed by extensions."""
@@ -118,6 +177,9 @@ class SplashClient:
             return ctx.logger.error(str(error))
         for extension in self.extensions:
             ctx.logger.debug(f"Extension enabled: {extension.name}")
+        for handler in self._objects.values():
+            order = " > ".join(f"{group.group_code()} ({group.origin})" for group in handler.pipeline)
+            ctx.logger.debug(f"Object {handler.type}: {order}")
 
         return True
 
@@ -170,6 +232,43 @@ class SplashClient:
         return SoapResponse(soap.build_response(call.service, result, call.uri))
 
     # ====================================================================#
+    # Objects & Widgets Registration
+    # ====================================================================#
+
+    def _build_objects(self, objects: Iterable[BaseObject | type[BaseObject]]) -> dict[str, ObjectHandler]:
+        """Register objects: host ones, then extensions ones (highest priority wins a type).
+
+        :raises PipelineError: on equal priorities for one type, or inconsistent fields groups.
+        """
+        candidates: list[tuple[BaseObject, str]] = [(_instance(obj), "core") for obj in objects]
+        for extension in self.extensions:
+            origin = extension.name or type(extension).__name__
+            candidates.extend((_instance(obj), origin) for obj in extension.objects())
+        chosen: dict[str, tuple[BaseObject, str]] = {}
+        for obj, origin in candidates:
+            current = chosen.get(obj.object_type())
+            if current is not None and current[0].priority == obj.priority:
+                raise PipelineError(f"Object type {obj.object_type()} is provided twice with priority {obj.priority}.")
+            if current is None or obj.priority > current[0].priority:
+                chosen[obj.object_type()] = (obj, origin)
+        handlers: dict[str, ObjectHandler] = {}
+        ctx = self.new_context()
+        for object_type, (obj, origin) in chosen.items():
+            handler = ObjectHandler(obj, self.extensions, self.locks, origin)
+            handler.validate(ctx)
+            handlers[object_type] = handler
+        return handlers
+
+    def _build_widgets(self, widgets: Iterable[BaseWidget | type[BaseWidget]]) -> dict[str, BaseWidget]:
+        """Register widgets: host ones, then extensions ones."""
+        registered: dict[str, BaseWidget] = {}
+        all_widgets = [*widgets, *(widget for extension in self.extensions for widget in extension.widgets())]
+        for widget in all_widgets:
+            instance = widget() if isinstance(widget, type) else widget
+            registered[instance.widget_type()] = instance
+        return registered
+
+    # ====================================================================#
     # Outgoing Requests (this node -> Splash)
     # ====================================================================#
 
@@ -195,19 +294,30 @@ class SplashClient:
     ) -> bool:
         """Notify the Splash server of a local change.
 
-        Locks and commit rules (server mode, objects locked by a running Set...)
-        come with the objects layer in milestone 2.
+        The commit is skipped (and True returned) when the object type is unknown, when
+        Splash itself is writing the object (locked), when an extension filters it, or in
+        CI mode (``SPLASH_CI`` / ``SPLASH_TRAVIS`` environment variables).
+
+        :return: False only when sending to Splash failed.
         """
-        ids = [str(object_ids)] if isinstance(object_ids, (str, int)) else [str(i) for i in object_ids]
+        event = CommitEvent(object_type, CommitEvent.ids_of(object_ids), action, user, comment)
+        ctx = self.new_context(server_mode=False)
+        result = self._commits.commit(ctx, event, lambda sent: self._send_commit(sent, ctx))
+        ctx.logger.flush(_LOGGER)
+
+        return result
+
+    def _send_commit(self, event: CommitEvent, ctx: RequestContext) -> bool:
+        """Send a commit event; Php-Core only checks a result is present."""
         task = {
             "id": 1,
             "name": SplObjectMethods.COMMIT,
-            "desc": f"Commit changes on {object_type}",
-            "params": {"type": object_type, "id": ids, "action": action, "user": user, "comment": comment},
+            "desc": f"Commit {event.action} on {event.type}",
+            "params": event.params(),
         }
-        response = self.call(SplServices.OBJECTS, {1: task})
+        response = self.call(SplServices.OBJECTS, {1: task}, ctx=ctx)
 
-        return response is not None and php_truthy(response.get("result"))
+        return response is not None and "result" in response
 
     def call(
         self,
@@ -261,6 +371,11 @@ class SplashClient:
         raw = self._transport.post(url, body, headers, float(self.config.ws_timeout))
 
         return soap.parse_response(raw)
+
+
+def _instance(obj: BaseObject | type[BaseObject]) -> BaseObject:
+    """Instantiate an object class if needed."""
+    return obj() if isinstance(obj, type) else obj
 
 
 __all__ = ["HTTP_FAULT", "HTTP_OK", "SoapResponse", "SplashClient"]

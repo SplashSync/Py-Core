@@ -11,6 +11,11 @@
 #  file that was distributed with this source code.
 #
 
-"""Widgets and blocks factory (milestone 2)."""
+"""Widgets: information blocks shown in Splash."""
 
 from __future__ import annotations
+
+from splashpy.widgets.base import BaseWidget, WidgetRender, WidgetSize
+from splashpy.widgets.blocks import BlocksFactory
+
+__all__ = ["BaseWidget", "BlocksFactory", "WidgetRender", "WidgetSize"]

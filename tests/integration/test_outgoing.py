@@ -24,6 +24,7 @@ from splashpy import SplashClient, SplashConfig
 from splashpy.dictionary import SplObjectMethods, SplOperations, SplServices
 from splashpy.protocol import MessageCodec, soap
 from splashpy.transport import TransportError
+from tests.support import Memory
 
 
 class FakeSplashServer:
@@ -60,10 +61,14 @@ class DownTransport:
 
 
 def make_client(config: SplashConfig, transport: Any, **settings: Any) -> SplashClient:
-    """Build a client on a transport."""
+    """Build a client on a transport, exposing a ThirdParty object."""
+
+    class ThirdParty(Memory):
+        pass
+
     if settings:
         config = SplashConfig(**{**config.__dict__, **settings})
-    return SplashClient(config, transport=transport)
+    return SplashClient(config, objects=[ThirdParty()], transport=transport)
 
 
 def test_ping(config: SplashConfig) -> None:

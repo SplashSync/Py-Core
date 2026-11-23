@@ -51,7 +51,6 @@ e2e:
         - docker network inspect splashsync > /dev/null 2>&1 || docker network create splashsync --attachable
         - docker compose up -d --build --wait
         - docker compose exec -T toolkit php vendor/bin/phpunit -c phpunit.xml.dist --testsuite Validator
-            --filter 'A01PingTest|A02ConnectTest|A05SelfTestsTest|A06InfosTest'
     after_script:
         - docker compose logs --no-color > e2e.log || true
         - docker compose down -v || true

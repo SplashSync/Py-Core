@@ -63,7 +63,7 @@ def test_connect_rejects_wrong_encryption(call_server: CallServer) -> None:
 
 
 def test_admin_tasks(call_server: CallServer, codec: MessageCodec) -> None:
-    """Admin tasks answer like Php-Core; empty lists are failures."""
+    """Admin tasks answer like Php-Core."""
     payload = admin_tasks(
         SplAdminMethods.INFOS, SplAdminMethods.SELF_TEST, SplAdminMethods.OBJECTS, SplAdminMethods.WIDGETS, "unknown"
     )
@@ -74,14 +74,23 @@ def test_admin_tasks(call_server: CallServer, codec: MessageCodec) -> None:
     assert tasks["array-1"]["data"]["shortdesc"].startswith("Splash Python Faker")
     assert tasks["array-1"]["id"] == "1"
     assert tasks["array-2"]["result"] == "1"
-    assert tasks["array-3"]["result"] == "0"
-    assert tasks["array-4"]["result"] == "0"
+    assert list(tasks["array-3"]["data"].values()) == ["short", "simple", "list", "primary", "image", "file"]
+    assert tasks["array-4"]["data"] == {"string-0": "FakerInfos", "string-1": "FakerCharts"}
     assert tasks["array-5"]["result"] == "0"
     assert data["tasksinfos"]["Performed"] == "5"
-    assert data["tasksinfos"]["Ok"] == "2"
+    assert data["tasksinfos"]["Ok"] == "4"
     assert data["result"] == "0"
     assert "Admin - Requested task not found => unknown" in data["log"]["err"].values()
     assert data["log"]["deb"]
+
+
+def test_admin_empty_lists_fail(config: Any, codec: MessageCodec) -> None:
+    """Without objects nor widgets, Admin lists are failures (Php-Core empty() rule)."""
+    client = SplashClient(config)
+    payload = admin_tasks(SplAdminMethods.OBJECTS, SplAdminMethods.WIDGETS)
+    body = soap.build_request(SplServices.ADMIN, (config.ws_id, codec.pack(payload)), "urn:x")
+    data = codec.unpack(soap.parse_response(client.handle(body)) or "")
+    assert [task["result"] for task in data["tasks"].values()] == ["0", "0"]
 
 
 def test_admin_wrong_id(call_server: CallServer, codec: MessageCodec) -> None:
@@ -109,12 +118,12 @@ def test_invalid_task(call_server: CallServer, codec: MessageCodec) -> None:
     assert data["result"] == "0"
 
 
-def test_service_without_router(call_server: CallServer, codec: MessageCodec) -> None:
-    """Services without router (until milestone 2) fail cleanly."""
-    data = decode_response(call_server(SplServices.OBJECTS, admin_tasks("Objects")), codec)
-    assert data is not None
-    assert data["result"] == "0"
-    assert "router doesn't exist" in data["log"]["err"]["string-0"]
+def test_service_with_unknown_router(codec: MessageCodec, config: Any) -> None:
+    """Services without router fail cleanly."""
+    outputs: dict[str, Any] = {}
+    ctx = RequestContext(config=config)
+    assert TaskRunner({}).run("Objects", admin_tasks("Objects"), outputs, ctx) is False
+    assert "router doesn't exist" in ctx.logger.entries("err")[0]
 
 
 def test_router_exception_is_reported(config: Any, codec: MessageCodec) -> None:

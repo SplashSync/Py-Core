@@ -48,6 +48,8 @@ never enabled implicitly.
 |--------------------------------------------------|-------------------------------------------------------------|
 | [Getting started](docs/getting-started.md)       | Install, build a client, serve Splash requests, call Splash |
 | [Configuration](docs/configuration.md)           | Settings and configuration providers                        |
+| [Objects & fields groups](docs/objects.md)       | Objects, ordered fields groups, phases, values, commits     |
+| [Extensions & widgets](docs/extensions.md)       | Extensions registry, hooks, widgets, faker                  |
 | [Project structure](docs/project-structure.md)   | Repository layout, package layers, request flow             |
 | [Wire protocol](docs/protocol.md)                | SOAP envelope, message encoding and encryption              |
 | [Development](docs/development.md)               | Quality tools, tests, golden fixtures, Docker E2E stack, CI |
@@ -59,7 +61,7 @@ never enabled implicitly.
 | Wire protocol (SOAP, XML, encryption)                 | available    |
 | Client, configuration, Admin service, outgoing calls  | available    |
 | WSGI gateway, `splashpy` command line                 | available    |
-| Fields, objects, extensions registry, widgets         | milestone 2  |
+| Fields, objects, extensions registry, widgets, files  | available    |
 | Contracts (templates & scopes), conformance suite     | milestone 3  |
 
 ## Development
@@ -71,6 +73,7 @@ make matrix         # tests on Python 3.9 -> 3.14 (uv)
 make golden         # regenerate golden fixtures with the real Php-Core (Docker)
 make up             # start Splash Toolkit 3.0 + the faker on every Python version (Docker)
 make test           # run the Toolkit 3.0 suites against the fakers
+make manifest       # generate splash.yml, splash.json & swagger.json with the Toolkit
 make stop           # stop the stack
 make prune          # remove containers, volumes & built images
 ```

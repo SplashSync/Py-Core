@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib
 import logging
 import sys
 from socketserver import ThreadingMixIn
@@ -26,6 +27,7 @@ from splashpy.client import SplashClient
 from splashpy.config import ConfigError, EnvConfig, JsonConfig, SplashConfig, resolve
 from splashpy.extensions import Extension
 from splashpy.faker import FAKER_WS_ID, FAKER_WS_KEY, FakerExtension
+from splashpy.objects import PipelineError
 from splashpy.version import __version__
 
 _LOGGER = logging.getLogger("splashpy.cli")
@@ -57,6 +59,11 @@ def build_parser() -> argparse.ArgumentParser:
     serve.add_argument("--path", default=None, help="only serve this path (default: any)")
     serve.add_argument("--config", default=None, help="JSON configuration file (default: SPLASH_* variables)")
     serve.add_argument("--faker", action="store_true", help="enable the faker demo connector (NEVER in production)")
+    describe = commands.add_parser("describe", help="show objects, their resolved fields groups pipeline, and widgets")
+    describe.add_argument("--client", default=None, help="'module:attribute' returning a SplashClient (host apps)")
+    describe.add_argument("--config", default=None, help="JSON configuration file (default: SPLASH_* variables)")
+    describe.add_argument("--faker", action="store_true", help="describe the faker demo connector")
+    describe.add_argument("--order", action="store_true", help="show the fields groups pipeline of each object")
 
     return parser
 
@@ -90,6 +97,46 @@ def serve(args: argparse.Namespace) -> int:
     return 0
 
 
+def load_client(args: argparse.Namespace) -> SplashClient:
+    """Build the client to describe: a host factory, or a client from configuration."""
+    if args.client:
+        module_name, _, attribute = str(args.client).partition(":")
+        target = getattr(importlib.import_module(module_name), attribute or "client")
+        client = target() if callable(target) and not isinstance(target, SplashClient) else target
+        if not isinstance(client, SplashClient):
+            raise ConfigError(f"{args.client} is not a SplashClient.")
+        return client
+    extensions: list[Extension] = [FakerExtension()] if args.faker else []
+    return SplashClient(load_config(args.config, args.faker), extensions=extensions)
+
+
+def describe(args: argparse.Namespace) -> int:
+    """Print objects (and their pipeline) and widgets of a client."""
+    client = load_client(args)
+    ctx = client.new_context()
+    for object_type in client.object_types():
+        handler = client.object_handler(object_type)
+        if handler is None:  # pragma: no cover - listed types always have a handler
+            continue
+        print(f"{object_type} ({handler.origin})")
+        if not args.order:
+            continue
+        for index, step in enumerate(handler.describe_pipeline(ctx), 1):
+            rules = f"priority={step['priority']}"
+            if step["after"]:
+                rules += f" after={','.join(step['after'])}"
+            if step["before"]:
+                rules += f" before={','.join(step['before'])}"
+            print(
+                f"  {index}. {step['code']:<16} {rules:<36} phases={','.join(step['phases'])}"
+                f"  origin={step['origin']}  fields: {', '.join(step['fields'])}"
+            )
+    print(f"Widgets: {', '.join(client.widget_types()) or '-'}")
+    for error in ctx.logger.entries("err"):
+        print(f"ERROR: {error}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Command line entry point."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -98,8 +145,8 @@ def main(argv: list[str] | None = None) -> int:
         print(__version__)
         return 0
     try:
-        return serve(args)
-    except ConfigError as error:
+        return describe(args) if args.command == "describe" else serve(args)
+    except (ConfigError, PipelineError, ImportError, AttributeError) as error:
         _LOGGER.error("Invalid configuration: %s", error)
         return 2
 

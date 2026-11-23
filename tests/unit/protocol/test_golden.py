@@ -15,10 +15,12 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 import pytest
 
+from splashpy.fields import FieldsFactory
 from splashpy.protocol import LegacyCipher, MessageCodec, SoapFault, XmlCodec, soap
 from tests.conftest import load_golden
 
@@ -92,3 +94,29 @@ def test_php_client_decodes_python_response() -> None:
     """PHP SoapClient decoded a PHP response to the same value Python returns."""
     decoded = SOAP["php_client_decode"]
     assert soap.parse_response(decoded["response"]) == decoded["decoded"]
+
+
+FIELDS = load_golden("fields")["cases"]
+
+
+def _snake(name: str) -> str:
+    """Convert a Php-Core method name to its splashpy name."""
+    return re.sub(r"(?<!^)([A-Z])", r"_\1", name).lower()
+
+
+def _empty_as_list(value: Any) -> Any:
+    """Normalize empty containers (PHP encodes empty arrays as lists)."""
+    if isinstance(value, dict):
+        return {key: _empty_as_list(item) for key, item in value.items()} if value else []
+    if isinstance(value, list):
+        return [_empty_as_list(item) for item in value]
+    return value
+
+
+@pytest.mark.parametrize("case", FIELDS, ids=[case["name"] for case in FIELDS])
+def test_fields_definitions_are_identical(case: dict[str, Any]) -> None:
+    """Replaying a FieldsFactory recipe publishes exactly what Php-Core publishes."""
+    factory = FieldsFactory()
+    for method, *args in case["recipe"]:
+        getattr(factory, _snake(method))(*args)
+    assert _empty_as_list(factory.publish()) == _empty_as_list(case["published"])
