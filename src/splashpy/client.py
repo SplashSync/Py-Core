@@ -26,7 +26,8 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, replace
 from typing import Any
 
-from splashpy.config import ConfigProvider, SplashConfig, resolve
+from splashpy.config import ConfigError, ConfigProvider, SplashConfig, resolve
+from splashpy.contracts import default_catalog
 from splashpy.core.context import RequestContext, php_truthy
 from splashpy.core.info import ClientInfo, server_info
 from splashpy.dictionary import SplFilesMethods, SplObjectMethods, SplServices
@@ -105,6 +106,7 @@ class SplashClient:
         self._info = info or ClientInfo()
         self._transport = transport or UrllibTransport(self.config.http_user, self.config.http_password)
         self._codec = MessageCodec(self.config.ws_key, self.config.ws_id)
+        self._check_scopes()
         self._objects = self._build_objects(objects)
         self._widgets = self._build_widgets(widgets)
         self._commits = CommitsManager(lambda: self._objects, self.extensions)
@@ -234,6 +236,19 @@ class SplashClient:
     # ====================================================================#
     # Objects & Widgets Registration
     # ====================================================================#
+
+    def _check_scopes(self) -> None:
+        """Check the scopes declared in client information exist in the contracts catalog.
+
+        :raises ConfigError: when a declared scope is unknown.
+        """
+        info = self._info
+        for extension in self.extensions:
+            info = extension.client_info(info)
+        known = default_catalog().scopes
+        unknown = [code for code in info.scopes if code not in known]
+        if unknown:
+            raise ConfigError(f"Unknown scopes declared in client information: {', '.join(unknown)}")
 
     def _build_objects(self, objects: Iterable[BaseObject | type[BaseObject]]) -> dict[str, ObjectHandler]:
         """Register objects: host ones, then extensions ones (highest priority wins a type).

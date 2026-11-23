@@ -1330,6 +1330,607 @@
             }
         },
         {
+            "name": "template_apply",
+            "recipe": [
+                [
+                    "create",
+                    "varchar",
+                    "civility"
+                ],
+                [
+                    "template",
+                    "Splash.Templates.ThirdParty.Profile.CivilityType"
+                ],
+                [
+                    "create",
+                    "varchar",
+                    "billing_zip",
+                    "Zip"
+                ],
+                [
+                    "template",
+                    "Splash.Templates.Accounting.Billing.PostalCode"
+                ]
+            ],
+            "published": {
+                "civility": {
+                    "type": "varchar",
+                    "id": "civility",
+                    "name": "Civility Type",
+                    "desc": "Normalized Civility Type",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/Person",
+                    "itemprop": "gender",
+                    "tag": "bdde51df5ea6f5777e6c085cc14c1c94",
+                    "choices": [
+                        {
+                            "key": "male",
+                            "value": "Male"
+                        },
+                        {
+                            "key": "female",
+                            "value": "Female"
+                        },
+                        {
+                            "key": "neutral",
+                            "value": "Non Binary"
+                        }
+                    ],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.ThirdParty.Profile.CivilityType"
+                    },
+                    "notest": false
+                },
+                "billing_zip": {
+                    "type": "varchar",
+                    "id": "billing_zip",
+                    "name": "[BA] Postal Code",
+                    "desc": "Billing :Postal Code",
+                    "group": "Billing",
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "https://schema.org/billingAddress",
+                    "itemprop": "postalCode",
+                    "tag": "75e6c3822d59fff0dc7cc0c44174fa4e",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "maxLength": 15,
+                        "tmpl": "Splash.Templates.Accounting.Billing.PostalCode"
+                    },
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "template_create",
+            "recipe": [
+                [
+                    "createFromTemplate",
+                    "billing_name",
+                    "Splash.Templates.Accounting.Billing.Name"
+                ],
+                [
+                    "createFromTemplate",
+                    "billing_alias",
+                    "Splash.Templates.Accounting.Billing.AlternateName",
+                    "Alias"
+                ],
+                [
+                    "createFromTemplate",
+                    "admin_url",
+                    "Splash.Templates.Common.Links.AdminUrl"
+                ],
+                [
+                    "createFromTemplate",
+                    "presence",
+                    "Splash.Templates.Common.Sync.Presence"
+                ],
+                [
+                    "createFromTemplate",
+                    "country_name",
+                    "Splash.Templates.Accounting.Billing.CountryName"
+                ],
+                [
+                    "createFromTemplate",
+                    "billing_address",
+                    "Splash.Templates.Accounting.Core.BillingAddress"
+                ]
+            ],
+            "published": {
+                "billing_name": {
+                    "type": "varchar",
+                    "id": "billing_name",
+                    "name": "[BA] Company",
+                    "desc": "Billing :Company",
+                    "group": "Billing",
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": true,
+                    "inlist": true,
+                    "hlist": false,
+                    "log": true,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "https://schema.org/billingAddress",
+                    "itemprop": "legalName",
+                    "tag": "e8b87735b0a5a4e8ccd84a6a5ccde272",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Accounting.Billing.Name"
+                    },
+                    "notest": false
+                },
+                "billing_alias": {
+                    "type": "varchar",
+                    "id": "billing_alias",
+                    "name": "Alias",
+                    "desc": "Billing :Alternative name / Full name",
+                    "group": "Billing",
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "https://schema.org/billingAddress",
+                    "itemprop": "alternateName",
+                    "tag": "816faa34d0590556b30120234634505a",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Accounting.Billing.AlternateName"
+                    },
+                    "notest": false
+                },
+                "admin_url": {
+                    "type": "url",
+                    "id": "admin_url",
+                    "name": "Admin URL",
+                    "desc": "Back-office page of the object on this application",
+                    "group": "Meta",
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "export",
+                    "itemtype": "http://schema.org/Thing",
+                    "itemprop": "adminUrl",
+                    "tag": "079b20ef89ab29624fbabeb785966007",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Common.Links.AdminUrl"
+                    },
+                    "notest": false
+                },
+                "presence": {
+                    "type": "bool",
+                    "id": "presence",
+                    "name": "Splash Presence",
+                    "desc": "Object presence indicator on remote server",
+                    "group": "Meta",
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "import",
+                    "itemtype": "http://splashync.com/schemas",
+                    "itemprop": "Presence",
+                    "tag": "d87f289be8cb09a2346fb7133d74e159",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Common.Sync.Presence"
+                    },
+                    "notest": true
+                },
+                "country_name": {
+                    "type": "varchar",
+                    "id": "country_name",
+                    "name": "[BA] Country name",
+                    "desc": "Billing :Country name",
+                    "group": "Billing",
+                    "required": false,
+                    "read": true,
+                    "write": false,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "https://schema.org/billingAddress",
+                    "itemprop": "addressCountryName",
+                    "tag": "df7ac90113d41e7898a9ae2fcce7831f",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Accounting.Billing.CountryName"
+                    },
+                    "notest": false
+                },
+                "billing_address": {
+                    "type": "objectid::Address",
+                    "id": "billing_address",
+                    "name": "Billing Address",
+                    "desc": "Billing address of the document",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/Order",
+                    "itemprop": "billingAddress",
+                    "tag": "072a0926008679a2fb0349cacbb1f8fd",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Accounting.Core.BillingAddress"
+                    },
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "template_lists",
+            "recipe": [
+                [
+                    "createFromTemplate",
+                    "description",
+                    "Splash.Templates.Accounting.Items.Description"
+                ],
+                [
+                    "inList",
+                    "lines"
+                ],
+                [
+                    "createFromTemplate",
+                    "type",
+                    "Splash.Templates.Accounting.Items.Type"
+                ],
+                [
+                    "inList",
+                    "lines"
+                ],
+                [
+                    "create",
+                    "inline",
+                    "options"
+                ],
+                [
+                    "inList",
+                    "lines"
+                ],
+                [
+                    "template",
+                    "Splash.Templates.Accounting.Items.Options"
+                ]
+            ],
+            "published": {
+                "description@lines": {
+                    "type": "varchar@list",
+                    "id": "description@lines",
+                    "name": "Description",
+                    "desc": "Line description",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/partOfInvoice",
+                    "itemprop": "description",
+                    "tag": "26aee3b9dc089cabee950e2a12401898",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Accounting.Items.Description"
+                    },
+                    "notest": false
+                },
+                "type@lines": {
+                    "type": "varchar@list",
+                    "id": "type@lines",
+                    "name": "Line Type",
+                    "desc": "Normalized type of the line",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "https://schema.org/OrderItem",
+                    "itemprop": "additionalType",
+                    "tag": "198f2965b4fe6960c5eee170c7ce1642",
+                    "choices": [
+                        {
+                            "key": "product",
+                            "value": "Product / Service"
+                        },
+                        {
+                            "key": "shipping",
+                            "value": "Shipping Charges"
+                        },
+                        {
+                            "key": "fee",
+                            "value": "Fee / Discount"
+                        },
+                        {
+                            "key": "option",
+                            "value": "Optional Line"
+                        },
+                        {
+                            "key": "comment",
+                            "value": "Comment"
+                        }
+                    ],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Accounting.Items.Type"
+                    },
+                    "notest": false
+                },
+                "options@lines": {
+                    "type": "inline@list",
+                    "id": "options@lines",
+                    "name": "Options",
+                    "desc": "Line details (options, attributes, ...)",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": false,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/partOfInvoice",
+                    "itemprop": "options",
+                    "tag": "ac680f77a0c37c04e5015dbe04debe06",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Accounting.Items.Options"
+                    },
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "template_overrides",
+            "recipe": [
+                [
+                    "createFromTemplate",
+                    "civility",
+                    "Splash.Templates.ThirdParty.Profile.CivilityType"
+                ],
+                [
+                    "isReadOnly"
+                ],
+                [
+                    "name",
+                    "My Civility"
+                ],
+                [
+                    "addChoice",
+                    "other",
+                    "Other"
+                ],
+                [
+                    "createFromTemplate",
+                    "zip",
+                    "Splash.Templates.Accounting.Billing.PostalCode"
+                ],
+                [
+                    "isRequired"
+                ],
+                [
+                    "addOption",
+                    "maxLength",
+                    5
+                ]
+            ],
+            "published": {
+                "civility": {
+                    "type": "varchar",
+                    "id": "civility",
+                    "name": "My Civility",
+                    "desc": "Normalized Civility Type",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": false,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/Person",
+                    "itemprop": "gender",
+                    "tag": "bdde51df5ea6f5777e6c085cc14c1c94",
+                    "choices": [
+                        {
+                            "key": "male",
+                            "value": "Male"
+                        },
+                        {
+                            "key": "female",
+                            "value": "Female"
+                        },
+                        {
+                            "key": "neutral",
+                            "value": "Non Binary"
+                        },
+                        {
+                            "key": "other",
+                            "value": "Other"
+                        }
+                    ],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.ThirdParty.Profile.CivilityType"
+                    },
+                    "notest": false
+                },
+                "zip": {
+                    "type": "varchar",
+                    "id": "zip",
+                    "name": "[BA] Postal Code",
+                    "desc": "Billing :Postal Code",
+                    "group": "Billing",
+                    "required": true,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "https://schema.org/billingAddress",
+                    "itemprop": "postalCode",
+                    "tag": "75e6c3822d59fff0dc7cc0c44174fa4e",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "maxLength": 5,
+                        "tmpl": "Splash.Templates.Accounting.Billing.PostalCode"
+                    },
+                    "notest": false
+                }
+            }
+        },
+        {
+            "name": "template_language",
+            "recipe": [
+                [
+                    "setDefaultLanguage",
+                    "fr_FR"
+                ],
+                [
+                    "createFromTemplate",
+                    "civility",
+                    "Splash.Templates.ThirdParty.Profile.CivilityType"
+                ],
+                [
+                    "createFromTemplate",
+                    "billing_name",
+                    "Splash.Templates.Accounting.Billing.Name"
+                ]
+            ],
+            "published": {
+                "civility": {
+                    "type": "varchar",
+                    "id": "civility",
+                    "name": "Type Civil",
+                    "desc": "Type Civil du tier normalis\u00e9",
+                    "group": null,
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": false,
+                    "inlist": false,
+                    "hlist": false,
+                    "log": false,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "http://schema.org/Person",
+                    "itemprop": "gender",
+                    "tag": "bdde51df5ea6f5777e6c085cc14c1c94",
+                    "choices": [
+                        {
+                            "key": "male",
+                            "value": "Male"
+                        },
+                        {
+                            "key": "female",
+                            "value": "Female"
+                        },
+                        {
+                            "key": "neutral",
+                            "value": "Non Binary"
+                        }
+                    ],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.ThirdParty.Profile.CivilityType"
+                    },
+                    "notest": false
+                },
+                "billing_name": {
+                    "type": "varchar",
+                    "id": "billing_name",
+                    "name": "[FA] Soci\u00e9t\u00e9",
+                    "desc": "Facturation : Soci\u00e9t\u00e9",
+                    "group": "Billing",
+                    "required": false,
+                    "read": true,
+                    "write": true,
+                    "index": true,
+                    "inlist": true,
+                    "hlist": false,
+                    "log": true,
+                    "primary": false,
+                    "syncmode": "both",
+                    "itemtype": "https://schema.org/billingAddress",
+                    "itemprop": "legalName",
+                    "tag": "e8b87735b0a5a4e8ccd84a6a5ccde272",
+                    "choices": [],
+                    "asso": [],
+                    "options": {
+                        "tmpl": "Splash.Templates.Accounting.Billing.Name"
+                    },
+                    "notest": false
+                }
+            }
+        },
+        {
             "name": "invalid",
             "recipe": [
                 [
@@ -1411,5 +2012,283 @@
                 }
             }
         }
-    ]
+    ],
+    "templates": {
+        "Splash.Templates.ThirdParty.Profile.CivilityType": {
+            "code": "Splash.Templates.ThirdParty.Profile.CivilityType",
+            "config": {
+                "type": "varchar",
+                "choices": {
+                    "male": "Male",
+                    "female": "Female",
+                    "neutral": "Non Binary"
+                },
+                "itemtype": "http://schema.org/Person",
+                "itemprop": "gender"
+            },
+            "name": {
+                "en_US": "Civility Type",
+                "fr_FR": "Type Civil",
+                "it_IT": "Tipo Civile",
+                "es_ES": "Tipo Civil",
+                "de_DE": "Anredeform"
+            },
+            "desc": {
+                "en_US": "Normalized Civility Type",
+                "fr_FR": "Type Civil du tier normalis\u00e9",
+                "it_IT": "Tipo civile normalizzato del terzo",
+                "es_ES": "Tipo civil normalizado del tercero",
+                "de_DE": "Normalisierte Anredeform des Kontakts"
+            }
+        },
+        "Splash.Templates.Accounting.Billing.PostalCode": {
+            "code": "Splash.Templates.Accounting.Billing.PostalCode",
+            "config": {
+                "type": "varchar",
+                "group": "Billing",
+                "itemtype": "https://schema.org/billingAddress",
+                "itemprop": "postalCode",
+                "options": {
+                    "maxLength": 15
+                },
+                "required": false
+            },
+            "name": {
+                "en_US": "[BA] Postal Code",
+                "fr_FR": "[FA] Code Postal",
+                "it_IT": "[FA] CAP",
+                "es_ES": "[FA] C\u00f3digo Postal",
+                "de_DE": "[RC] Postleitzahl"
+            },
+            "desc": {
+                "en_US": "Billing :Postal Code",
+                "fr_FR": "Facturation : Code Postal",
+                "it_IT": "Fatturazione : CAP",
+                "es_ES": "Facturaci\u00f3n : C\u00f3digo Postal",
+                "de_DE": "Rechnung : Postleitzahl"
+            }
+        },
+        "Splash.Templates.Accounting.Billing.Name": {
+            "code": "Splash.Templates.Accounting.Billing.Name",
+            "config": {
+                "type": "varchar",
+                "required": false,
+                "index": true,
+                "inlist": true,
+                "log": true,
+                "itemtype": "https://schema.org/billingAddress",
+                "itemprop": "legalName",
+                "group": "Billing"
+            },
+            "name": {
+                "en_US": "[BA] Company",
+                "fr_FR": "[FA] Soci\u00e9t\u00e9",
+                "it_IT": "[FA] Societ\u00e0",
+                "es_ES": "[FA] Empresa",
+                "de_DE": "[RC] Firma"
+            },
+            "desc": {
+                "en_US": "Billing :Company",
+                "fr_FR": "Facturation : Soci\u00e9t\u00e9",
+                "it_IT": "Fatturazione : Societ\u00e0",
+                "es_ES": "Facturaci\u00f3n : Empresa",
+                "de_DE": "Rechnung : Firma"
+            }
+        },
+        "Splash.Templates.Accounting.Billing.AlternateName": {
+            "code": "Splash.Templates.Accounting.Billing.AlternateName",
+            "config": {
+                "type": "varchar",
+                "itemtype": "https://schema.org/billingAddress",
+                "itemprop": "alternateName",
+                "group": "Billing",
+                "required": false
+            },
+            "name": {
+                "en_US": "[BA] Alternative name / Full name",
+                "fr_FR": "[FA] Nom Alternatif / Complet",
+                "it_IT": "[FA] Nome Alternativo / Completo",
+                "es_ES": "[FA] Nombre Alternativo / Completo",
+                "de_DE": "[RC] Alternativname / Vollst\u00e4ndiger Name"
+            },
+            "desc": {
+                "en_US": "Billing :Alternative name / Full name",
+                "fr_FR": "Facturation : Nom Alternatif / Complet",
+                "it_IT": "Fatturazione : Nome Alternativo / Completo",
+                "es_ES": "Facturaci\u00f3n : Nombre Alternativo / Completo",
+                "de_DE": "Rechnung : Alternativname / Vollst\u00e4ndiger Name"
+            }
+        },
+        "Splash.Templates.Common.Links.AdminUrl": {
+            "code": "Splash.Templates.Common.Links.AdminUrl",
+            "config": {
+                "type": "url",
+                "itemtype": "http://schema.org/Thing",
+                "itemprop": "adminUrl",
+                "group": "Meta",
+                "syncmode": "export"
+            },
+            "name": {
+                "en_US": "Admin URL",
+                "fr_FR": "URL Admin",
+                "it_IT": "URL Admin",
+                "es_ES": "URL Admin",
+                "de_DE": "Admin-URL"
+            },
+            "desc": {
+                "en_US": "Back-office page of the object on this application",
+                "fr_FR": "Page back-office de l'objet sur cette application",
+                "it_IT": "Pagina back-office dell'oggetto su questa applicazione",
+                "es_ES": "P\u00e1gina de back-office del objeto en esta aplicaci\u00f3n",
+                "de_DE": "Back-Office-Seite des Objekts in dieser Anwendung"
+            }
+        },
+        "Splash.Templates.Common.Sync.Presence": {
+            "code": "Splash.Templates.Common.Sync.Presence",
+            "config": {
+                "type": "bool",
+                "itemtype": "http://splashync.com/schemas",
+                "itemprop": "Presence",
+                "group": "Meta",
+                "syncmode": "import",
+                "notest": true
+            },
+            "name": {
+                "en_US": "Splash Presence",
+                "fr_FR": "Pr\u00e9sence Splash",
+                "it_IT": "Presenza Splash",
+                "es_ES": "Presencia Splash",
+                "de_DE": "Splash-Pr\u00e4senz"
+            },
+            "desc": {
+                "en_US": "Object presence indicator on remote server",
+                "fr_FR": "Indicateur de pr\u00e9sence de l'objet sur le serveur distant",
+                "it_IT": "Indicatore di presenza dell'oggetto sul server remoto",
+                "es_ES": "Indicador de presencia del objeto en el servidor remoto",
+                "de_DE": "Pr\u00e4senzanzeige des Objekts auf dem Remote-Server"
+            }
+        },
+        "Splash.Templates.Accounting.Billing.CountryName": {
+            "code": "Splash.Templates.Accounting.Billing.CountryName",
+            "config": {
+                "type": "varchar",
+                "group": "Billing",
+                "write": false,
+                "itemtype": "https://schema.org/billingAddress",
+                "itemprop": "addressCountryName",
+                "required": false
+            },
+            "name": {
+                "en_US": "[BA] Country name",
+                "fr_FR": "[FA] Nom du pays",
+                "it_IT": "[FA] Nome del Paese",
+                "es_ES": "[FA] Nombre del Pa\u00eds",
+                "de_DE": "[RC] L\u00e4ndername"
+            },
+            "desc": {
+                "en_US": "Billing :Country name",
+                "fr_FR": "Facturation : Nom du pays",
+                "it_IT": "Fatturazione : Nome del Paese",
+                "es_ES": "Facturaci\u00f3n : Nombre del Pa\u00eds",
+                "de_DE": "Rechnung : L\u00e4ndername"
+            }
+        },
+        "Splash.Templates.Accounting.Core.BillingAddress": {
+            "code": "Splash.Templates.Accounting.Core.BillingAddress",
+            "config": {
+                "type": "objectid::Address",
+                "itemtype": "http://schema.org/Order",
+                "itemprop": "billingAddress"
+            },
+            "name": {
+                "en_US": "Billing Address",
+                "fr_FR": "Adresse de facturation",
+                "it_IT": "Indirizzo di fatturazione",
+                "es_ES": "Direcci\u00f3n de facturaci\u00f3n",
+                "de_DE": "Rechnungsadresse"
+            },
+            "desc": {
+                "en_US": "Billing address of the document",
+                "fr_FR": "Adresse de facturation du document",
+                "it_IT": "Indirizzo di fatturazione del documento",
+                "es_ES": "Direcci\u00f3n de facturaci\u00f3n del documento",
+                "de_DE": "Rechnungsadresse des Dokuments"
+            }
+        },
+        "Splash.Templates.Accounting.Items.Description": {
+            "code": "Splash.Templates.Accounting.Items.Description",
+            "config": {
+                "type": "varchar@list",
+                "itemtype": "http://schema.org/partOfInvoice",
+                "itemprop": "description"
+            },
+            "name": {
+                "en_US": "Description",
+                "fr_FR": "Description",
+                "it_IT": "Descrizione",
+                "es_ES": "Descripci\u00f3n",
+                "de_DE": "Beschreibung"
+            },
+            "desc": {
+                "en_US": "Line description",
+                "fr_FR": "Description de la ligne",
+                "it_IT": "Descrizione della riga",
+                "es_ES": "Descripci\u00f3n de la l\u00ednea",
+                "de_DE": "Beschreibung der Zeile"
+            }
+        },
+        "Splash.Templates.Accounting.Items.Type": {
+            "code": "Splash.Templates.Accounting.Items.Type",
+            "config": {
+                "type": "varchar@list",
+                "choices": {
+                    "product": "Product / Service",
+                    "shipping": "Shipping Charges",
+                    "fee": "Fee / Discount",
+                    "option": "Optional Line",
+                    "comment": "Comment"
+                },
+                "itemtype": "https://schema.org/OrderItem",
+                "itemprop": "additionalType"
+            },
+            "name": {
+                "en_US": "Line Type",
+                "fr_FR": "Type de ligne",
+                "it_IT": "Tipo di riga",
+                "es_ES": "Tipo de l\u00ednea",
+                "de_DE": "Zeilentyp"
+            },
+            "desc": {
+                "en_US": "Normalized type of the line",
+                "fr_FR": "Type normalis\u00e9 de la ligne",
+                "it_IT": "Tipo normalizzato della riga",
+                "es_ES": "Tipo normalizado de la l\u00ednea",
+                "de_DE": "Normalisierter Typ der Zeile"
+            }
+        },
+        "Splash.Templates.Accounting.Items.Options": {
+            "code": "Splash.Templates.Accounting.Items.Options",
+            "config": {
+                "type": "inline@list",
+                "itemtype": "http://schema.org/partOfInvoice",
+                "itemprop": "options",
+                "read": true,
+                "write": false
+            },
+            "name": {
+                "en_US": "Options",
+                "fr_FR": "Options",
+                "it_IT": "Opzioni",
+                "es_ES": "Opciones",
+                "de_DE": "Optionen"
+            },
+            "desc": {
+                "en_US": "Line details (options, attributes, ...)",
+                "fr_FR": "D\u00e9tails de la ligne (options, attributs, ...)",
+                "it_IT": "Dettagli della riga (opzioni, attributi, ...)",
+                "es_ES": "Detalles de la l\u00ednea (opciones, atributos, ...)",
+                "de_DE": "Details der Zeile (Optionen, Attribute, ...)"
+            }
+        }
+    }
 }

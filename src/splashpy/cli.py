@@ -11,7 +11,7 @@
 #  file that was distributed with this source code.
 #
 
-"""``splashpy`` command line: ``version`` and ``serve`` (demo / development server)."""
+"""``splashpy`` command line: ``version``, ``serve`` (development server), ``describe`` and ``contracts``."""
 
 from __future__ import annotations
 
@@ -26,6 +26,8 @@ from wsgiref.simple_server import WSGIRequestHandler, WSGIServer, make_server
 from splashpy.adapters import SplashWsgiApp
 from splashpy.client import SplashClient
 from splashpy.config import ConfigError, EnvConfig, JsonConfig, SplashConfig, resolve
+from splashpy.contracts import ContractsError, ContractsProvider, FileCache, update
+from splashpy.dictionary import SplContracts
 from splashpy.extensions import Extension
 from splashpy.faker import FAKER_WS_ID, FAKER_WS_KEY, FakerExtension
 from splashpy.faker.http import FakerFilesApp
@@ -69,6 +71,10 @@ def build_parser() -> argparse.ArgumentParser:
     describe.add_argument("--config", default=None, help="JSON configuration file (default: SPLASH_* variables)")
     describe.add_argument("--faker", action="store_true", help="describe the faker demo connector")
     describe.add_argument("--order", action="store_true", help="show the fields groups pipeline of each object")
+    contracts = commands.add_parser("contracts", help="field templates & scopes catalog (Php-Scopes)")
+    contracts.add_argument("action", choices=("show", "update"), help="show the catalog in use, or update the cache")
+    contracts.add_argument("--version", default=SplContracts.VERSION, help="registry version (default: latest)")
+    contracts.add_argument("--cache", default=None, help="cache directory (default: ~/.cache/splashpy/contracts)")
 
     return parser
 
@@ -144,6 +150,24 @@ def describe(args: argparse.Namespace) -> int:
     return 0
 
 
+def contracts(args: argparse.Namespace) -> int:
+    """Show the contracts catalog in use, or download the latest one into the cache."""
+    cache = FileCache(args.cache)
+    if args.action == "update":
+        try:
+            result = update(cache, args.version)
+        except ContractsError as error:
+            _LOGGER.error("Contracts update failed, current catalog kept: %s", error)
+            return 1
+        state = "updated" if result.updated else "already up to date"
+        print(f"Contracts catalog {state}: {result.version} ({result.commit}) in {cache.path}")
+        return 0
+    catalog = ContractsProvider(cache).catalog()
+    print(f"Contracts catalog: {catalog.origin} {catalog.version} ({catalog.commit})")
+    print(f"Templates: {len(catalog.templates)}, scopes: {len(catalog.scopes)}, cache: {cache.path}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Command line entry point."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -151,9 +175,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "version":
         print(__version__)
         return 0
+    if args.command == "contracts":
+        return contracts(args)
     try:
         return describe(args) if args.command == "describe" else serve(args)
-    except (ConfigError, PipelineError, ImportError, AttributeError) as error:
+    except (ConfigError, ContractsError, PipelineError, ImportError, AttributeError) as error:
         _LOGGER.error("Invalid configuration: %s", error)
         return 2
 

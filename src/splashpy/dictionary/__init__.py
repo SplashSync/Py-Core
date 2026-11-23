@@ -15,6 +15,7 @@
 
 from __future__ import annotations
 
+from splashpy.dictionary.contracts import SplContracts
 from splashpy.dictionary.definition import SplDefinition
 from splashpy.dictionary.formats import SplFormats
 from splashpy.dictionary.methods import (
@@ -28,6 +29,7 @@ from splashpy.dictionary.services import SplServices
 
 __all__ = [
     "SplAdminMethods",
+    "SplContracts",
     "SplDefinition",
     "SplFilesMethods",
     "SplFormats",

@@ -81,11 +81,12 @@ Php-Core faker types:
 | Type      | Content                                                                         |
 |-----------|---------------------------------------------------------------------------------|
 | `short`   | a varchar and a bool, only to check the synchronization works                   |
-| `simple`  | every field type but images & files: basic, advanced (price, inlines with and without choices, link to `short`) and translated fields |
-| `list`    | a list of basic types: bool, varchar, double, price                             |
+| `simple`  | every field type but images & files: basic, advanced (price, inlines with and without choices, link to `short`), translated and templated fields |
+| `list`    | a list of basic types: bool, varchar, double, price, plus templated list fields |
 | `primary` | the only object with a primary key                                              |
 | `image`   | two images                                                                      |
 | `file`    | one file                                                                        |
+| `ThirdParty` | built from templates only, declares the `ThirdParty.Provider` scope          |
 
 Plus two widgets. It is for development and tests only: enable it with
 `splashpy serve --faker` or by name (`faker`), never in production.

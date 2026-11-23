@@ -17,7 +17,8 @@ from __future__ import annotations
 
 import hashlib
 import re
-from typing import Any, Final
+from collections.abc import Mapping
+from typing import Any, Callable, Final
 
 from splashpy.dictionary import SplFormats
 from splashpy.fields.helpers import Inline, Lists
@@ -212,6 +213,34 @@ class ObjectField:
         return self
 
     # ====================================================================#
+    # Bulk Update
+    # ====================================================================#
+
+    def update(self, values: Mapping[str, Any]) -> ObjectField:
+        """Update the definition from raw properties (mirror of Php-Core ``AbstractField::update()``).
+
+        Used to apply field templates: only valid values are applied, missing keys are kept.
+        """
+        _update_string(values, "type", lambda value: setattr(self, "type", value))
+        _update_string(values, "name", self.set_name)
+        _update_string(values, "desc", self.set_desc)
+        _update_string(values, "group", self.set_group)
+        _update_bool(values, "required", lambda value: setattr(self, "required", value))
+        _update_bool(values, "read", lambda value: setattr(self, "read", value))
+        _update_bool(values, "write", lambda value: setattr(self, "write", value))
+        _update_bool(values, "index", lambda value: setattr(self, "index", value))
+        _update_bool(values, "primary", self.set_primary)
+        _update_bool(values, "log", lambda value: setattr(self, "logged", value))
+        _update_string(values, "syncmode", self.set_sync_mode)
+        _update_bool(values, "inlist", lambda value: setattr(self, "listed", value))
+        _update_bool(values, "hlist", lambda value: setattr(self, "list_hidden", value))
+        self._update_metadata(values)
+        self._update_options(values)
+        self._update_choices(values)
+        self._update_tests(values)
+        return self
+
+    # ====================================================================#
     # Validation & Export
     # ====================================================================#
 
@@ -262,6 +291,46 @@ class ObjectField:
         """Check a language code length (2 to 5 characters)."""
         return 2 <= len(iso_code or "") <= 5
 
+    def _update_metadata(self, values: Mapping[str, Any]) -> None:
+        """Update microdata (then the tag, only when none is set)."""
+        item_type = values.get("itemtype", self.item_type)
+        item_prop = values.get("itemprop", self.item_prop)
+        valid = _is_scalar_or_none(item_type) and _is_scalar_or_none(item_prop)
+        if valid and (item_type != self.item_type or item_prop != self.item_prop):
+            self.set_micro_data(_php_string(item_type), _php_string(item_prop))
+        if not self.tag and "tag" in values:
+            _update_string(values, "tag", lambda value: setattr(self, "tag", value))
+
+    def _update_options(self, values: Mapping[str, Any]) -> None:
+        """Add options with a non empty key and a truthy scalar value."""
+        options = values.get("options")
+        if isinstance(options, Mapping):
+            for key, value in options.items():
+                if key and value and isinstance(key, str) and _is_scalar(value):
+                    self.add_option(key, value)
+
+    def _update_choices(self, values: Mapping[str, Any]) -> None:
+        """Replace choices: ``{value: label}`` or ``[{key, value}]`` items."""
+        choices = values.get("choices")
+        if not isinstance(choices, (Mapping, list)):
+            return
+        self.choices = []
+        items = choices.items() if isinstance(choices, Mapping) else enumerate(choices)
+        for key, choice in items:
+            if key and choice and isinstance(key, str) and isinstance(choice, str):
+                self.add_choice(key, choice)
+            if isinstance(choice, Mapping):
+                struct_key, struct_value = choice.get("key"), choice.get("value")
+                if struct_key and struct_value and isinstance(struct_key, str) and isinstance(struct_value, str):
+                    self.add_choice(struct_key, struct_value)
+
+    def _update_tests(self, values: Mapping[str, Any]) -> None:
+        """Replace associations, update the not tested flag."""
+        associations = values.get("asso")
+        if isinstance(associations, (list, tuple)):
+            self.set_associations([value for value in associations if value and isinstance(value, str)])
+        _update_bool(values, "notest", lambda value: setattr(self, "not_tested", value))
+
     def _filter_tags(self, tags: list[Any]) -> list[str]:
         """Keep valid, unique tags, different from the own tag."""
         unique: dict[str, None] = {}
@@ -269,3 +338,39 @@ class ObjectField:
             if isinstance(tag, str) and _TAG.match(tag) and tag != self.tag:
                 unique[tag] = None
         return list(unique)
+
+
+def _update_string(values: Mapping[str, Any], key: str, setter: Callable[[str], Any]) -> None:
+    """Apply a non empty string value (Php-Core ``updateStringValue``)."""
+    value = values.get(key)
+    if value and isinstance(value, str):
+        setter(value)
+
+
+def _update_bool(values: Mapping[str, Any], key: str, setter: Callable[[bool], Any]) -> None:
+    """Apply a scalar value as a boolean (Php-Core ``updateBooleanValue``)."""
+    value = values.get(key)
+    if value is not None and _is_scalar(value):
+        setter(_php_bool(value))
+
+
+def _is_scalar(value: Any) -> bool:
+    """PHP ``is_scalar()``."""
+    return isinstance(value, (str, int, float, bool))
+
+
+def _is_scalar_or_none(value: Any) -> bool:
+    """PHP ``is_null() || is_scalar()``."""
+    return value is None or _is_scalar(value)
+
+
+def _php_string(value: Any) -> str:
+    """PHP ``(string)`` cast of a scalar or null."""
+    if value is None or value is False:
+        return ""
+    return "1" if value is True else str(value)
+
+
+def _php_bool(value: Any) -> bool:
+    """PHP ``(bool)`` cast of a scalar."""
+    return value not in ("", "0", 0, 0.0, False)

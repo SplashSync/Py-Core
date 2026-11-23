@@ -20,10 +20,13 @@ requests or threads.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from splashpy.fields.field import ObjectField, clean
-from splashpy.fields.types import SyncMode
+from splashpy.fields.types import FieldConstraints, FieldType, SyncMode
+
+if TYPE_CHECKING:
+    from splashpy.contracts import Catalog
 
 
 class FieldsFactory:
@@ -33,8 +36,12 @@ class FieldsFactory:
     # Constructor
     # ====================================================================#
 
-    def __init__(self) -> None:
-        """Create an empty factory."""
+    def __init__(self, catalog: Catalog | None = None) -> None:
+        """Create an empty factory.
+
+        :param catalog: contracts catalog for field templates (the default catalog when None).
+        """
+        self._catalog = catalog
         self._fields: dict[str, ObjectField] = {}
         self._current: ObjectField | None = None
         self._default_language: str | None = None
@@ -51,6 +58,30 @@ class FieldsFactory:
         if field_name:
             self._current.set_name(field_name)
         return self
+
+    def create_from_template(self, field_id: str, template: str, field_name: str | None = None) -> FieldsFactory:
+        """Start a new field from a template (Php-Core ``createFromTemplate()``).
+
+        :raises ContractsError: when the template is unknown.
+        """
+        self.create(FieldType.VARCHAR, field_id).template(template)
+        if field_name:
+            self.name(field_name)
+        return self
+
+    def template(self, template: str) -> FieldsFactory:
+        """Apply a field template to the current field (Php-Core ``template()``).
+
+        Type, metadata, flags, choices and options of the template are applied, with its name and
+        description in the factory default language; the ``tmpl`` option records the template code.
+
+        :raises ContractsError: when the template is unknown (an explicit error when the client is built).
+        """
+        from splashpy.contracts import default_catalog
+
+        catalog = self._catalog or default_catalog()
+        config = catalog.template_config(template, self._default_language)
+        return self._apply(lambda field: field.update(config).add_option(FieldConstraints.TEMPLATE, template))
 
     def identifier(self, field_id: str) -> FieldsFactory:
         """Set the identifier."""

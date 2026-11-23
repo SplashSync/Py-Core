@@ -21,6 +21,7 @@ from typing import Any
 import pytest
 
 from splashpy import SplashClient, SplashConfig
+from splashpy.contracts import Catalog
 from splashpy.core.context import RequestContext
 from splashpy.fields import FieldsFactory
 from splashpy.protocol import LegacyCipher, MessageCodec, SoapFault, XmlCodec, soap
@@ -100,6 +101,8 @@ def test_php_client_decodes_python_response() -> None:
 
 
 FIELDS = load_golden("fields")["cases"]
+TEMPLATES = Catalog({}, load_golden("fields")["templates"], {}, "golden")
+"""Field templates exported by Php-Core, as a catalog."""
 
 
 def _snake(name: str) -> str:
@@ -119,7 +122,7 @@ def _empty_as_list(value: Any) -> Any:
 @pytest.mark.parametrize("case", FIELDS, ids=[case["name"] for case in FIELDS])
 def test_fields_definitions_are_identical(case: dict[str, Any]) -> None:
     """Replaying a FieldsFactory recipe publishes exactly what Php-Core publishes."""
-    factory = FieldsFactory()
+    factory = FieldsFactory(TEMPLATES)
     for method, *args in case["recipe"]:
         getattr(factory, _snake(method))(*args)
     assert _empty_as_list(factory.publish()) == _empty_as_list(case["published"])

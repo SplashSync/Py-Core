@@ -8,7 +8,9 @@
             "shortdesc": "Splash Python Faker 3.0.0.dev0",
             "longdesc": "Demo connector of splashpy, for development and tests only.",
             "logourl": "",
-            "scopes": "",
+            "scopes": {
+                "string-0": "Splash.Scopes.ThirdParty.Provider"
+            },
             "servertype": "Splash Python Faker",
             "serverurl": "https://www.splashsync.com",
             "moduleauthor": "Splash Official <www.splashsync.com>",
@@ -39,6 +41,10 @@
         {
             "name": "File",
             "description": "- **Type:** `file`\n- **Icon:** `fa fa-file`\n\nFaker object with a file\n\n### Configuration\n\n| Action | Allowed | Push | Pull |\n|--------|:-------:|:----:|:----:|\n| Create | \u2705 | \u2705 | \u2705 |\n| Update | \u2705 | \u2705 | \u2705 |\n| Delete | \u2705 | \u2705 | \u2705 |\n\n<SchemaDefinition schemaRef=\"#/components/schemas/file\" />"
+        },
+        {
+            "name": "ThirdParty",
+            "description": "- **Type:** `ThirdParty`\n- **Icon:** `fa fa-user`\n\nFaker third party, built from contracts templates\n\n### Configuration\n\n| Action | Allowed | Push | Pull |\n|--------|:-------:|:----:|:----:|\n| Create | \u2705 | \u2705 | \u2705 |\n| Update | \u2705 | \u2705 | \u2705 |\n| Delete | \u2705 | \u2705 | \u2705 |\n\n<SchemaDefinition schemaRef=\"#/components/schemas/ThirdParty\" />"
         }
     ],
     "paths": {
@@ -1319,6 +1325,219 @@
                     }
                 }
             }
+        },
+        "/thirdparty/list": {
+            "post": {
+                "tags": [
+                    "ThirdParty"
+                ],
+                "summary": "List ThirdParty",
+                "operationId": "listThirdParty",
+                "description": "Read objects list \u2014 rows only carry fields flagged `In List`.\n\nThe server appends a `meta` entry to the result: `{ total, current }` counters.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "filters": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Text filter applied on searchable fields"
+                                    },
+                                    "params": {
+                                        "type": "object",
+                                        "properties": {
+                                            "max": {
+                                                "type": "integer",
+                                                "description": "Maximum number of results"
+                                            },
+                                            "offset": {
+                                                "type": "integer",
+                                                "description": "List start offset"
+                                            },
+                                            "sortfield": {
+                                                "type": "string",
+                                                "description": "Field id used to sort the list"
+                                            },
+                                            "sortorder": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ASC",
+                                                    "DESC"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ThirdPartyListItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/thirdparty/get": {
+            "post": {
+                "tags": [
+                    "ThirdParty"
+                ],
+                "summary": "Read ThirdParty",
+                "operationId": "getThirdParty",
+                "description": "Read object data \u2014 only requested fields are returned.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Ids of the fields to read"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ThirdParty"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/thirdparty/set": {
+            "post": {
+                "tags": [
+                    "ThirdParty"
+                ],
+                "summary": "Write ThirdParty",
+                "operationId": "setThirdParty",
+                "description": "Create or update object data \u2014 read-only fields are not writable and hidden from this request.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "fields"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Object identifier \u2014 `null` to create a new object"
+                                    },
+                                    "fields": {
+                                        "$ref": "#/components/schemas/ThirdParty"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Identifier of the created or updated object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Write failure \u2014 the server answers `null`. Check `Splash::log()` messages for error details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "nullable": true,
+                                    "description": "Always `null` on write failure"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/thirdparty/delete": {
+            "post": {
+                "tags": [
+                    "ThirdParty"
+                ],
+                "summary": "Delete ThirdParty",
+                "operationId": "deleteThirdParty",
+                "description": "Delete an object.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Object identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task data payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean",
+                                    "description": "True when the object was deleted"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1515,7 +1734,7 @@
                         "title": "Datetime",
                         "description": "Datetime",
                         "x-splash-type": "datetime",
-                        "example": "2026-11-23 13:25:58"
+                        "example": "2026-11-23 16:39:19"
                     },
                     "email": {
                         "type": "string",
@@ -1607,10 +1826,10 @@
                         "format": "price",
                         "example": {
                             "base": 0,
-                            "ht": 196.56,
+                            "ht": 140.86,
                             "vat": 20,
-                            "tax": 39.31,
-                            "ttc": 235.87,
+                            "tax": 28.17,
+                            "ttc": 169.03,
                             "code": "EUR",
                             "symbol": "\u20ac",
                             "name": "Euro"
@@ -1641,7 +1860,7 @@
                         "title": "Short",
                         "description": "Short",
                         "x-splash-type": "objectid::short",
-                        "example": "902::short"
+                        "example": "845::short"
                     },
                     "title": {
                         "type": "string",
@@ -1660,6 +1879,62 @@
                         "format": "varchar",
                         "x-schema-org-itemtype": "http://schema.org/Product/fr_FR",
                         "x-schema-org-itemprop": "alternateName"
+                    },
+                    "contact_civility": {
+                        "type": "string",
+                        "title": "Civility Type",
+                        "description": "Normalized Civility Type\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Profile\\CivilityType::class`\n- **Microdata:** `http://schema.org/Person` \u2192 `gender`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Person",
+                        "x-schema-org-itemprop": "gender",
+                        "enum": [
+                            "male",
+                            "female",
+                            "neutral"
+                        ],
+                        "x-technical-description": "Normalized civility type code. Mapped to schema.org Person/gender. Accepted values are Splash normalized: 'male', 'female', 'neutral' (from Civility dictionary). The connector must convert its local civility codes to/from these normalized values using Civility::toSplash() and Civility::toApp(). The writable code field, use CIVILITY_NAME for the read-only human-readable label."
+                    },
+                    "contact_email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email Address",
+                        "description": "ThirdParty Email Address\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Core\\Email::class`\n- **Microdata:** `http://schema.org/ContactPoint` \u2192 `email`\n- `\ud83d\udd0e Indexed` `\ud83d\udccb In List`",
+                        "x-splash-type": "email",
+                        "x-schema-org-itemtype": "http://schema.org/ContactPoint",
+                        "x-schema-org-itemprop": "email",
+                        "x-technical-description": "ThirdParty primary email address. Splash type is 'email', validated as a valid email format. Mapped to schema.org ContactPoint/email. Indexed and listed by default, commonly used as a primary key for matching ThirdParties across systems. Also available via AddressFields for address contact email."
+                    },
+                    "contact_phone": {
+                        "type": "string",
+                        "format": "phone",
+                        "title": "Phone",
+                        "description": "Person Phone\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Core\\Phone::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `telephone`",
+                        "x-splash-type": "phone",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "telephone",
+                        "x-technical-description": "Home or landline phone number. Splash type is 'phone', no strict format validation. Mapped to schema.org PostalAddress/telephone. Distinguished from MOBILE (Person/telephone) by the itemtype: PHONE uses PostalAddress/telephone, MOBILE uses Person/telephone. Some connectors expose additional phone fields (e.g. phone_pro), those should be mapped to this template when they represent the primary landline.",
+                        "example": "+33612345678"
+                    },
+                    "contact_website": {
+                        "type": "string",
+                        "format": "url",
+                        "title": "Website Url",
+                        "description": "Website / Profile Url\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Profile\\Website::class`\n- **Microdata:** `http://schema.org/Organization` \u2192 `url`",
+                        "x-splash-type": "url",
+                        "x-schema-org-itemtype": "http://schema.org/Organization",
+                        "x-schema-org-itemprop": "url",
+                        "x-technical-description": "Website or profile URL of the ThirdParty. Splash type is 'url', expects a fully qualified URL (e.g. 'https://example.com'). Mapped to schema.org Organization/url. Can represent a company website, personal homepage, or social media profile link."
+                    },
+                    "contact_zip": {
+                        "type": "string",
+                        "title": "Postal Code",
+                        "description": "The postal code. For example, 94043.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\PostalCode::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `postalCode`\n- **Options:**\n    - **maxLength** => 15",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "postalCode",
+                        "x-technical-description": "Postal or ZIP code. Format varies by country (e.g. '75001' for France, '94043' for US, 'SW1A 1AA' for UK). Mapped to schema.org PostalAddress/postalCode. Grouped under 'Address' in field definitions. Maximum length constrained to 15 characters. This field is never validated against a country-specific format by Splash."
                     }
                 },
                 "required": [
@@ -1674,6 +1949,11 @@
                     "name": {
                         "type": "string",
                         "title": "Name"
+                    },
+                    "contact_email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email Address"
                     }
                 }
             },
@@ -1732,14 +2012,41 @@
                                     "format": "price@list",
                                     "example": {
                                         "base": 0,
-                                        "ht": 53.39,
+                                        "ht": 194.96,
                                         "vat": 20,
-                                        "tax": 10.68,
-                                        "ttc": 64.07,
+                                        "tax": 38.99,
+                                        "ttc": 233.95,
                                         "code": "EUR",
                                         "symbol": "\u20ac",
                                         "name": "Euro"
                                     }
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "title": "Description",
+                                    "description": "Line description\n\n- **Template:** `Splash\\Templates\\Accounting\\Items\\Description::class`\n- **Microdata:** `http://schema.org/partOfInvoice` \u2192 `description`",
+                                    "x-splash-type": "varchar@list",
+                                    "format": "varchar@list",
+                                    "x-schema-org-itemtype": "http://schema.org/partOfInvoice",
+                                    "x-schema-org-itemprop": "description",
+                                    "x-technical-description": "Free-text description of the accounting line item (typically the product short description). Mapped to schema.org partOfInvoice/description. Final type is varchar@list."
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "title": "Line Type",
+                                    "description": "Normalized type of the line\n\n- **Template:** `Splash\\Templates\\Accounting\\Items\\Type::class`\n- **Microdata:** `https://schema.org/OrderItem` \u2192 `additionalType`",
+                                    "x-splash-type": "varchar@list",
+                                    "format": "varchar@list",
+                                    "x-schema-org-itemtype": "https://schema.org/OrderItem",
+                                    "x-schema-org-itemprop": "additionalType",
+                                    "enum": [
+                                        "product",
+                                        "shipping",
+                                        "fee",
+                                        "option",
+                                        "comment"
+                                    ],
+                                    "x-technical-description": "Qualifies WHAT the accounting line is, so that the receiving application does not have to guess it from the line label. Accepted values are Splash normalized codes from the AccountLineType dictionary: 'product' (sold product or service), 'shipping' (delivery charges), 'fee' (extra charge or global discount), 'option' (optional line, qty = 0 & price != 0), 'comment' (free text, qty = 1 & price = 0). An EMPTY value means a regular product line, so connectors that ignore this field keep working as before. Mapped to schema.org OrderItem/additionalType (https scheme: new field, no legacy pairing to preserve). Final type is varchar@list."
                                 }
                             }
                         }
@@ -1896,6 +2203,274 @@
                     "name": {
                         "type": "string",
                         "title": "Name"
+                    }
+                }
+            },
+            "ThirdParty": {
+                "type": "object",
+                "title": "ThirdParty",
+                "description": "Faker third party, built from contracts templates",
+                "x-splash-type": "ThirdParty",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "User name",
+                        "description": "ThirdParty or Company Name\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Core\\Name::class`\n- **Microdata:** `http://schema.org/Organization` \u2192 `legalName`\n- `\ud83d\udd0e Indexed` `\ud83d\udccb In List` `\ud83d\udcdc Logged`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Organization",
+                        "x-schema-org-itemprop": "legalName",
+                        "x-technical-description": "Primary identification name of the ThirdParty. For a company: the legal name (e.g. 'Acme Corp'). For an individual: the username or display name. Mapped to schema.org Organization/legalName. This field is required, indexed, listed and logged by default. It is the main identifier shown in lists and search results. Also available via AddressFields for address contact identification."
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email Address",
+                        "description": "ThirdParty Email Address\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Core\\Email::class`\n- **Microdata:** `http://schema.org/ContactPoint` \u2192 `email`\n- `\ud83d\udd0e Indexed` `\ud83d\udccb In List`",
+                        "x-splash-type": "email",
+                        "x-schema-org-itemtype": "http://schema.org/ContactPoint",
+                        "x-schema-org-itemprop": "email",
+                        "x-technical-description": "ThirdParty primary email address. Splash type is 'email', validated as a valid email format. Mapped to schema.org ContactPoint/email. Indexed and listed by default, commonly used as a primary key for matching ThirdParties across systems. Also available via AddressFields for address contact email."
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "title": "First Name",
+                        "description": "Contact Firstname\n\n- **Template:** `Splash\\Templates\\Address\\Contact\\Firstname::class`\n- **Microdata:** `http://schema.org/Person` \u2192 `givenName`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Person",
+                        "x-schema-org-itemprop": "givenName",
+                        "x-technical-description": "Contact firstname, for Address definitions ONLY: postal address, billing address, delivery address. Mapped to schema.org Person/givenName \u2014 semantically correct mapping, http scheme preserved for automatic field pairing. Unlike the ThirdParty Firstname template, this field does NOT use the historical given/family swap: worst case, a legacy connector pairing only inverts firstname & lastname values."
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "title": "Last Name",
+                        "description": "Contact Lastname / Family Name\n\n- **Template:** `Splash\\Templates\\Address\\Contact\\Lastname::class`\n- **Microdata:** `http://schema.org/Person` \u2192 `familyName`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Person",
+                        "x-schema-org-itemprop": "familyName",
+                        "x-technical-description": "Contact lastname / family name, for Address definitions ONLY: postal address, billing address, delivery address. Mapped to schema.org Person/familyName \u2014 semantically correct mapping, http scheme preserved for automatic field pairing. Unlike the ThirdParty Lastname template, this field does NOT use the historical given/family swap: worst case, a legacy connector pairing only inverts firstname & lastname values."
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "phone",
+                        "title": "Phone",
+                        "description": "Person Phone\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Core\\Phone::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `telephone`",
+                        "x-splash-type": "phone",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "telephone",
+                        "x-technical-description": "Home or landline phone number. Splash type is 'phone', no strict format validation. Mapped to schema.org PostalAddress/telephone. Distinguished from MOBILE (Person/telephone) by the itemtype: PHONE uses PostalAddress/telephone, MOBILE uses Person/telephone. Some connectors expose additional phone fields (e.g. phone_pro), those should be mapped to this template when they represent the primary landline.",
+                        "example": "+33612345678"
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "format": "phone",
+                        "title": "Mobile Phone",
+                        "description": "Person Mobile Phone\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Core\\MobilePhone::class`\n- **Microdata:** `http://schema.org/Person` \u2192 `telephone`",
+                        "x-splash-type": "phone",
+                        "x-schema-org-itemtype": "http://schema.org/Person",
+                        "x-schema-org-itemprop": "telephone",
+                        "x-technical-description": "Mobile or cellular phone number. Splash type is 'phone', no strict format validation. Mapped to schema.org Person/telephone. Distinguished from PHONE (PostalAddress/telephone) by the itemtype: MOBILE uses Person/telephone, PHONE uses PostalAddress/telephone. When a connector only has one phone field, prefer mapping it to PHONE.",
+                        "example": "+33612345678"
+                    },
+                    "civility": {
+                        "type": "string",
+                        "title": "Civility Type",
+                        "description": "Normalized Civility Type\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Profile\\CivilityType::class`\n- **Microdata:** `http://schema.org/Person` \u2192 `gender`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/Person",
+                        "x-schema-org-itemprop": "gender",
+                        "enum": [
+                            "male",
+                            "female",
+                            "neutral"
+                        ],
+                        "x-technical-description": "Normalized civility type code. Mapped to schema.org Person/gender. Accepted values are Splash normalized: 'male', 'female', 'neutral' (from Civility dictionary). The connector must convert its local civility codes to/from these normalized values using Civility::toSplash() and Civility::toApp(). The writable code field, use CIVILITY_NAME for the read-only human-readable label."
+                    },
+                    "civility_name": {
+                        "type": "string",
+                        "title": "Civility Name",
+                        "description": "Civility Type Name\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Profile\\CivilityName::class`\n- **Microdata:** `http://schema.org/Person` \u2192 `honorificPrefix`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "readOnly": true,
+                        "x-schema-org-itemtype": "http://schema.org/Person",
+                        "x-schema-org-itemprop": "honorificPrefix",
+                        "x-technical-description": "Human-readable civility label (e.g. 'Mr', 'Mrs', 'Mx'). Read-only field, derived from the CIVILITY code by the connector. Mapped to schema.org Person/honorificPrefix. To change the civility, write to the CIVILITY (type code) field instead."
+                    },
+                    "website": {
+                        "type": "string",
+                        "format": "url",
+                        "title": "Website Url",
+                        "description": "Website / Profile Url\n\n- **Template:** `Splash\\Templates\\ThirdParty\\Profile\\Website::class`\n- **Microdata:** `http://schema.org/Organization` \u2192 `url`",
+                        "x-splash-type": "url",
+                        "x-schema-org-itemtype": "http://schema.org/Organization",
+                        "x-schema-org-itemprop": "url",
+                        "x-technical-description": "Website or profile URL of the ThirdParty. Splash type is 'url', expects a fully qualified URL (e.g. 'https://example.com'). Mapped to schema.org Organization/url. Can represent a company website, personal homepage, or social media profile link."
+                    },
+                    "alternate_name": {
+                        "type": "string",
+                        "title": "Alternative name / Full name",
+                        "description": "Address contact alternative or complete name, all in one.\n\n- **Template:** `Splash\\Templates\\Address\\Contact\\AlternateName::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `alternateName`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "alternateName",
+                        "x-technical-description": "Alternative or full name of the address contact, for Address definitions ONLY: postal address, billing address, delivery address. Typically a composite of firstname + lastname, used when the application does not store them as separate fields. Mapped to schema.org PostalAddress/alternateName. Grouped under 'Address' by convention."
+                    },
+                    "fax": {
+                        "type": "string",
+                        "format": "phone",
+                        "title": "Fax",
+                        "description": "Fax Number\n\n- **Template:** `Splash\\Templates\\Address\\Contact\\Fax::class`\n- **Microdata:** `http://schema.org/Organization` \u2192 `faxNumber`",
+                        "x-splash-type": "phone",
+                        "x-schema-org-itemtype": "http://schema.org/Organization",
+                        "x-schema-org-itemprop": "faxNumber",
+                        "x-technical-description": "Contact fax number, for Address definitions ONLY: postal address, billing address, delivery address. Splash type is 'fax', no strict format validation. Mapped to schema.org Organization/faxNumber \u2014 historical Splash mapping shared by ALL existing connectors, preserved as-is (http scheme included) for automatic field pairing. In a ThirdParty context, use the ThirdParty Fax template instead.",
+                        "example": "+33612345678"
+                    },
+                    "street": {
+                        "type": "string",
+                        "title": "[ADD1] Street address",
+                        "description": "The street address. For example, 1600 Amphitheatre Pkwy.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\StreetAddress::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `streetAddress`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "streetAddress",
+                        "x-technical-description": "Primary street address line (address line 1). Contains the street number, name and type (e.g. '1600 Amphitheatre Pkwy'). Mapped to schema.org PostalAddress/streetAddress. Grouped under 'Address' in field definitions. Some connectors may concatenate multiple address lines into this single field. When writing, only the primary street line should be set here, use POST_OFFICE_BOX_NUMBER and EXTENDED for additional lines."
+                    },
+                    "po_box": {
+                        "type": "string",
+                        "title": "[ADD2] Post office box number",
+                        "description": "The post office box number for PO box addresses. For example, DN7524.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\PostOfficeBoxNumber::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `postOfficeBoxNumber`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "postOfficeBoxNumber",
+                        "x-technical-description": "Secondary address line (address line 2). Originally intended for PO box numbers, but commonly used as a generic second address line. Mapped to schema.org PostalAddress/postOfficeBoxNumber. Grouped under 'Address' in field definitions. Connectors should map their 'address line 2' or 'PO box' field here."
+                    },
+                    "extended": {
+                        "type": "string",
+                        "title": "[ADD3] Address extension",
+                        "description": "An address extension such as an apartment number, C/O or alternative name.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\ExtendedAddress::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `extendedAddress`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "extendedAddress",
+                        "x-technical-description": "Tertiary address line (address line 3). Used for additional address details such as apartment number, building, C/O, or alternative name. Mapped to schema.org PostalAddress/extendedAddress. Grouped under 'Address' in field definitions. Not all connectors support a third address line, this field may be ignored on write."
+                    },
+                    "zip": {
+                        "type": "string",
+                        "title": "Postal Code",
+                        "description": "The postal code. For example, 94043.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\PostalCode::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `postalCode`\n- **Options:**\n    - **maxLength** => 15",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "postalCode",
+                        "x-technical-description": "Postal or ZIP code. Format varies by country (e.g. '75001' for France, '94043' for US, 'SW1A 1AA' for UK). Mapped to schema.org PostalAddress/postalCode. Grouped under 'Address' in field definitions. Maximum length constrained to 15 characters. This field is never validated against a country-specific format by Splash."
+                    },
+                    "city": {
+                        "type": "string",
+                        "title": "Locality",
+                        "description": "The locality in which the street address is, and which is in the region. I.e, Mountain View.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\Locality::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `addressLocality`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "addressLocality",
+                        "x-technical-description": "City or locality name. Free-text value, not normalized (e.g. 'Paris', 'Mountain View', 'London'). Mapped to schema.org PostalAddress/addressLocality. Grouped under 'Address' in field definitions. This is a plain text city name, not a code or ID."
+                    },
+                    "region": {
+                        "type": "string",
+                        "format": "state",
+                        "title": "Region / State Code",
+                        "description": "Code of region or state in which the locality is, and which is in the country.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\RegionCode::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `addressRegion`",
+                        "x-splash-type": "state",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "addressRegion",
+                        "x-technical-description": "Region, state or department code. Splash type is 'state', expects the local subdivision code without country prefix (e.g. '33' for France, 'CA' for US). Mapped to schema.org PostalAddress/addressRegion. Grouped under 'Address' in field definitions. The writable code field, use REGION_NAME for the read-only human-readable label."
+                    },
+                    "region_name": {
+                        "type": "string",
+                        "title": "Region / State Name",
+                        "description": "Name of region or state in which the locality is, and which is in the country.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\RegionName::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `addressRegionName`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "readOnly": true,
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "addressRegionName",
+                        "x-technical-description": "Human-readable region, state or department name. Read-only field, derived from the REGION code by the connector. Mapped to schema.org PostalAddress/addressRegionName. Grouped under 'Address' in field definitions. To change the region, write to the REGION (code) field instead."
+                    },
+                    "country": {
+                        "type": "string",
+                        "format": "country",
+                        "title": "Country ISO code",
+                        "description": "The country. Recommended to be in 2-letter ISO 3166-1 alpha-2 format, for example 'US'.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\CountryCode::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `addressCountry`",
+                        "x-splash-type": "country",
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "addressCountry",
+                        "x-technical-description": "Country ISO code. Splash type is 'country', expects ISO 3166-1 alpha-2 format (e.g. 'FR', 'US', 'DE'). For backward compatibility, ISO 3166-1 alpha-3 codes (e.g. 'FRA', 'SGP') may also be accepted. Mapped to schema.org PostalAddress/addressCountry. Grouped under 'Address' in field definitions. The writable code field, use COUNTRY_NAME for the read-only human-readable label."
+                    },
+                    "country_name": {
+                        "type": "string",
+                        "title": "Country name",
+                        "description": "The country name.\n\n- **Template:** `Splash\\Templates\\Address\\PostalAddress\\CountryName::class`\n- **Microdata:** `http://schema.org/PostalAddress` \u2192 `addressCountryName`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "readOnly": true,
+                        "x-schema-org-itemtype": "http://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "addressCountryName",
+                        "x-technical-description": "Human-readable country name. Read-only field, derived from the COUNTRY code by the connector. Mapped to schema.org PostalAddress/addressCountryName. Grouped under 'Address' in field definitions. This field is never synchronized, it is purely informational. To change the country, write to the COUNTRY (code) field instead."
+                    },
+                    "duns": {
+                        "type": "string",
+                        "title": "Company Number / DUNS",
+                        "description": "Company Number / DUNS Identifier\n\n- **Template:** `Splash\\Templates\\Address\\Identifiers\\Duns::class`\n- **Microdata:** `https://schema.org/PostalAddress` \u2192 `duns`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "https://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "duns",
+                        "x-technical-description": "Dun & Bradstreet DUNS number of the organization. Worldwide unique identifier assigned by Dun & Bradstreet to each legal entity or site: 9 digits (e.g. 150483782), often displayed as XX-XXX-XXXX. Mapped to schema.org Organization/duns. Used internationally for B2B identification, credit reporting and public procurement. Historical Splash convention: when no true DUNS is available, connectors store the national company registry identifier here. Name varies by country: SIREN in France (9 digits, company-level), BCE/KBO number in Belgium, Handelsregisternummer in Germany, Company Number in the UK, REA number in Italy, CIF in Spain, KvK number in the Netherlands, UID (CHE) in Switzerland. PostalAddress variant of this identifier, for Address definitions ONLY: postal address, billing address, delivery address \u2014 here mapped to schema.org PostalAddress/duns. In a ThirdParty context, use the parent ThirdParty Duns template instead (Organization/duns)."
+                    },
+                    "tax_id": {
+                        "type": "string",
+                        "title": "Tax ID",
+                        "description": "Organization Tax Identification Number\n\n- **Template:** `Splash\\Templates\\Address\\Identifiers\\TaxId::class`\n- **Microdata:** `https://schema.org/PostalAddress` \u2192 `taxID`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "https://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "taxID",
+                        "x-technical-description": "Tax identification number of the organization. Format varies by country: SIRET in France (14 digits), EIN in the US, Company Number in the UK. Mapped to schema.org Organization/taxID. PostalAddress variant of this identifier, for Address definitions ONLY: postal address, billing address, delivery address \u2014 here mapped to schema.org PostalAddress/taxID. In France this is the SIRET (14 digits): one per establishment, i.e. per address \u2014 while the company-level SIREN belongs to the ThirdParty. In a ThirdParty context, use the parent ThirdParty TaxId template instead (Organization/taxID)."
+                    },
+                    "vat_id": {
+                        "type": "string",
+                        "title": "VAT Number",
+                        "description": "Intra-community VAT Number\n\n- **Template:** `Splash\\Templates\\Address\\Identifiers\\VatId::class`\n- **Microdata:** `https://schema.org/PostalAddress` \u2192 `vatID`",
+                        "x-splash-type": "varchar",
+                        "format": "varchar",
+                        "x-schema-org-itemtype": "https://schema.org/PostalAddress",
+                        "x-schema-org-itemprop": "vatID",
+                        "x-technical-description": "Intra-community VAT identification number. Format varies by country (e.g. FR12345678901 for France, DE123456789 for Germany, GB123456789 for UK). Mapped to schema.org Organization/vatID. Maximum length 20 characters. Used for B2B invoicing and tax compliance. PostalAddress variant of this identifier, for Address definitions ONLY: postal address, billing address, delivery address \u2014 here mapped to schema.org PostalAddress/vatID. In a ThirdParty context, use the parent ThirdParty VatId template instead (Organization/vatID)."
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "ThirdPartyListItem": {
+                "type": "object",
+                "title": "ThirdParty (List Item)",
+                "description": "Fields returned by objects list requests \u2014 fields flagged `In List` only.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "User name"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email Address"
                     }
                 }
             }

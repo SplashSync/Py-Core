@@ -29,6 +29,7 @@ from typing import Final
 from splashpy.core.info import ClientInfo
 from splashpy.extensions import Extension
 from splashpy.faker.objects import OBJECTS
+from splashpy.faker.objects.thirdparty import SCOPE
 from splashpy.faker.store import FakerStore
 from splashpy.faker.widgets import WIDGETS
 from splashpy.objects import BaseObject
@@ -75,6 +76,7 @@ class FakerExtension(Extension):
             phone="+33 0 00 00 00 00",
             servertype="Splash Python Faker",
             serverurl="https://www.splashsync.com",
+            scopes=[*info.scopes, SCOPE],
         )
 
 

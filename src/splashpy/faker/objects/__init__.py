@@ -26,8 +26,9 @@ from splashpy.faker.objects.list import List
 from splashpy.faker.objects.primary import Primary
 from splashpy.faker.objects.short import Short
 from splashpy.faker.objects.simple import Simple
+from splashpy.faker.objects.thirdparty import ThirdParty
 
-OBJECTS: tuple[type[FakerObject], ...] = (Short, Simple, List, Primary, Image, File)
+OBJECTS: tuple[type[FakerObject], ...] = (Short, Simple, List, Primary, Image, File, ThirdParty)
 """Every faker object."""
 
-__all__ = ["OBJECTS", "FakerObject", "File", "Image", "List", "Primary", "Short", "Simple", "StoredGroup"]
+__all__ = ["OBJECTS", "FakerObject", "File", "Image", "List", "Primary", "Short", "Simple", "StoredGroup", "ThirdParty"]

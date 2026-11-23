@@ -49,7 +49,7 @@ splashpy/
 ├── widgets/       BaseWidget, per-render output, BlocksFactory
 ├── extensions/    Extension hooks, per-client registry (explicit + allowlisted entry points)
 ├── faker/         demo connector (short, simple, list, primary, image, file + widgets), dev & tests only
-├── contracts/     (milestone 3) field templates and scopes
+├── contracts/     field templates & scopes catalog (embedded snapshot, cache, updates)
 └── testing/       (milestone 3) conformance test suite for connectors
 ```
 

@@ -1,0 +1,20 @@
+{
+    "format": 1,
+    "version": "1.0",
+    "commit": "0f8e1a39218fa71b221f3b97709b7fe765c35130",
+    "generated_at": "2026-11-17T11:41:38+00:00",
+    "files": {
+        "scopes.json": {
+            "size": 189165,
+            "sha256": "232f8828b9fdef94f69a218ba46553a9de8c985c1d47fd9b672bc0f11ef7dc03"
+        },
+        "swagger.json": {
+            "size": 692440,
+            "sha256": "679883f77b70370ff8fd7169aa85d61f97ef08c67903f960e43c73e13fe39259"
+        },
+        "templates.json": {
+            "size": 268286,
+            "sha256": "4398ad93b6c32dd9ab4186cc19729918dd6598b8e16c71dd72d2791347dac356"
+        }
+    }
+}

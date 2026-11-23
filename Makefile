@@ -23,7 +23,7 @@ WS          ?= ThisIsSplashWsId3p14
 MANIFESTS   := splash.yml splash.json swagger.json
 
 .DEFAULT_GOAL := help
-.PHONY: help install lint style stan pytest quality matrix golden up test manifest stop prune build clean
+.PHONY: help install lint style stan pytest quality matrix contracts golden up test manifest stop prune build clean
 
 help:		## Show this help
 	@grep -hE '^[a-zA-Z0-9_-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -64,6 +64,9 @@ matrix:		## Run tests on every supported Python version (needs uv)
 ################################################################################
 # Golden Fixtures & E2E (Docker)
 ################################################################################
+
+contracts:	## Refresh the contracts catalog embedded in the package (Php-Scopes, latest)
+	$(VENV)/bin/splashpy contracts update --cache src/splashpy/contracts/data
 
 golden:		## Regenerate golden fixtures with the real Php-Core
 	docker run --rm --user "$$(id -u):$$(id -g)" -v "$$PWD:/py" -w /app --entrypoint php \

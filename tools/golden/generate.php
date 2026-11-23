@@ -305,6 +305,43 @@ $fieldsRecipes = array(
         array("create", "inline", "f_inline", "Inline"),
         array("create", "objectid::ThirdParty", "f_parent", "Parent"),
     ),
+    "template_apply" => array(
+        array("create", "varchar", "civility"),
+        array("template", "Splash.Templates.ThirdParty.Profile.CivilityType"),
+        array("create", "varchar", "billing_zip", "Zip"),
+        array("template", "Splash.Templates.Accounting.Billing.PostalCode"),
+    ),
+    "template_create" => array(
+        array("createFromTemplate", "billing_name", "Splash.Templates.Accounting.Billing.Name"),
+        array("createFromTemplate", "billing_alias", "Splash.Templates.Accounting.Billing.AlternateName", "Alias"),
+        array("createFromTemplate", "admin_url", "Splash.Templates.Common.Links.AdminUrl"),
+        array("createFromTemplate", "presence", "Splash.Templates.Common.Sync.Presence"),
+        array("createFromTemplate", "country_name", "Splash.Templates.Accounting.Billing.CountryName"),
+        array("createFromTemplate", "billing_address", "Splash.Templates.Accounting.Core.BillingAddress"),
+    ),
+    "template_lists" => array(
+        array("createFromTemplate", "description", "Splash.Templates.Accounting.Items.Description"),
+        array("inList", "lines"),
+        array("createFromTemplate", "type", "Splash.Templates.Accounting.Items.Type"),
+        array("inList", "lines"),
+        array("create", "inline", "options"),
+        array("inList", "lines"),
+        array("template", "Splash.Templates.Accounting.Items.Options"),
+    ),
+    "template_overrides" => array(
+        array("createFromTemplate", "civility", "Splash.Templates.ThirdParty.Profile.CivilityType"),
+        array("isReadOnly"),
+        array("name", "My Civility"),
+        array("addChoice", "other", "Other"),
+        array("createFromTemplate", "zip", "Splash.Templates.Accounting.Billing.PostalCode"),
+        array("isRequired"),
+        array("addOption", "maxLength", 5),
+    ),
+    "template_language" => array(
+        array("setDefaultLanguage", "fr_FR"),
+        array("createFromTemplate", "civility", "Splash.Templates.ThirdParty.Profile.CivilityType"),
+        array("createFromTemplate", "billing_name", "Splash.Templates.Accounting.Billing.Name"),
+    ),
     "invalid" => array(
         array("create", "varchar", "", "No Id"),
         array("create", "image", "picture", "Picture"),
@@ -328,7 +365,33 @@ foreach ($fieldsRecipes as $name => $recipe) {
         "published" => $factory->publish(),
     );
 }
-writeFixture($target, "fields", array("cases" => $fields));
+//====================================================================//
+// Templates used by recipes, exported in the catalog format
+$templates = array();
+foreach ($fieldsRecipes as $recipe) {
+    foreach ($recipe as $call) {
+        $code = match ($call[0]) {
+            "template" => $call[1],
+            "createFromTemplate" => $call[2],
+            default => null,
+        };
+        $template = $code ? \Splash\Core\Helpers\FieldTemplatesHelper::resolve($code) : null;
+        if (!$template || isset($templates[$code])) {
+            continue;
+        }
+        $config = $template->getConfiguration("en_US");
+        unset($config["name"], $config["desc"]);
+        $names = $descriptions = array();
+        foreach (array("en_US", "fr_FR", "it_IT", "es_ES", "de_DE") as $isoLang) {
+            $names[$isoLang] = $template->getName($isoLang);
+            $descriptions[$isoLang] = $template->getShortDescription($isoLang);
+        }
+        $templates[$code] = array(
+            "code" => $code, "config" => $config, "name" => $names, "desc" => $descriptions,
+        );
+    }
+}
+writeFixture($target, "fields", array("cases" => $fields, "templates" => $templates));
 
 //====================================================================//
 // Widgets Fixtures

@@ -23,9 +23,11 @@ from typing import Any
 import pytest
 
 from splashpy import ConfigError, Extension, SplashClient, SplashConfig, cli
+from splashpy.contracts import embedded_catalog
 from splashpy.extensions.registry import ExtensionsRegistry, installed
 from splashpy.faker import FakerExtension
 from splashpy.faker.objects import StoredGroup
+from splashpy.faker.objects.thirdparty import SCOPE
 from splashpy.faker.store import FakerStore, Record
 from splashpy.objects import ObjectRequest
 
@@ -105,7 +107,7 @@ def test_faker_store(tmp_path: Any) -> None:
     assert not store.save("T", Record("999"))
 
 
-FAKER_TYPES = ["short", "simple", "list", "primary", "image", "file"]
+FAKER_TYPES = ["short", "simple", "list", "primary", "image", "file", "ThirdParty"]
 """Faker object types, in declaration order."""
 
 
@@ -128,7 +130,12 @@ def test_faker_objects(config: SplashConfig) -> None:
         "varchar@list",
         "double@list",
         "price@list",
+        "varchar@list",
+        "varchar@list",
     ]
+    templated = [field["options"].get("tmpl") for field in fields["simple"].values() if "tmpl" in field["options"]]
+    assert "Splash.Templates.ThirdParty.Profile.CivilityType" in templated
+    assert fields["list"]["type@items"]["options"]["tmpl"] == "Splash.Templates.Accounting.Items.Type"
 
 
 def test_faker_roundtrip(config: SplashConfig) -> None:
@@ -163,6 +170,25 @@ def test_faker_roundtrip(config: SplashConfig) -> None:
     rendered = widget.get(ctx, {})
     assert rendered is not None
     assert len(rendered["blocks"]) == 3
+
+
+def test_faker_thirdparty_honours_its_scope(config: SplashConfig) -> None:
+    """The ThirdParty object exposes every field of its declared scope, from templates."""
+    client = SplashClient(config, extensions=[FakerExtension()])
+    ctx = client.new_context()
+    assert SCOPE in client.informations(ctx)["scopes"]
+    handler = client.object_handler("ThirdParty")
+    assert handler is not None
+    fields = handler.fields(ctx)
+    tags = {(field["itemtype"], field["itemprop"]) for field in fields.values()}
+    assert len(tags) == len(fields)
+    constraints = embedded_catalog().constraints(SCOPE, "ThirdParty")
+    assert {(constraint["itemtype"], constraint["itemprop"]) for constraint in constraints.values()} <= tags
+    assert fields["name"]["required"] is True
+    object_id = handler.set(ctx, "", {"name": "ACME", "civility": "female", "region": "CA", "country": "US"})
+    assert object_id is not None
+    values = handler.get(ctx, object_id, ["civility_name", "region_name", "country_name"])
+    assert values == {"id": object_id, "civility_name": "Female", "region_name": "CA", "country_name": "US"}
 
 
 def test_faker_group_requires_a_record() -> None:
@@ -210,7 +236,7 @@ def test_discover_groups() -> None:
     from splashpy.objects.discovery import discover_groups
 
     groups = discover_groups("splashpy.faker.objects.simple")
-    assert [group.group_code() for group in groups] == ["advanced", "basic", "translations"]
+    assert [group.group_code() for group in groups] == ["advanced", "basic", "templates", "translations"]
     assert SimpleBasic in groups
     assert [group.__name__ for group in discover_groups("splashpy.faker.objects")] == ["CoreName"]
     with pytest.raises(ValueError, match="not a package"):

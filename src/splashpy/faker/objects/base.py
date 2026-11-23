@@ -20,7 +20,7 @@ from typing import Any, ClassVar
 
 from splashpy.core.context import RequestContext
 from splashpy.faker.store import FakerStore, Record
-from splashpy.fields import Lists
+from splashpy.fields import FieldsFactory, Lists
 from splashpy.objects import BaseObject, FieldsGroup, ObjectRequest
 
 
@@ -52,6 +52,32 @@ class StoredGroup(FieldsGroup):
             data[field_id] = value
             req.need_update()
         return True
+
+
+class TemplatedGroup(StoredGroup):
+    """Base of faker groups whose fields all come from contracts templates."""
+
+    templates: ClassVar[Mapping[str, str]] = {}
+    """Fields: field id => template code."""
+
+    label: ClassVar[str | None] = None
+    """Fields group label (the template one when None)."""
+
+    @classmethod
+    def build_templates(cls, factory: FieldsFactory) -> None:
+        """Declare every templated field."""
+        for field_id, template in cls.templates.items():
+            factory.create_from_template(field_id, template)
+            if cls.label:
+                factory.group(cls.label)
+
+    def get(self, req: ObjectRequest, field_id: str) -> Any:
+        """Read a stored value."""
+        return self.read(req, field_id)
+
+    def set(self, req: ObjectRequest, field_id: str, value: Any) -> bool | None:
+        """Store a value."""
+        return self.write(req, field_id, value)
 
 
 class FakerObject(BaseObject):

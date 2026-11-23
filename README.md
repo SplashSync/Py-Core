@@ -50,6 +50,7 @@ never enabled implicitly.
 | [Configuration](docs/configuration.md)           | Settings and configuration providers                        |
 | [Objects & fields groups](docs/objects.md)       | Objects, ordered fields groups, phases, values, commits     |
 | [Extensions & widgets](docs/extensions.md)       | Extensions registry, hooks, widgets, faker                  |
+| [Contracts](docs/contracts.md)                   | Field templates, scopes, embedded catalog and updates       |
 | [Project structure](docs/project-structure.md)   | Repository layout, package layers, request flow             |
 | [Development](docs/development.md)               | Quality tools, tests, golden fixtures, Docker E2E stack, CI |
 

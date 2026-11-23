@@ -11,7 +11,7 @@
 #  file that was distributed with this source code.
 #
 
-"""list: items, a list of bool, varchar, double & price."""
+"""list: items, a list of bool, varchar, double & price, plus templated list fields."""
 
 from __future__ import annotations
 
@@ -24,6 +24,12 @@ from splashpy.objects import ObjectRequest, fields_group
 LIST: Final = "items"
 """List name."""
 
+TEMPLATES: Final = {
+    "description": "Splash.Templates.Accounting.Items.Description",
+    "type": "Splash.Templates.Accounting.Items.Type",
+}
+"""Templated list fields: field id => template code."""
+
 
 @fields_group("items", priority=50, after=("core",))
 class ListItems(StoredGroup):
@@ -35,6 +41,8 @@ class ListItems(StoredGroup):
         factory.create(FieldType.VARCHAR, "label", "Item Label").in_list(LIST).group("Items")
         factory.create(FieldType.DOUBLE, "qty", "Item Quantity").in_list(LIST).group("Items")
         factory.create(FieldType.PRICE, "price", "Item Price").in_list(LIST).group("Items")
+        for field_id, template in TEMPLATES.items():
+            factory.create_from_template(field_id, template).in_list(LIST).group("Items")
 
     def get(self, req: ObjectRequest, field_id: str) -> Any:
         """Read one field of every item."""

@@ -74,7 +74,15 @@ def test_admin_tasks(call_server: CallServer, codec: MessageCodec) -> None:
     assert tasks["array-1"]["data"]["shortdesc"].startswith("Splash Python Faker")
     assert tasks["array-1"]["id"] == "1"
     assert tasks["array-2"]["result"] == "1"
-    assert list(tasks["array-3"]["data"].values()) == ["short", "simple", "list", "primary", "image", "file"]
+    assert list(tasks["array-3"]["data"].values()) == [
+        "short",
+        "simple",
+        "list",
+        "primary",
+        "image",
+        "file",
+        "ThirdParty",
+    ]
     assert tasks["array-4"]["data"] == {"string-0": "FakerInfos", "string-1": "FakerCharts"}
     assert tasks["array-5"]["result"] == "0"
     assert data["tasksinfos"]["Performed"] == "5"
