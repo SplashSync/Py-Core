@@ -8,7 +8,7 @@ build
 dist
 splashpy
 tests
-docs
+docs/plan
 **/__pycache__
 *.egg-info
 faker.db

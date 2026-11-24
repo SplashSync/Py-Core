@@ -19,7 +19,8 @@ ARG PYTHON=3.12
 FROM python:${PYTHON}-slim
 
 WORKDIR /app
-COPY pyproject.toml README.md LICENSE ./
+COPY pyproject.toml README.md LICENSE llms.txt ./
+COPY docs ./docs
 COPY src ./src
 RUN pip install --no-cache-dir --root-user-action=ignore .
 
