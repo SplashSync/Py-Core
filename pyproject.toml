@@ -31,7 +31,7 @@ authors         = [{ name = "Splash Sync", email = "contact@splashsync.com" }]
 requires-python = ">=3.9"
 keywords        = ["splash", "splashsync", "synchronization", "connector", "soap"]
 classifiers     = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",

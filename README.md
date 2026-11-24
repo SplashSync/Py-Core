@@ -3,7 +3,8 @@
 splashpy is the Python core of [Splash Sync](https://www.splashsync.com) connectors: it lets
 **any Python application** expose its data to Splash, and notify Splash of its changes.
 
-> Branch `3.0` is a full rewrite (work in progress). splashpy 0.4.x lives on branch `1.0`.
+> Branch `3.0` is a full rewrite, published as pre-releases (`pip install --pre splashpy`, or
+> `splashpy>=3.0.0b1`). splashpy 0.4.x lives on branch `1.0`.
 
 ## Key principles
 
@@ -57,16 +58,6 @@ never enabled implicitly.
 
 Coding agents: start with [`llms.txt`](llms.txt). The same pages ship inside the package:
 `splashpy docs` prints the index, `splashpy docs <page>` one page of the installed version.
-
-## Status
-
-| Area                                                  | Status       |
-|-------------------------------------------------------|--------------|
-| Wire protocol (SOAP, XML, encryption)                 | available    |
-| Client, configuration, Admin service, outgoing calls  | available    |
-| WSGI gateway, `splashpy` command line                 | available    |
-| Fields, objects, extensions registry, widgets, files  | available    |
-| Contracts (templates & scopes), conformance suite     | milestone 3  |
 
 ## Development
 

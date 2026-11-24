@@ -1,11 +1,11 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "Splash Python Faker 3.0.0.dev0",
+        "title": "Splash Python Faker 3.0.0b1",
         "description": "Demo connector of splashpy, for development and tests only.",
-        "version": "3.0.0.dev0",
+        "version": "3.0.0b1",
         "x-splash-server": {
-            "shortdesc": "Splash Python Faker 3.0.0.dev0",
+            "shortdesc": "Splash Python Faker 3.0.0b1",
             "longdesc": "Demo connector of splashpy, for development and tests only.",
             "logourl": "",
             "scopes": {
@@ -14,7 +14,7 @@
             "servertype": "Splash Python Faker",
             "serverurl": "https://www.splashsync.com",
             "moduleauthor": "Splash Official <www.splashsync.com>",
-            "moduleversion": "3.0.0.dev0"
+            "moduleversion": "3.0.0b1"
         }
     },
     "tags": [
@@ -1726,7 +1726,7 @@
                         "title": "Date",
                         "description": "Date",
                         "x-splash-type": "date",
-                        "example": "2026-11-23"
+                        "example": "2026-11-24"
                     },
                     "datetime": {
                         "type": "string",
@@ -1734,7 +1734,7 @@
                         "title": "Datetime",
                         "description": "Datetime",
                         "x-splash-type": "datetime",
-                        "example": "2026-11-23 16:39:19"
+                        "example": "2026-11-24 13:03:16"
                     },
                     "email": {
                         "type": "string",
@@ -1826,10 +1826,10 @@
                         "format": "price",
                         "example": {
                             "base": 0,
-                            "ht": 140.86,
+                            "ht": 197.8,
                             "vat": 20,
-                            "tax": 28.17,
-                            "ttc": 169.03,
+                            "tax": 39.56,
+                            "ttc": 237.36,
                             "code": "EUR",
                             "symbol": "\u20ac",
                             "name": "Euro"
@@ -1860,7 +1860,7 @@
                         "title": "Short",
                         "description": "Short",
                         "x-splash-type": "objectid::short",
-                        "example": "845::short"
+                        "example": "223::short"
                     },
                     "title": {
                         "type": "string",
@@ -2012,10 +2012,10 @@
                                     "format": "price@list",
                                     "example": {
                                         "base": 0,
-                                        "ht": 194.96,
+                                        "ht": 127.78,
                                         "vat": 20,
-                                        "tax": 38.99,
-                                        "ttc": 233.95,
+                                        "tax": 25.56,
+                                        "ttc": 153.34,
                                         "code": "EUR",
                                         "symbol": "\u20ac",
                                         "name": "Euro"
