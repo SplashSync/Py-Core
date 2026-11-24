@@ -23,6 +23,7 @@
     script:
         - pip install build twine
         - python -m build
+        - python tools/packages/check.py dist
         - TWINE_PASSWORD=${TWINE_TOKEN} TWINE_USERNAME=__token__ python -m twine upload --repository ${TWINE_REPOSITORY} dist/* --verbose
     artifacts:
         paths:  [ "dist/*" ]

@@ -101,5 +101,8 @@ Configuration comes from `SPLASH_*` environment variables, or from `--config fil
 `splashpy describe --order` prints the objects of a client with their resolved fields groups
 pipeline (`--client my_app.splash:build_client` for your own client, `--faker` for the demo).
 
+`splashpy docs` prints the documentation index of the installed version, `splashpy docs <page>`
+one page as raw Markdown (for coding agents too, see `llms.txt`).
+
 `splashpy serve --faker` runs a demo connector. The faker is for development and tests only: it is
 never enabled unless explicitly requested.

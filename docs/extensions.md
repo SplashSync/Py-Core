@@ -108,3 +108,15 @@ Stored files are published:
 |--------|-------------------------------------------------------------------------|
 | Splash | `ReadFile` with path `faker/files/<md5>` and the checksum               |
 | Humans | `GET <server path>/files/<md5>`, the `url` of read values (`splashpy serve --faker`) |
+
+### Faker commits
+
+The faker acts like a host application after a change: it commits an object to Splash.
+
+```bash
+curl -X POST "http://3p12.splashpy.local:8000/splash/commit/simple/1"                 # update
+curl -X POST "http://3p12.splashpy.local:8000/splash/commit/ThirdParty/5?action=delete"
+```
+
+The answer tells if the commit was sent (`sent`), or skipped (locked object, CI mode...). Only
+available with `splashpy serve --faker`.

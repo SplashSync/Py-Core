@@ -90,6 +90,15 @@ connection in `docker/toolkit/splash.yaml`.
 |               |                       | `e2e`: Docker stack + Toolkit suites (`Dedicated-Docker` runner)         |
 | `Builds`      | `ci/Builds.yml`       | `release:test` (TestPyPI, manual), `release:tags` (PyPI, on tags)        |
 
+## Packages & documentation
+
+`make build` builds the wheel and the sdist, then `tools/packages/check.py` checks them: `docs/`
+pages and `llms.txt` are shipped in `splashpy/docs/`, `docs/plan/` (planning notes) never is.
+The release jobs run the same check before uploading.
+
+When adding a documentation page, list it in `llms.txt` and in the README table (a test checks
+that `llms.txt` and `docs/` match).
+
 ## Branches
 
 - `3.0`: splashpy 3.0 (this code).

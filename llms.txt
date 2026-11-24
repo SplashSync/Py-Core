@@ -1,0 +1,35 @@
+# splashpy
+
+> Python core of Splash Sync connectors (branch 3.0): any Python application exposes its data to
+> Splash and notifies Splash of its changes. Wire protocol byte identical to Php-Core 3.0,
+> Python 3.9 → 3.14, one runtime dependency (`cryptography`).
+
+Read a page: `docs/<page>.md` in the repository, or `splashpy docs <page>` from any installation
+(same pages, installed version). `splashpy docs` prints this index.
+
+Rules for connector code:
+
+- One `SplashClient` per database / tenant, one `RequestContext` per request: no global state.
+- Objects are made of fields groups, ordered explicitly (priorities, `after` / `before`, phases),
+  never by method names or imports. Check the order with `splashpy describe --order`.
+- Build standard fields from templates (`create_from_template`, `template`), never write
+  metadata by hand; declare scopes in `ClientInfo.scopes` or in an extension `client_info()`.
+- Protocol strings come from `splashpy.dictionary` (services, operations, formats), never hardcoded.
+- Values are flexible on input (`"1"`, `1`, `True`): convert them inside the connector, with
+  `splashpy.fields` helpers and `Validators`.
+- Validate a connector with the conformance suite (`splashpy.testing`), then the Splash Toolkit.
+- The faker demo connector is for development and tests only, never enabled implicitly.
+
+## Docs
+
+- [Getting started](docs/getting-started.md): install, build a client, serve Splash requests, debug page, call Splash, development server
+- [Configuration](docs/configuration.md): settings, environment / JSON / static providers
+- [Objects & fields groups](docs/objects.md): objects, ordered fields groups, phases, values helpers, files, commits
+- [Extensions & widgets](docs/extensions.md): extensions registry and hooks, widgets, faker objects, files & commits endpoints
+- [Contracts](docs/contracts.md): field templates, scopes, embedded catalog, cache and updates
+- [Testing a connector](docs/testing.md): conformance suite for connectors, commits checks
+
+## Optional
+
+- [Project structure](docs/project-structure.md): repository layout, package layers, request flow
+- [Development](docs/development.md): quality tools, tests, golden fixtures, Docker E2E stack, CI (splashpy contributors)

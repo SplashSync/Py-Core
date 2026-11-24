@@ -60,6 +60,9 @@ dev             = [
     "pytest-cov>=5.0",
     "ruff>=0.6",
 ]
+testing         = [
+    "pytest>=8.0",      # splashpy.testing.suite: conformance suite for connectors
+]
 
 [project.urls]
 Homepage        = "https://www.splashsync.com"
@@ -78,11 +81,21 @@ faker           = "splashpy.faker:FakerExtension"
 [tool.hatch.version]
 path            = "src/splashpy/version.py"
 
+# Documentation ships inside the package (splashpy/docs/), planning notes never do
 [tool.hatch.build.targets.wheel]
-packages        = ["src/splashpy"]
+only-include    = ["src/splashpy", "docs"]
+exclude         = ["docs/plan"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src"           = ""
+"docs"          = "splashpy/docs"
+
+[tool.hatch.build.targets.wheel.force-include]
+"llms.txt"      = "splashpy/docs/llms.txt"
 
 [tool.hatch.build.targets.sdist]
-include         = ["src/splashpy", "tests", "README.md", "LICENSE"]
+include         = ["src/splashpy", "tests", "docs", "llms.txt", "README.md", "LICENSE"]
+exclude         = ["docs/plan"]
 
 ################################################################################
 # Ruff: Lint & Format

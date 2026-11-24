@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import json
 import struct
 import zlib
 from collections.abc import Iterable
@@ -24,7 +25,7 @@ from typing import Any
 from splashpy import RequestContext, SplashClient, SplashConfig
 from splashpy.dictionary import SplServices
 from splashpy.faker import FakerExtension
-from splashpy.faker.http import FakerFilesApp
+from splashpy.faker.http import FakerHttpApp
 from splashpy.faker.store import FakerStore
 from splashpy.fields import Files
 from splashpy.objects.handler import ObjectHandler
@@ -172,7 +173,7 @@ def test_faker_files_http_endpoint() -> None:
         start_response("200 OK", [])
         return [b"inner"]
 
-    app = FakerFilesApp(inner, store)
+    app = FakerHttpApp(inner, store)
     statuses: list[tuple[str, list[tuple[str, str]]]] = []
 
     def call(path: str, method: str = "GET") -> bytes:
@@ -187,3 +188,41 @@ def test_faker_files_http_endpoint() -> None:
     assert call("/splash") == b"inner"
     assert call(f"/splash/files/{stored.md5}", "POST") == b"inner"
     assert forwarded == ["/splash", f"/splash/files/{stored.md5}"]
+
+
+def test_faker_commit_endpoint(config: SplashConfig) -> None:
+    """The faker commits objects like a host application; bad requests are refused."""
+    client, server = faker_client(config)
+    forwarded: list[str] = []
+
+    def inner(environ: dict[str, Any], start_response: Any) -> Iterable[bytes]:
+        forwarded.append(environ["PATH_INFO"])
+        start_response("200 OK", [])
+        return [b"inner"]
+
+    app = FakerHttpApp(inner, FakerStore(), client)
+    statuses: list[str] = []
+
+    def call(path: str, method: str = "POST", query: str = "") -> bytes:
+        environ = {"PATH_INFO": path, "REQUEST_METHOD": method, "QUERY_STRING": query}
+        return b"".join(app(environ, lambda status, headers: statuses.append(status)))  # type: ignore[arg-type]
+
+    assert json.loads(call("/splash/commit/simple/12")) == {
+        "type": "simple",
+        "id": "12",
+        "action": "update",
+        "result": True,
+        "sent": True,
+    }
+    task = server.requests[-1]["inputs"]["tasks"]["array-1"]
+    assert (task["name"], task["params"]["type"], task["params"]["action"]) == ("Commit", "simple", "update")
+    assert json.loads(call("/splash/commit/ThirdParty/3", query="action=create"))["action"] == "create"
+    assert call("/splash/commit/simple/1", query="action=bogus") == b"Unknown commit action"
+    assert statuses[-1] == "400 Bad Request"
+    assert call("/splash/commit/missing/1") == b"Unknown object type"
+    assert statuses[-1] == "404 Not Found"
+    assert call("/splash/commit/simple/1", "GET") == b"inner"
+    without_client = FakerHttpApp(inner, FakerStore())
+    environ = {"PATH_INFO": "/splash/commit/simple/1", "REQUEST_METHOD": "POST"}
+    assert b"".join(without_client(environ, lambda *_: None)) == b"inner"  # type: ignore[arg-type]
+    assert forwarded == ["/splash/commit/simple/1", "/splash/commit/simple/1"]

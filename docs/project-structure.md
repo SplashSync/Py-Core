@@ -10,13 +10,15 @@ Py-Core/
 │   ├── unit/                isolated components (protocol, config, logger, transport...)
 │   └── integration/         client end to end: serving, outgoing calls, WSGI, CLI, threads
 ├── tools/golden/            Php-Core script generating the golden fixtures
+├── tools/packages/check.py  checks built packages (docs shipped, docs/plan never)
 ├── docker/                  E2E stack: one compose file per service + images
 │   ├── toolkit.yml          Splash Toolkit 3.0
 │   ├── python-3.X.yml       splashpy faker on Python 3.X (3.9 → 3.14)
 │   ├── python/Dockerfile    faker image
 │   └── toolkit/splash.yaml  Toolkit connections to the fakers
 ├── ci/                      GitLab CI jobs, one file per stage: Quality, Functional, Builds
-├── docs/                    this documentation
+├── docs/                    this documentation (shipped in the package as splashpy/docs/)
+├── llms.txt                 documentation index for coding agents (shipped too)
 ├── docker-compose.yml       includes docker/*.yml (IP plan in header)
 ├── Makefile                 quality, tests, golden fixtures, Docker stack
 ├── pyproject.toml           packaging & tools configuration
@@ -43,14 +45,15 @@ splashpy/
 ├── transport/     HTTP transport for outgoing calls (injectable)
 ├── client.py      SplashClient: serves Splash, calls Splash
 ├── adapters/      HTTP gateways (WSGI)
-├── cli.py         `splashpy version`, `splashpy serve`
+├── cli.py         `splashpy version | serve | describe | contracts | docs`
+├── documentation.py  documentation reader (packaged pages, repository in editable installs)
 ├── fields/        field types, fluent FieldsFactory, values helpers (one module each) & validators
 ├── objects/       BaseObject, FieldsGroup, pipeline resolver, handler, locks, commits
 ├── widgets/       BaseWidget, per-render output, BlocksFactory
 ├── extensions/    Extension hooks, per-client registry (explicit + allowlisted entry points)
 ├── faker/         demo connector (short, simple, list, primary, image, file + widgets), dev & tests only
 ├── contracts/     field templates & scopes catalog (embedded snapshot, cache, updates)
-└── testing/       (milestone 3) conformance test suite for connectors
+└── testing/       conformance checks & pytest suite for connectors
 ```
 
 ### Dependency rule

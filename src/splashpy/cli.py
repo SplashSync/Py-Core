@@ -11,7 +11,7 @@
 #  file that was distributed with this source code.
 #
 
-"""``splashpy`` command line: ``version``, ``serve`` (development server), ``describe`` and ``contracts``."""
+"""``splashpy`` command line: ``version``, ``serve`` (development server), ``describe``, ``contracts`` and ``docs``."""
 
 from __future__ import annotations
 
@@ -28,9 +28,10 @@ from splashpy.client import SplashClient
 from splashpy.config import ConfigError, EnvConfig, JsonConfig, SplashConfig, resolve
 from splashpy.contracts import ContractsError, ContractsProvider, FileCache, update
 from splashpy.dictionary import SplContracts
+from splashpy.documentation import DocsError, docs_source
 from splashpy.extensions import Extension
 from splashpy.faker import FAKER_WS_ID, FAKER_WS_KEY, FakerExtension
-from splashpy.faker.http import FakerFilesApp
+from splashpy.faker.http import FakerHttpApp
 from splashpy.objects import PipelineError
 from splashpy.version import __version__
 
@@ -75,6 +76,8 @@ def build_parser() -> argparse.ArgumentParser:
     contracts.add_argument("action", choices=("show", "update"), help="show the catalog in use, or update the cache")
     contracts.add_argument("--version", default=SplContracts.VERSION, help="registry version (default: latest)")
     contracts.add_argument("--cache", default=None, help="cache directory (default: ~/.cache/splashpy/contracts)")
+    docs = commands.add_parser("docs", help="print the documentation index, or one page (raw Markdown)")
+    docs.add_argument("page", nargs="?", default=None, help="page name (default: the index)")
 
     return parser
 
@@ -99,7 +102,7 @@ def serve(args: argparse.Namespace) -> int:
     client = SplashClient(config, extensions=[faker] if faker else [])
     app: WsgiApp = SplashWsgiApp(client, path=args.path)
     if faker is not None:
-        app = FakerFilesApp(app, faker.store)
+        app = FakerHttpApp(app, faker.store, client)
     with make_server(args.host, args.port, app, ThreadingWsgiServer, QuietHandler) as server:
         _LOGGER.info("splashpy %s serving %s on http://%s:%s", __version__, config.ws_id, args.host, args.port)
         try:
@@ -168,6 +171,19 @@ def contracts(args: argparse.Namespace) -> int:
     return 0
 
 
+def docs(args: argparse.Namespace) -> int:
+    """Print the documentation index, or one page, of the installed splashpy version."""
+    source = docs_source()
+    try:
+        print(source.read_page(args.page) if args.page else source.read_index())
+    except DocsError as error:
+        _LOGGER.error("%s", error)
+        return 1
+    if not args.page:
+        print(f"Pages: {', '.join(source.names())} (splashpy docs <page>)")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Command line entry point."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -177,6 +193,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "contracts":
         return contracts(args)
+    if args.command == "docs":
+        return docs(args)
     try:
         return describe(args) if args.command == "describe" else serve(args)
     except (ConfigError, ContractsError, PipelineError, ImportError, AttributeError) as error:

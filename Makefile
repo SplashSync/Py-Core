@@ -94,8 +94,9 @@ prune:		## Remove the Docker stack: containers, volumes, built images & internal
 # Build
 ################################################################################
 
-build:		## Build wheel & sdist
+build:		## Build wheel & sdist, check their contents
 	$(BIN)/python -m build
+	$(BIN)/python tools/packages/check.py dist
 
 clean:		## Remove build & cache artefacts
 	rm -rf build dist .cache .mypy_cache .ruff_cache .coverage htmlcov src/*.egg-info

@@ -22,7 +22,7 @@ from the stored file itself, never from what was received.
 Stored files are published:
 
 - to Splash, by path & checksum (``ReadFile``): path ``faker/files/<md5>``;
-- over HTTP, for humans: ``<server path>/files/<md5>`` (see ``FakerFilesApp``).
+- over HTTP, for humans: ``<server path>/files/<md5>`` (see ``FakerHttpApp``).
 """
 
 from __future__ import annotations

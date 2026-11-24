@@ -51,8 +51,12 @@ never enabled implicitly.
 | [Objects & fields groups](docs/objects.md)       | Objects, ordered fields groups, phases, values, commits     |
 | [Extensions & widgets](docs/extensions.md)       | Extensions registry, hooks, widgets, faker                  |
 | [Contracts](docs/contracts.md)                   | Field templates, scopes, embedded catalog and updates       |
+| [Testing a connector](docs/testing.md)           | Conformance suite for connectors, commits checks            |
 | [Project structure](docs/project-structure.md)   | Repository layout, package layers, request flow             |
 | [Development](docs/development.md)               | Quality tools, tests, golden fixtures, Docker E2E stack, CI |
+
+Coding agents: start with [`llms.txt`](llms.txt). The same pages ship inside the package:
+`splashpy docs` prints the index, `splashpy docs <page>` one page of the installed version.
 
 ## Status
 
